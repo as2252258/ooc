@@ -1,0 +1,131 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: qv
+ * Date: 2018/10/9 0009
+ * Time: 16:06
+ */
+
+namespace data;
+
+
+use model\Email;
+use Yoc\core\Str;
+use Yoc\http\Request;
+use Yoc\http\Response;
+use Exception;
+
+class EmailService
+{
+
+    /**
+     * @param array $params
+     * @throws
+     * @return array
+     */
+    public static function dataAdd($params)
+    {
+        $model = new Email();
+        $model->attributes = [
+            'fromId' => $params['fromId'] ?? NULL,
+            'fromName' => $params['fromName'] ?? NULL,
+            'fromUser' => $params['fromUser'] ?? NULL,
+            'receiveId' => $params['receiveId'] ?? NULL,
+            'receiveName' => $params['receiveName'] ?? NULL,
+            'receiveUser' => $params['receiveUser'] ?? NULL,
+            'title' => $params['title'] ?? NULL,
+            'content' => $params['content'] ?? NULL,
+            'addTime' => $params['addTime'] ?? NULL,
+        ];
+        $results = $model->save();
+        if (!$results) {
+            return [FALSE, $model->getLastError()];
+        } else {
+            return [TRUE, $model];
+        }
+    }
+
+    /**
+     * @param Email $model
+     * @return bool|mixed|\Yoc\db\Orm
+     * @throws \Exception
+     */
+    public static function dataUpdate($model, $params = [])
+    {
+        $model->attributes = [
+            'fromId' => $params['fromId'] ?? NULL,
+            'fromName' => $params['fromName'] ?? NULL,
+            'fromUser' => $params['fromUser'] ?? NULL,
+            'receiveId' => $params['receiveId'] ?? NULL,
+            'receiveName' => $params['receiveName'] ?? NULL,
+            'receiveUser' => $params['receiveUser'] ?? NULL,
+            'title' => $params['title'] ?? NULL,
+            'content' => $params['content'] ?? NULL,
+            'addTime' => $params['addTime'] ?? NULL,
+        ];
+        $results = $model->save();
+        if (!$results) {
+            return [FALSE, $model->getLastError()];
+        } else {
+            return [TRUE, $model];
+        }
+    }
+
+    /**
+     * @param int $id
+     * @throws
+     * @return Email
+     */
+    public static function dataDetail($id)
+    {
+        return Email::findOne($id);
+    }
+
+    /**
+     * @param $condition
+     * @throws
+     * @return boolean
+     */
+    public static function dataDelete($condition)
+    {
+        return Email::find()->where($condition)->deleteAll();
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     * @throws Exception
+     */
+    public static function dataList(Request $request)
+    {
+        $pWhere = [];
+        $pWhere['fromId'] = $request->get('fromId');
+        $pWhere['fromName'] = $request->get('fromName');
+        $pWhere['fromUser'] = $request->get('fromUser');
+        $pWhere['receiveId'] = $request->get('receiveId');
+        $pWhere['receiveName'] = $request->get('receiveName');
+        $pWhere['receiveUser'] = $request->get('receiveUser');
+        $pWhere['title'] = $request->get('title');
+        $pWhere['content'] = $request->get('content');
+        $pWhere['addTime'] = $request->get('addTime');
+
+        //分页处理
+        $count = $request->get('count', -1);
+        $order = $request->get('order', 'id');
+        if (!empty($order)) {
+            $order .= $request->get('isDesc') ? ' asc' : ' desc';
+        } else {
+            $order = 'id desc';
+        }
+
+        //列表输出
+        $model = Email::find()->where($pWhere)->orderBy($order);
+        if ($count != -100) {
+            $model->limit($request->offset, $request->size);
+        }
+        if ((int)$count === 1) {
+            $count = $model->count();
+        }
+        return [$model->all(), $count];
+    }
+}

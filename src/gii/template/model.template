@@ -1,0 +1,36 @@
+<?php
+namespace app\Model;
+
+use Yoc\db\Orm;
+
+{$comment}
+class {$model} extends Orm
+{
+    protected $primary = '{$primary}';
+
+    protected $appends = {$appends};
+
+    /**
+     * @inheritdoc
+     */
+    public static function tableName(){
+        return '{$tableName}';
+    }
+
+
+	/**
+	 * @return array
+	 */
+    public function rules(){
+        return {$rules};
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributes() : array
+    {
+        return {$labels}
+    }
+
+}

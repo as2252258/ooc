@@ -1,0 +1,20 @@
+{
+    "name": "sprout/sprout",
+    "type": "composer-plugin",
+    "authors": [
+        {
+            "name": "xl",
+            "email": "as2252258@163.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Yoc\\": "src/",
+        },
+        "files": [
+            "src/Yoc.php"
+        ]
+    }
+}

@@ -1,0 +1,95 @@
+<?php
+
+namespace controller;
+
+use {$service};
+use Exception;
+use Yoc\core\Str;
+use Yoc\http\Request;
+use components\ActiveController;
+
+
+/**
+ * Class {$model}Controller
+ *
+ * @package Controller
+ */
+class {$model}Controller extends ActiveController
+{
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function actionAdd(Request $request)
+    {
+        list($status, $model) = {$model}Service::dataAdd($request->params());
+        if (!$status) throw new Exception($model);
+        return $this->render(0, $model);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function actionUpdate(Request $request)
+    {
+        $model = {$model}Service::dataDetail($request->get('id'));
+        if (empty($model)) {
+            throw new \Exception('指定数据不存在');
+        }
+
+        list($status, $model) = {$model}Service::dataUpdate($model, $request->params());
+
+        if (!$status) {
+            throw new \Exception($model);
+        }
+        return $this->render(0, $model);
+    }
+
+    /**
+     * @param Request $request
+     * @throws Exception
+     * @return
+     */
+    public function actionDetail(Request $request)
+    {
+        $detail = {$model}Service::dataDetail($request->get('id'));
+
+        return $this->render(0, $detail);
+    }
+
+    /**
+     * @param Request $request
+     * @throws Exception
+     * @return
+     */
+    public function actionDelete(Request $request)
+    {
+        $_key = $request->post('id', TRUE);
+        $pass = $request->post('password', TRUE);
+        if (empty($this->user) || strcmp(Str::encrypt($pass), $this->user->password)) {
+            throw new \Exception('密码错误');
+        }
+        $model = {$model}Service::dataDelete(['id' => $_key]);
+        if (empty($model)) {
+            throw new \Exception('数据已被删除或已不存在!');
+        }
+        return $this->render(0, 'delete success');
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function actionList(Request $request)
+    {
+        list($list, $count) = {$model}Service::dataList($request);
+
+        return $this->render(0, $list, $count);
+    }
+
+}
