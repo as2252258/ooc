@@ -1,13 +1,18 @@
 {
-    "name": "Walk/walk",
-    "type": "composer-plugin",
+    "name": "sprout/sprout",
+    "description": "一个参数效验扩展",
+    "keywords": [
+        "validate"
+    ],
+    "license": "MIT",
     "authors": [
         {
-            "name": "xl",
-            "email": "as2252258@163.com"
+            "name": "xianglin",
+            "email": "xianglin@163.com"
         }
     ],
     "require": {
+        "php": ">= 7.0"
     },
     "autoload": {
         "psr-4": {
