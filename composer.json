@@ -1,5 +1,5 @@
 {
-    "name": "sprout/sprout",
+    "name": "forset/forset",
     "description": "一个参数效验扩展",
     "keywords": [
         "validate"
@@ -8,7 +8,7 @@
     "authors": [
         {
             "name": "xianglin",
-            "email": "xianglin@163.com"
+            "email": "as2252258@163.com"
         }
     ],
     "require": {
