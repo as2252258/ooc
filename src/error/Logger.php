@@ -75,7 +75,10 @@ class Logger
 			$message = self::arrayformat($message);
 		}
 		if (!empty($message)) {
-			static::$logs[] = [$category, $message];
+			if (!is_array(static::$logs)) {
+				static::$logs = [];
+			}
+			array_push(static::$logs, [$category, $message]);
 		}
 	}
 
