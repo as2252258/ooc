@@ -11,6 +11,7 @@ namespace Yoc\server;
 use Yoc\core\JSON;
 use Yoc\core\Xml;
 use Yoc\error\Logger;
+use Yoc\event\Event;
 use Yoc\exception\ExitException;
 use Yoc\http\Response;
 use Yoc\route\Router;
@@ -39,6 +40,7 @@ class Request extends Base
 	 */
 	public function onRequest(\swoole_http_request $request, \swoole_http_response $response)
 	{
+		Event::on('REQUEST_AFTER', [$this, 'requestLog'], $request);
 		try {
 			$this->setRequestDi($request);
 			$this->setResponseDi($response);
@@ -62,14 +64,13 @@ class Request extends Base
 				'line' => $exception->getLine()
 			]));
 		}
-		$this->requestLog($request);
 	}
 
 	/**
 	 * @param $request
 	 * @throws \Exception
 	 */
-	private function requestLog($request)
+	public function requestLog($request)
 	{
 		Logger::insert();
 
