@@ -67,9 +67,13 @@ class Worker extends Base
 			} catch (\Exception $exception) {
 				$this->addError($exception);
 			}
-			swoole_set_process_name('PHP_' . \Yoc::$app->id . ': worker: No.' . $workeer_id);
+			if (function_exists('swoole_set_process_name')) {
+				swoole_set_process_name('PHP_' . \Yoc::$app->id . ': worker: No.' . $workeer_id);
+			}
 		} else {
-			swoole_set_process_name('PHP_' . \Yoc::$app->id . ': task: No.' . $workeer_id);
+			if (function_exists('swoole_set_process_name')) {
+				swoole_set_process_name('PHP_' . \Yoc::$app->id . ': task: No.' . $workeer_id);
+			}
 		}
 	}
 }

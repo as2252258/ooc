@@ -28,10 +28,18 @@ class Process extends \Swoole\Process
 	 */
 	public static function listen(\swoole_process $process)
 	{
-		static::$inotify = inotify_init();
-		swoole_set_process_name('Listen file modify event.');
-		static::watch(APP_PATH);
-		swoole_event_add(static::$inotify, [static::class, 'check']);
+		if (!extension_loaded('inotify')) {
+			swoole_timer_tick(3000, function () {
+				echo 'Waite check.' . PHP_EOL;
+			});
+		} else {
+			static::$inotify = inotify_init();
+			if(function_exists('swoole_set_process_name')){
+				swoole_set_process_name('Listen file modify event.');
+			}
+			static::watch(APP_PATH);
+			swoole_event_add(static::$inotify, [static::class, 'check']);
+		}
 	}
 
 	/**

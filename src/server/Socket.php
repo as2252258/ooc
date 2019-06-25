@@ -126,7 +126,10 @@ class Socket extends Service
 	{
 		$time = \Yoc::$app->runtimePath . '/socket.sock';
 		file_put_contents($time, $server->master_pid);
-		swoole_set_process_name(\Yoc::$app->id);
+
+		if(function_exists('swoole_set_process_name')){
+			swoole_set_process_name(\Yoc::$app->id);
+		}
 
 		$this->isRun = true;
 
