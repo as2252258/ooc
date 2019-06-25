@@ -110,7 +110,7 @@ class Logger
 
 		$command = new LogTask(static::$logs);
 		$command->handler();
-		static::$logs = [];
+		static::$logs = null;
 	}
 
 	/**

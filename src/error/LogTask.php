@@ -33,7 +33,12 @@ class LogTask extends Task
 		$_tmp = [];
 
 		foreach ($this->param as $val) {
-			list($category, $message) = $val;
+
+			if (is_string($val[0])) {
+				list($category, $message) = $val;
+			} else {
+				list($category, $message) = array_shift($val);
+			}
 
 			$local = $path . '/' . (empty($category) ? 'app' : $category);
 			if (!is_dir($local)) mkdir($local);
