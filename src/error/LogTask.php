@@ -33,10 +33,6 @@ class LogTask extends Task
 		$_tmp = [];
 
 		foreach ($this->param as $val) {
-			if (count($val) < 2) {
-				$val = array_shift($val);
-			}
-
 			list($category, $message) = $val;
 
 			$local = $path . '/' . (empty($category) ? 'app' : $category);
