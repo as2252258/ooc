@@ -330,7 +330,7 @@ function process_exists($server_name = 'im server')
 {
 	$cmd = 'ps axu|grep "' . $server_name . '"|grep -v "grep"|wc -l';
 	$ret = shell_exec("$cmd");
-	return (bool)rtrim($ret, "\r\n");
+	return (bool)trim(rtrim($ret, "\r\n"));
 }
 
 spl_autoload_register(['Yoc', 'autoload'], TRUE, TRUE);
