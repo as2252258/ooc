@@ -40,7 +40,7 @@ class Request extends Base
 	 */
 	public function onRequest(\swoole_http_request $request, \swoole_http_response $response)
 	{
-		Event::on('REQUEST_AFTER', [$this, 'requestLog'], $request);
+		Event::on('AFTER_REQUEST', [$this, 'requestLog'], $request);
 		try {
 			$this->setRequestDi($request);
 			$this->setResponseDi($response);
@@ -73,6 +73,8 @@ class Request extends Base
 	public function requestLog($request)
 	{
 		Logger::insert();
+
+		$request = $request->data;
 
 		$client = new Client('47.92.194.207', 9201);
 		$client->setHeaders(['Content-Type' => 'application/json']);
