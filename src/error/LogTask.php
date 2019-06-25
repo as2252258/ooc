@@ -56,7 +56,7 @@ class LogTask extends Task
 
 		$text = '[debug ' . date('Y-m-d H:i:s') . ']:';
 		foreach ($_tmp as $key => $val) {
-			$data = implode(PHP_EOL, $val['data']);
+			$data = implode(PHP_EOL . '[debug ' . date('Y-m-d H:i:s') . ']', $val['data']);
 
 			$logFile = $val['local'] . '/server.log';
 
