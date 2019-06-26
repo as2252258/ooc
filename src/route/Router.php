@@ -7,6 +7,7 @@ namespace Yoc\route;
 use Exception;
 use Yoc\base\Component;
 use Yoc\exception\NotFindClassException;
+use Yoc\exception\RequestException;
 
 class Router extends Component
 {
@@ -27,6 +28,10 @@ class Router extends Component
 		$prefix = $this->addPrefix();
 		if (!empty($prefix) && $path != rtrim($prefix, '/')) {
 			$path = $prefix . $path;
+		}
+
+		if (strpos($path, '/') === false) {
+			$path = '/' . $path;
 		}
 
 		list($first, $explode) = $this->split($path);
@@ -144,6 +149,8 @@ class Router extends Component
 		$node->handler = $handler;
 
 		$name = array_column($this->groupTacks, 'namespace');
+
+		array_unshift($name, 'app\\controller');
 		if (!empty($name) && $name = array_filter($name)) {
 			$node->namespace = $name;
 		}
@@ -224,6 +231,7 @@ class Router extends Component
 		list($first, $explode) = $this->split($path);
 
 		$parent = $this->nodes[$first] ?? null;
+
 		if (empty($explode) || empty($parent)) {
 			return null;
 		}
@@ -271,11 +279,10 @@ class Router extends Component
 	/**
 	 * @param string $url
 	 * @return mixed
-	 * @throws NotFindClassException
+	 * @throws
 	 */
 	public function findByRoute($url = '')
 	{
-		$_tmp = [];
 		if (empty($url)) {
 			$url = request()->getUri();
 		}
@@ -283,6 +290,29 @@ class Router extends Component
 		if (empty($explode)) {
 			throw new NotFindClassException();
 		}
+
+		$_tmp = $this->transform($explode);
+		/** @var \Yoc\route\Node $node */
+		$node = $this->findByPath('/' . implode('/', $_tmp));
+		if (!($node instanceof Node)) {
+			throw new NotFindClassException();
+		}
+
+		if ($node->method != 'any' && $node->method != request()->getMethod()) {
+			throw new \Exception('method mot allowed.', 403);
+		}
+
+		return $node->run($node->handler);
+	}
+
+	/**
+	 * @param $explode
+	 * @return array
+	 * @throws NotFindClassException
+	 */
+	private function transform($explode)
+	{
+		$_tmp = [];
 		foreach ($explode as $value) {
 			if (empty($value) && !is_numeric($value)) {
 				continue;
@@ -292,20 +322,11 @@ class Router extends Component
 			}
 			$_tmp[] = $value;
 		}
-
 		if (empty($_tmp)) {
 			throw new NotFindClassException();
 		}
 
-		/** @var \Yoc\route\Node $node */
-		$node = $this->findByPath('/' . implode('/', $_tmp));
-
-
-		if (!($node instanceof Node)) {
-			throw new NotFindClassException();
-		}
-
-		return $node->run($node->handler);
+		return $_tmp;
 	}
 
 
@@ -315,8 +336,6 @@ class Router extends Component
 		foreach ($routes as $val) {
 			require_once $val;
 		}
-
-		$this->printTree();
 	}
 
 	public function printTree()

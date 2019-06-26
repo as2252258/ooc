@@ -17,7 +17,7 @@ class Node
 	public $index = 0;
 	public $method;
 
-	/** @var \Node[] $childs */
+	/** @var Node[] $childs */
 	public $childs = [];
 
 	public $group = [];
@@ -32,7 +32,7 @@ class Node
 	/**
 	 * @param Node $node
 	 * @param string $field
-	 * @return \Node
+	 * @return Node
 	 */
 	public function addChild(Node $node, string $field)
 	{
@@ -103,6 +103,18 @@ class Node
 		}
 		$mid = new Middleware();
 		$mid->bindParams(\Yoc::$app->request);
+
+		if (!empty($this->rules)) {
+			foreach ($this->rules as $rule) {
+				if (!isset($rule['class'])) {
+					$rule['class'] = Filter::class;
+				}
+
+				$object = \Yoc::createObject($rule);
+				$object->handler();
+			}
+		}
+
 		foreach ($this->middleware as $val) {
 			$mid->set($val);
 		}
