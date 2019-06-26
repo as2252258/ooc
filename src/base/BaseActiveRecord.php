@@ -17,7 +17,7 @@ use Yoc\db\IOrm;
 use Yoc\db\Connection;
 use Yoc\db\ActiveQuery;
 use Yoc\db\ActiveRecord;
-use Yoc\db\validator\Validator;
+use Yoc\validator\Validator;
 use Yoc\error\Logger;
 use Exception;
 

@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Yoc\http;
+namespace Router;
 
 
 use Yoc\base\Component;
-use Yoc\validator\Validator;
 use Yoc\exception\AuthException;
 use Yoc\exception\RequestException;
+use Yoc\validator\Validator;
 
-class HttpFilter extends Component
+class Filter extends Component
 {
 
 	public $body = [];

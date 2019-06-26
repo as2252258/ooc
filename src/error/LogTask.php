@@ -23,22 +23,18 @@ class LogTask extends Task
 
 	/**
 	 * 触发事件
+	 * @param $param
 	 * @throws
 	 */
-	public function handler()
+	public function handler($param)
 	{
 		$path = \Yoc::$app->runtimePath . '/log';
 		if (!is_dir($path)) mkdir($path, 777);
 
 		$_tmp = [];
 
-		foreach ($this->param as $val) {
-
-			if (is_string($val[0])) {
-				list($category, $message) = $val;
-			} else {
-				list($category, $message) = array_shift($val);
-			}
+		foreach ($param as $val) {
+			list($category, $message) = $val;
 
 			$local = $path . '/' . (empty($category) ? 'app' : $category);
 			if (!is_dir($local)) mkdir($local);
@@ -54,9 +50,9 @@ class LogTask extends Task
 			$_tmp[$category]['data'][] = $message;
 		}
 
-		$text = '[debug ' . date('Y-m-d H:i:s') . ']: ';
+		$text = '[debug ' . date('Y-m-d H:i:s') . ']:';
 		foreach ($_tmp as $key => $val) {
-			$data = implode(PHP_EOL . $text, $val['data']);
+			$data = implode(PHP_EOL, $val['data']);
 
 			$logFile = $val['local'] . '/server.log';
 

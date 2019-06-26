@@ -41,7 +41,9 @@ class Request extends Base
 	public function onRequest(\swoole_http_request $request, \swoole_http_response $response)
 	{
 		Event::on('AFTER_REQUEST', [$this, 'requestLog'], $request);
+
 		try {
+
 			$this->setRequestDi($request);
 			$this->setResponseDi($response);
 
@@ -52,7 +54,7 @@ class Request extends Base
 				throw new \Exception('Page not exists.', 404);
 			}
 
-			$resp->send(router()->resolve());
+			$resp->send(router()->findByRoute());
 		} catch (\Error | \Exception $exception) {
 			$this->addError($exception->getMessage(), 'app');
 
@@ -73,7 +75,7 @@ class Request extends Base
 	public function requestLog($request)
 	{
 		Logger::insert();
-
+		
 		$request = $request->data;
 
 		$client = new Client('47.92.194.207', 9201);

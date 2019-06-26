@@ -62,8 +62,8 @@ class Worker extends Base
 		if ($workeer_id < $socket->config['worker_num']) {
 			/** @var DbPool $dbPool */
 			try {
-				$app = \Yoc::$app;
-				$app->get('router')->loader();
+//				$app = \Yoc::$app;
+//				$app->get('router')->loader();
 			} catch (\Exception $exception) {
 				$this->addError($exception);
 			}

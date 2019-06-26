@@ -108,12 +108,13 @@ class Logger
 	public static function insert()
 	{
 		if (empty(static::$logs)) {
+			static::$logs = [];
 			return;
 		}
 
-		$command = new LogTask(static::$logs);
-		$command->handler();
-		static::$logs = null;
+		$command = new LogTask();
+		$command->handler(static::$logs);
+		static::$logs = [];
 	}
 
 	/**
