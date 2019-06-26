@@ -62,9 +62,9 @@ class Worker extends Base
 		if ($workeer_id < $socket->config['worker_num']) {
 			/** @var DbPool $dbPool */
 			try {
-//				$app = \Yoc::$app;
-//				$app->get('router')->loader();
+				\router()->loader();
 			} catch (\Exception $exception) {
+				echo 'Error: '.$exception->getMessage() . PHP_EOL;
 				$this->addError($exception);
 			}
 			if (function_exists('swoole_set_process_name')) {

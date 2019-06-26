@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Router;
+namespace Yoc\route;
 
 
 use Yoc\base\Component;

@@ -50,7 +50,7 @@ abstract class BApp extends Service
 	/**
 	 * @param $config
 	 *
-	 * @throws InitException
+	 * @throws
 	 */
 	public function parseInt(&$config)
 	{
