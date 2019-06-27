@@ -135,9 +135,13 @@ class Node
 
 	/**
 	 * @return mixed
+	 * @throws
 	 */
 	public function execOptions()
 	{
+		if (!is_callable($this->options, true)) {
+			throw new \Exception('Option callback can\'t exec.');
+		}
 		return call_user_func($this->options);
 	}
 }

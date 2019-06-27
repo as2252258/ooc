@@ -182,6 +182,17 @@ class Router extends Component
 			throw new Exception('Controller is con\'t exec.');
 		}
 
+		$options = array_column($this->groupTacks, 'options');
+		if (!empty($options) && is_array($options)) {
+			$options = array_filter($options);
+
+			$last = $options[count($options) - 1];
+			if (!empty($last) && is_callable($last, true)) {
+				$node->bindOptions($last);
+			}
+
+		}
+
 		$rules = array_column($this->groupTacks, 'filter');
 		$rules = array_shift($rules);
 		if (!empty($rules) && is_array($rules)) {
