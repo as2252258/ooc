@@ -139,7 +139,6 @@ class Node
 	 */
 	public function execOptions()
 	{
-		var_dump($this->options);
 		if (!is_callable($this->options, true)) {
 			throw new \Exception('Option callback can\'t exec.');
 		}
