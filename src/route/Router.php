@@ -207,7 +207,7 @@ class Router extends Component
 	 * @param callable $callback
 	 * 路由分组
 	 */
-	public function addGroup(array $config, callable $callback)
+	public function group(array $config, callable $callback)
 	{
 		$this->groupTacks[] = $config;
 
