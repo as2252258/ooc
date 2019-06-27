@@ -287,16 +287,6 @@ class Router extends Component
 			$url = request()->getUri();
 		}
 
-		if (request()->getMethod() == 'options') {
-			return call_user_func(function () {
-				$request = request()->headers->getHeader('access-control-request-headers');
-				response()->addHeader('Access-Control-Allow-Headers', $request);
-
-				$request = request()->headers->getHeader('access-control-request-method');
-				response()->addHeader('Access-Control-Request-Method', $request);
-			});
-		}
-
 		$explode = explode('/', $url);
 		if (empty($explode)) {
 			throw new NotFindClassException();
@@ -311,6 +301,10 @@ class Router extends Component
 
 		if ($node->method != 'any' && $node->method != request()->getMethod()) {
 			throw new \Exception('method mot allowed.', 403);
+		}
+
+		if (request()->getMethod() == 'options') {
+			return $node->execOptions();
 		}
 
 		return $node->run($node->handler);

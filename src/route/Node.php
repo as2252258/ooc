@@ -21,6 +21,7 @@ class Node
 	public $childs = [];
 
 	public $group = [];
+	public $options = null;
 
 	public $rules = [];
 	public $handler;
@@ -121,4 +122,22 @@ class Node
 		return $mid->exec($call);
 	}
 
+	/**
+	 * @param $call
+	 * @return $this
+	 */
+	public function bindOptions($call)
+	{
+		$this->options = $call;
+		return $this;
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	public function execOptions()
+	{
+		return call_user_func($this->options);
+	}
 }
