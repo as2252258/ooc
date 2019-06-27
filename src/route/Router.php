@@ -187,6 +187,8 @@ class Router extends Component
 			$options = array_filter($options);
 
 			$last = $options[count($options) - 1];
+
+			var_dump($last);
 			if (!empty($last) && is_callable($last, true)) {
 				$node->bindOptions($last);
 			}
