@@ -310,13 +310,14 @@ class Router extends Component
 			throw new NotFindClassException();
 		}
 
+		if (request()->getMethod() == 'options') {
+			return $node->execOptions();
+		}
+
 		if ($node->method != 'any' && $node->method != request()->getMethod()) {
 			throw new \Exception('method mot allowed.', 403);
 		}
 
-		if (request()->getMethod() == 'options') {
-			return $node->execOptions();
-		}
 
 		return $node->run($node->handler);
 	}
