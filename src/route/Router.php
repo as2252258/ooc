@@ -286,6 +286,17 @@ class Router extends Component
 		if (empty($url)) {
 			$url = request()->getUri();
 		}
+
+		if (request()->getMethod() == 'options') {
+			return call_user_func(function () {
+				$request = request()->headers->getHeader('access-control-request-headers');
+				response()->addHeader('Access-Control-Allow-Headers', $request);
+
+				$request = request()->headers->getHeader('access-control-request-method');
+				response()->addHeader('Access-Control-Request-Method', $request);
+			});
+		}
+
 		$explode = explode('/', $url);
 		if (empty($explode)) {
 			throw new NotFindClassException();
