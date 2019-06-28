@@ -336,3 +336,5 @@ function process_exists($server_name = 'im server')
 spl_autoload_register(['Yoc', 'autoload'], TRUE, TRUE);
 Yoc::$container = new \Yoc\di\Container();
 Yoc::$router = new Yoc\route\Router();
+
+require_once "func.php";
