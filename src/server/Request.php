@@ -56,13 +56,15 @@ class Request extends Base
 
 			$resp->send(router()->findByRoute());
 		} catch (\Error | \Exception $exception) {
-			$this->addError($exception->getMessage(), 'app');
+			$message = $exception->getMessage();
+			$this->addError($message, 'app');
 
 			$code = $exception->getCode();
 			if ($code == 0) $code = 500;
 
+			$trance = array_slice($exception->getTrace(), 0, 10);
 
-			$resp->send(JSON::to($code, $exception->getMessage(), array_slice($exception->getTrace(), 0, 10)));
+			$resp->send(JSON::to($code, $message, array_values($trance)));
 		}
 	}
 
