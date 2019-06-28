@@ -180,9 +180,11 @@ return [
 
 ```
 
+```bash
 启动  php $dir/execfile 或 php $dir/execfile start  
 重启  php $dir/execfile restart   
-停止  php $dir/execfile stop   
+停止  php $dir/execfile stop 
+```  
 
 
 
