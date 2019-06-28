@@ -337,4 +337,5 @@ spl_autoload_register(['Yoc', 'autoload'], TRUE, TRUE);
 Yoc::$container = new \Yoc\di\Container();
 Yoc::$router = new Yoc\route\Router();
 
+require_once "Code.php";
 require_once "func.php";
