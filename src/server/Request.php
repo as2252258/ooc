@@ -61,10 +61,8 @@ class Request extends Base
 			$code = $exception->getCode();
 			if ($code == 0) $code = 500;
 
-			$resp->send(JSON::to($code, $exception->getMessage(), [
-				'file' => $exception->getFile(),
-				'line' => $exception->getLine()
-			]));
+
+			$resp->send(JSON::to($code, $exception->getMessage(), array_slice($exception->getTrace(), 0, 10)));
 		}
 	}
 
@@ -75,7 +73,7 @@ class Request extends Base
 	public function requestLog($request)
 	{
 		Logger::insert();
-		
+
 		$request = $request->data;
 
 		$client = new Client('47.92.194.207', 9201);
