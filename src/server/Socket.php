@@ -33,6 +33,44 @@ class Socket extends Service
 
 
 	/**
+	 * @return array
+	 * return server default config
+	 */
+	private function getDefaultConfig()
+	{
+		return [
+			'worker_num' => 6,
+			'reactor_num' => 4,
+			'backlog' => 20000,
+			'max_conn' => 2000,
+			'open_eof_check' => FALSE,
+			'http_parse_post' => TRUE,
+			'package_eof' => "\r\n\r\n",
+			'dispatch_mode' => 1,
+			'daemonize' => 1,
+			'open_cpu_affinity' => 1,
+			'open_tcp_nodelay' => 1,
+			'tcp_defer_accept' => 1,
+			'task_worker_num' => 10,
+			'enable_port_reuse' => TRUE,
+			'discard_timeout_request' => FALSE,
+			'open_mqtt_protocol' => TRUE,
+			'task_ipc_mode' => 1,
+			'task_max_request' => 50000,
+			'message_queue_key' => 0x72000120,
+			'tcp_fastopen' => TRUE,
+			'reload_async' => TRUE,
+			'heartbeat_idle_time' => 600,
+			'heartbeat_check_interval' => 50,
+			'package_max_length' => 3096000,
+			'open_websocket_close_frame' => TRUE,
+			'websocket_subprotocol' => TRUE,
+			'http_compression' => true,
+		];
+	}
+
+
+	/**
 	 * @var array
 	 *
 	 * @uses $listens =[
@@ -51,7 +89,8 @@ class Socket extends Service
 		$array = [$this->host, $this->port];
 		$this->server = new \swoole_websocket_server(...$array);
 
-		$this->server->set($this->config);
+		$default = $this->getDefaultConfig();
+		$this->server->set(array_merge($default,$this->config));
 
 		new Worker();
 
@@ -127,7 +166,7 @@ class Socket extends Service
 		$time = \Yoc::$app->runtimePath . '/socket.sock';
 		file_put_contents($time, $server->master_pid);
 
-		if(function_exists('swoole_set_process_name')){
+		if (function_exists('swoole_set_process_name')) {
 			swoole_set_process_name(\Yoc::$app->id);
 		}
 
