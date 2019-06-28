@@ -178,12 +178,12 @@ class Node
 	{
 		$_tmp = [];
 		foreach ($middles as $class) {
-			if ($class instanceof \Closure) {
-				$_tmp[] = $class;
-			} else if ($class instanceof IMiddleware) {
+			if (is_string($class) && class_exists($class)) {
 				$reflect = new \ReflectionClass($class);
 
 				$_tmp[] = $reflect->newInstance();
+			} else if ($class instanceof \Closure) {
+				$_tmp[] = $class;
 			} else {
 				$_tmp[] = $class;
 			}
