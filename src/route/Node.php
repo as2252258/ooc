@@ -4,6 +4,7 @@
 namespace Yoc\route;
 
 
+use Exception;
 use Yoc\exception\NotFindClassException;
 
 /**
@@ -29,6 +30,38 @@ class Node
 	public $enableHtmlSuffix = false;
 	public $namespace = [];
 	public $middleware = [];
+
+
+	/**
+	 * @param $handler
+	 * @throws
+	 */
+	public function bindHandler($handler)
+	{
+		if (is_string($handler) && strpos($handler, '@') !== false) {
+			list($controller, $action) = explode('@', $handler);
+			if (!empty($this->namespace)) {
+				$controller = implode('\\', $this->namespace) . '\\' . $controller;
+			}
+
+			$reflect = new \ReflectionClass($controller);
+			if (!$reflect->isInstantiable()) {
+				throw new Exception('Controller Class is con\'t Instantiable.');
+			}
+
+			if (!$reflect->hasMethod($action)) {
+				throw new Exception('method not exists at Controller.');
+			}
+
+			$this->handler = [$reflect->newInstance(), $action];
+		} else if ($handler instanceof \Closure) {
+			$this->handler = $handler;
+		} else if ($handler != null && !is_callable($handler, true)) {
+			throw new Exception('Controller is con\'t exec.');
+		}
+
+		$this->handler = $handler;
+	}
 
 	/**
 	 * @param Node $node
@@ -123,12 +156,17 @@ class Node
 	}
 
 	/**
-	 * @param $call
+	 * @param $options
 	 * @return $this
 	 */
-	public function bindOptions($call)
+	public function bindOptions($options)
 	{
-		$this->options = $call;
+		$options = array_filter($options);
+		$last = $options[count($options) - 1];
+		if (empty($last)) {
+			return $this;
+		}
+		$this->options = $last;
 		return $this;
 	}
 

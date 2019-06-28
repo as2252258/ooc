@@ -146,51 +146,23 @@ class Router extends Component
 		$node->path = $value;
 		$node->index = $index;
 		$node->method = $method;
-		$node->handler = $handler;
 
 		$name = array_column($this->groupTacks, 'namespace');
-
 		array_unshift($name, 'app\\controller');
 		if (!empty($name) && $name = array_filter($name)) {
 			$node->namespace = $name;
 		}
+
+		$node->bindHandler($handler);
 
 		$name = array_column($this->groupTacks, 'middleware');
 		if (!empty($name) && $name = array_filter($name)) {
 			$node->bindMiddleware($name);
 		}
 
-		if (is_string($handler) && strpos($handler, '@') !== false) {
-			list($controller, $action) = explode('@', $handler);
-			if (!empty($node->namespace)) {
-				$controller = implode('\\', $node->namespace) . '\\' . $controller;
-			}
-
-			$reflect = new \ReflectionClass($controller);
-			if (!$reflect->isInstantiable()) {
-				throw new Exception('Controller Class is con\'t Instantiable.');
-			}
-
-			if (!$reflect->hasMethod($action)) {
-				throw new Exception('method not exists at Controller.');
-			}
-
-			$node->handler = [$reflect->newInstance(), $action];
-		} else if ($handler instanceof \Closure) {
-			$node->handler = $handler;
-		} else if ($handler != null && !is_callable($handler, true)) {
-			throw new Exception('Controller is con\'t exec.');
-		}
-
 		$options = array_column($this->groupTacks, 'options');
 		if (!empty($options) && is_array($options)) {
-			$options = array_filter($options);
-
-			$last = $options[count($options) - 1];
-			if (!empty($last)) {
-				$node->bindOptions($last);
-			}
-
+			$node->bindOptions($options);
 		}
 
 		$rules = array_column($this->groupTacks, 'filter');
