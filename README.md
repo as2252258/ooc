@@ -1,22 +1,182 @@
-# 萌推
+# 瞎写的
 
 #### 介紹
-好萌啊
+瞎写的，自己用的
 
 #### 架構
-架構說明
+瞎几吧乱抄的
 
 #### 安裝教程
+新建 $dir/composer.json  
+新建 $dir/app/controller  
+新建 $dir/app/model  
+新建 $dir/app/middleware  
+新建 $dir/commands  
+新建 $dir/components  
+新建 $dir/config  
+新建 $dir/routes  
 
-1. xxxx
-2. xxxx
-3. xxxx
+添加composer 内容  
+```json
+{
+	"autoload": {
+		"psr-4": {
+			"app\\": "app"
+		},
+		"files": [
+		]
+	},
+	"require": {
+		"php": ">= 7.1",
+	},
+	"require-dev": {
+		"forset/forset": "dev-master",
+		"swoole/ide-helper": "@dev"
+	}
+}
+
+```
+
+
+```bash
+执行 composer update
+```
 
 #### 使用說明
 
-1. xxxx
-2. xxxx
-3. xxxx
+新建 $dir/routes/web.php
+```php
+<?php
+
+/** @var Router $router */
+$router = app()->get('router');
+$router->get('index', 'SiteController@index');
+$router->post('index', 'SiteController@index');
+$router->any('index', 'SiteController@index');
+$router->delete('index', 'SiteController@index');
+$router->put('index', 'SiteController@index');
+
+$router->group($options, function (\Yoc\route\Router $router){
+    $router->get('index', 'SiteController@index');
+    $router->post('index', 'SiteController@index');
+    $router->any('index', 'SiteController@index');
+    $router->delete('index', 'SiteController@index');
+    $router->put('index', 'SiteController@index');
+});
+
+```
+
+新建 $dir/execfile并添加内容
+```php
+<?php
+//error_reporting(E_ALL & ~E_NOTICE);
+
+define('APP_PATH', __DIR__);
+define('DISPLAY_ERRORS', TRUE);
+define('DEBUG', TRUE);
+define('DB_EMPTY', 3001);
+define('DB_ERROR', 3002);
+define('PARAM_NOT_EXISTS', 4001);
+define('PARAM_EMPTY', 4004);
+
+use Yoc\web\Application;
+
+$array = parse_ini_file(APP_PATH . '/.env', true);
+foreach ($array as $key => $val) {
+	putenv($key . '=' . $val);
+}
+
+
+require_once __DIR__ . '/vendor/autoload.php';
+//require_once __DIR__ . '/vendor/yoc/Yoc.php';
+
+$config = require_once __DIR__ . '/config/configure.php';
+
+$init = new Application($config);
+$init->initial();
+```
+
+添加配置项内容 $dir/config/configure.php
+```php
+<?php
+
+return [
+	'id' => 'restful',
+	'runtimePath' => __DIR__ . '/../runtime',
+	'components' => [
+		'config' => [
+			'class' => \Yoc\base\Config::class,
+			'cache_time' => 60 * 60 * 24,
+			'usePipeMessage' => TRUE,
+			'wss' => \app\socket\GameSocket::class,
+			'udp' => [
+				'host' => '0.0.0.0',
+				'port' => 33305,
+			]
+		],
+		'error' => [
+			'class' => \app\MyErrorHandler::class
+		],
+		'socket' => [
+			'class' => 'Yoc\server\Socket',
+			'host' => '127.0.0.1',
+			'port' => 6500,
+			'serverHost' => '127.0.0.1',
+			'serverPort' => 6600,
+			'config' => [
+				'worker_num' => 32,
+				'reactor_num' => 8,
+				'task_worker_num' => 20
+			],
+		],
+		'redis' => [
+			'class' => 'Yoc\cache\Redis',
+			'host' => '127.0.0.1',
+			'port' => '6379',
+			'prefix' => '',
+			'auth' => '',
+			'databases' => '0',
+		],
+		'qn' => [
+			'class' => '\Yoc\core\Qn',
+			'access_key' => '',
+			'secret_key' => '',
+			'bucket' => '',
+		],
+
+		'default' => [
+			'class' => 'Yoc\db\Connection',
+			'id' => 'default',
+			'cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST,
+			'username' => CONNECT_USER,
+			'password' => CONNECT_PASS,
+			'tablePrefix' => 'aircraftwar_',
+			'masterConfig' => [
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+			],
+			'slaveConfig' => [
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+				['cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST, 'username' => CONNECT_USER, 'password' => CONNECT_PASS,],
+			],
+		],
+	],
+	'aliases' => []
+];
+
+```
+
+启动  php $dir/execfile 或 php $dir/execfile start  
+重启  php $dir/execfile restart   
+停止  php $dir/execfile stop   
+
+
 
 #### 參與貢獻
 
