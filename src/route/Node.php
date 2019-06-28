@@ -132,6 +132,26 @@ class Node
 		return $this;
 	}
 
+	/**
+	 * @param $middles
+	 * @throws \ReflectionException
+	 */
+	public function bindMiddleware($middles)
+	{
+		$_tmp = [];
+		foreach ($middles as $class) {
+			if ($class instanceof \Closure) {
+				$_tmp[] = $class;
+			} else if ($class instanceof IMiddleware) {
+				$reflect = new \ReflectionClass($class);
+
+				$_tmp[] = $reflect->newInstance();
+			} else {
+				$_tmp[] = $class;
+			}
+		}
+		$this->middleware = $_tmp;
+	}
 
 	/**
 	 * @return mixed

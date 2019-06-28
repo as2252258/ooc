@@ -157,7 +157,7 @@ class Router extends Component
 
 		$name = array_column($this->groupTacks, 'middleware');
 		if (!empty($name) && $name = array_filter($name)) {
-			$node->middleware = $name;
+			$node->bindMiddleware($name);
 		}
 
 		if (is_string($handler) && strpos($handler, '@') !== false) {
