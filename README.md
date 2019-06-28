@@ -7,6 +7,7 @@
 瞎几吧乱抄的
 
 #### 安裝教程
+```text
 新建 $dir/composer.json  
 新建 $dir/app/controller  
 新建 $dir/app/model  
@@ -14,7 +15,8 @@
 新建 $dir/commands  
 新建 $dir/components  
 新建 $dir/config  
-新建 $dir/routes  
+新建 $dir/routes 
+``` 
 
 添加composer 内容  
 ```json
