@@ -66,7 +66,19 @@ $router->put('index', 'SiteController@index');
 $options = [
     'prefix' => '', //前缀
     'namespace' => '', //Controller使用的命名空间如  namespace='server'则访问 app\controller\server\TestController
-    'filter' => '',     // 过滤请求用的
+    'filter' => [   // 过滤请求用的, 参数效验同 model写法
+    	 'grant' => [] ,    //权限效验回调函数
+    	 'header' => [      //效验请求头所需数据
+    	 	[['token', 'user', 'time', 'source'], 'required'],
+    	 	[['token', 'source'], 'string'],
+    	 	[['user', 'time'], 'int', 'maxLength' => 32],
+         ],
+    	 'body' => [      //效验请求体所需数据
+    	 	[['token', 'user', 'time', 'source'], 'required'],
+    	 	[['token', 'source'], 'string'],
+    	 	[['user', 'time'], 'int', 'maxLength' => 32],
+         ]
+     ],     
     'middleware' => '',  // 中间件	
     'options' => '',  // ajax跨域请求处理	
 ];
