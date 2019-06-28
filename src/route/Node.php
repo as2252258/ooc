@@ -58,9 +58,10 @@ class Node
 			$this->handler = $handler;
 		} else if ($handler != null && !is_callable($handler, true)) {
 			throw new Exception('Controller is con\'t exec.');
+		} else {
+			$this->handler = $handler;
 		}
 
-		$this->handler = $handler;
 	}
 
 	/**
