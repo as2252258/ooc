@@ -66,7 +66,7 @@ class Middleware
 	{
 		return function ($stack, $pipe) {
 			return function ($passable) use ($stack, $pipe) {
-				if ($pipe instanceof MiddlewareTest) {
+				if ($pipe instanceof IMiddleware) {
 					return $pipe->handler($passable, $stack);
 				} else {
 					return $pipe($passable, $stack);
