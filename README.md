@@ -56,6 +56,14 @@ $router->any('index', 'SiteController@index');
 $router->delete('index', 'SiteController@index');
 $router->put('index', 'SiteController@index');
 
+$options = [
+    'prefix' => '', //前缀
+    'namespace' => '', //Controller使用的命名空间如  namespace='server'则访问 app\controller\server\TestController
+    'filter' => '',     // 过滤请求用的
+    'middleware' => '',  // 中间件	
+    'options' => '',  // ajax跨域请求处理	
+];
+
 $router->group($options, function (\Yoc\route\Router $router){
     $router->get('index', 'SiteController@index');
     $router->post('index', 'SiteController@index');
