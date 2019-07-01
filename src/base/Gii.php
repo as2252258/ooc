@@ -299,7 +299,7 @@ class {$managerName}Controller extends ActiveController
 	
 ";
 		$funcNames = [];
-		$default = ['actions', 'actionAdd', 'actionUpdate', 'actionDetail', 'actionDelete', 'actionList'];
+		$default = ['actionAdd', 'actionUpdate', 'actionDetail', 'actionDelete', 'actionList'];
 		if (is_object($class)) {
 			$methods = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
 			$funcNames = array_column($methods, 'name');
@@ -769,7 +769,7 @@ class ' . $managerName . ' extends ActiveRecord
 	 * @return array
 	 * @throws exception
 	 */
-	public function actionAdd(Request $request){
+	public function actionAdd(){
 		$model = new ' . $className . '();
 		$model->attributes = [' . $this->getData($className, $fields) . '
 		];
@@ -865,7 +865,7 @@ class ' . $managerName . ' extends ActiveRecord
 	 * @return array
 	 * @throws exception
 	 */
-	public function actionUpdate(Request $request){
+	public function actionUpdate(){
 		$model = ' . $className . '::findOne(Input()->post(\'id\', 0));
 		if (empty($model)) {
 			return JSON::to(500, \'指定数据不存在\');
@@ -886,7 +886,7 @@ class ' . $managerName . ' extends ActiveRecord
 	 * @return array
 	 * @throws exception
 	 */
-    public function actionDetail(Request $request){
+    public function actionDetail(){
         $model = ' . $managerName . '::findOne(Input()->get(\'id\'));
         if(empty($model)){
             return JSON::to(404, \'Data Not Exists\');
@@ -899,12 +899,10 @@ class ' . $managerName . ' extends ActiveRecord
 	{
 		return '
     /**
-	 * @param Request $request
-	 *
 	 * @return array
 	 * @throws exception
 	 */
-    public function actionDelete(Request $request){
+    public function actionDelete(){
 		$_key = Input()->int(\'id\', true);
 		$pass = Input()->string(\'password\', true, 32);		
 		
@@ -928,12 +926,10 @@ class ' . $managerName . ' extends ActiveRecord
 	{
 		return '
     /**
-	 * @param Request $request
-	 *
 	 * @return array
 	 * @throws exception
 	 */
-    public function actionList(Request $request)
+    public function actionList()
     {
         $pWhere = array();' . $this->getWhere($fields, $object) . '
         
@@ -959,73 +955,6 @@ class ' . $managerName . ' extends ActiveRecord
 		
         return JSON::to(Code::SUCCESS, $data, $count);
     }
-    ';
-	}
-
-	public function controllerMethods($fields, $className, $managerName, $object = NULL)
-	{
-
-		$managerName = lcfirst($managerName);
-
-		return '
-    /**
-	 * @return array
-	 * Http Filter Rules
-	 */
-	public function actions()
-	{
-		return [
-			\'' . $managerName . '/add\' => [
-				\'class\' => Yoc\http\HttpFilter::class,
-				\'grant\' => [Authorize::class, \'getUserInfo\'],
-				\'body\' => [],
-				\'header\' => [
-					[[\'source\', \'user\', \'time\', \'token\'], \'required\'],
-					[[\'user\', \'time\'], \'int\', \'maxLength\' => 11, \'minLength\' => 1],
-					[[\'token\', \'source\'], \'string\'],
-					[\'token\', \'maxLength\' => 36, \'minLength\' => 32]
-				]
-			],
-			\'' . $managerName . '/update\' => [
-				\'class\' => Yoc\http\HttpFilter::class,
-				\'grant\' => [Authorize::class, \'getUserInfo\'],
-				\'body\' => [],
-				\'header\' => [
-					[[\'source\', \'user\', \'time\', \'token\'], \'required\'],
-					[[\'user\', \'time\'], \'int\', \'maxLength\' => 11, \'minLength\' => 1],
-					[[\'token\', \'source\'], \'string\'],
-					[\'token\', \'maxLength\' => 36, \'minLength\' => 32]
-				]
-			],
-			\'' . $managerName . '/delete\' => [
-				\'class\' => Yoc\http\HttpFilter::class,
-				\'grant\' => [Authorize::class, \'getUserInfo\'],
-				\'body\' => [
-					[[\'id\', \'password\'], \'required\'],
-					[\'id\', \'int\', \'maxLength\' => 11, \'minLength\' => 1],
-					[\'password\', \'string\', \'length\' => 32]
-				],
-				\'header\' => [
-					[[\'source\', \'user\', \'time\', \'token\'], \'required\'],
-					[[\'user\', \'time\'], \'int\', \'maxLength\' => 11, \'minLength\' => 1],
-					[[\'token\', \'source\'], \'string\'],
-					[\'token\', \'maxLength\' => 36, \'minLength\' => 32]
-				]
-			],
-			\'' . $managerName . '/list\' => [
-				\'class\' => Yoc\http\HttpFilter::class,
-				\'grant\' => [Authorize::class, \'getUserInfo\'],
-				\'body\' => [],
-				\'header\' => [
-					[[\'source\', \'user\', \'time\', \'token\'], \'required\'],
-					[[\'user\', \'time\'], \'int\', \'maxLength\' => 11, \'minLength\' => 1],
-					[[\'token\', \'source\'], \'string\'],
-					[\'token\', \'maxLength\' => 36, \'minLength\' => 32]
-				]
-			]
-		];
-	}
-
     ';
 	}
 
