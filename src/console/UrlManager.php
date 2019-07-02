@@ -92,7 +92,6 @@ class UrlManager extends BUrlManager
 				echo str_pad("\033[32;40;1;1m" . $split[0] . " \033[0m", 40, ' ', STR_PAD_RIGHT);
 				echo PHP_EOL;
 			} else if (isset($split[0]) && $last != $split[0]) {
-				echo PHP_EOL;
 				echo str_pad("\033[32;40;1;1m" . $split[0] . " \033[0m", 40, ' ', STR_PAD_RIGHT);
 				echo PHP_EOL;
 			}
@@ -100,7 +99,7 @@ class UrlManager extends BUrlManager
 			$last = $split[0] ?? '';
 
 			list($method, $ts) = $val;
-			echo str_pad("\033[32;40;1;1m" . $key . " \033[0m", 40, ' ', STR_PAD_RIGHT) . $method;
+			echo str_pad("\033[32;40;1;1m  " . $key . " \033[0m", 40, ' ', STR_PAD_RIGHT) . $method;
 			echo PHP_EOL;
 		}
 	}
