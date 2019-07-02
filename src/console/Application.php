@@ -32,9 +32,9 @@ class Application extends BApp
 		/** @var UrlManager $urlManager */
 		$urlManager = $this->get('urlManager');
 		try {
-			/** @var Action $action */
+			/** @var Command $action */
 			$action = $urlManager->requestHandler($argv);
-			$action->runWithParam();
+			$action->exec();
 		} catch (\Exception $exception) {
 			echo 'error: ' . $exception->getMessage() . PHP_EOL;
 		}

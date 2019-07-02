@@ -77,16 +77,16 @@ class UrlManager extends BUrlManager
 	/**
 	 * @throws \ReflectionException
 	 */
-	public function handler()
+	public function exec()
 	{
 		$methods = $this->getCommandList();
 
-		echo str_pad('Commands', 20) . '注释' . PHP_EOL;
+		echo str_pad('Commands', 30) . '注释' . PHP_EOL;
 		foreach ($methods as $key => $val) {
 			list($method, $ts) = $val;
 
 //			echo "\033[32;40;1;1m " . $method . " \033[0m" . str_pad(Str::cut_str_utf8($ts, 1000), 20, ' ', STR_PAD_LEFT);
-			echo str_pad("\033[32;40;1;1m " . $key . " \033[0m", 50, ' ') . $method;
+			echo str_pad("\033[32;40;1;1m " . $key . " \033[0m", 30, ' ') . $method;
 			echo PHP_EOL;
 		}
 	}
