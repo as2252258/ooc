@@ -91,8 +91,14 @@ class UrlManager extends BUrlManager
 			if (empty($last) && isset($split[0])) {
 				echo str_pad("\033[32;40;1;1m" . $split[0] . " \033[0m", 40, ' ', STR_PAD_RIGHT);
 				echo PHP_EOL;
+				echo '---------------------------------------------------------------------------------------------------------------------';
+				echo PHP_EOL;
+				echo PHP_EOL;
 			} else if (isset($split[0]) && $last != $split[0]) {
 				echo str_pad("\033[32;40;1;1m" . $split[0] . " \033[0m", 40, ' ', STR_PAD_RIGHT);
+				echo PHP_EOL;
+				echo '---------------------------------------------------------------------------------------------------------------------';
+				echo PHP_EOL;
 				echo PHP_EOL;
 			}
 
