@@ -205,7 +205,34 @@ return [
 停止  php $dir/execfile stop 
 ```  
 
+#Command
+注册命令  
+```php
+<?php
 
+class exranpk extends Command{
+	
+	public $command = 'exmple:test';
+	
+	public $description = '任务描述';
+	
+	public $dataFile = '/usr/local/config.json';
+	
+	public $dataType = 'json';
+	
+	public function handler()
+	{
+		
+	}
+	
+}
+```
+
+
+使用  
+```bash
+php artu master:qtes --key=o --key=b --key=v
+```
 
 #### 參與貢獻
 

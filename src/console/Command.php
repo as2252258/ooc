@@ -9,79 +9,52 @@
 namespace Yoc\console;
 
 
-use Yoc\base\Controller;
+use Yoc\base\Component;
 use Yoc\http\formatter\IFormatter;
 use Yoc\web\Action;
 
-class Command extends Controller
+abstract class Command extends Component implements ICommand
 {
-    /** @var string */
-    public $id;
+	/**
+	 * @return mixed
+	 */
+	public function exec()
+	{
+    	return $this->handler();
+	}
 
-    /** @var Action */
-    public $action;
+	/**
+	 * @param mixed ...$param
+	 * @return string
+	 * @throws
+	 */
+	public function output(...$param)
+	{
+		/** @var IFormatter $build */
+		$build = \Yoc::$app->response->sender(...$param);
+		if (!empty($build)) {
+			print_r($build);
+		}
+		echo 'Command Success!' . PHP_EOL;
+		exit;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * @param Action $action
+	 * @return bool
+	 */
+	public function beforeAction(Action $action)
+	{
+		return TRUE;
+	}
 
-    /**
-     * @return Action
-     */
-    public function getAction()
-    {
-        return $this->action;
-    }
-
-    /**
-     * @param $id
-     * @return mixed|Action
-     * @throws \ReflectionException
-     */
-    public function createAction($id)
-    {
-        $class = new Action();
-        $class->id = $id;
-        $class->controller = $this;
-        return $class;
-    }
-
-    /**
-     * @param mixed ...$param
-     * @return string
-     * @throws
-     */
-    public function output(...$param)
-    {
-        /** @var IFormatter $build */
-        $build = \Yoc::$app->response->sender(...$param);
-        if (!empty($build)) {
-            print_r($build);
-        }
-        echo 'Command Success!' . PHP_EOL;
-        exit;
-    }
-
-    /**
-     * @param Action $action
-     * @return bool
-     */
-    public function beforeAction(Action $action)
-    {
-        return TRUE;
-    }
-
-    /**
-     * @param $action
-     * @param $result
-     * @return mixed
-     */
-    public function afterAction($action, $result = NULL)
-    {
-        return TRUE;
-    }
+	/**
+	 * @param $action
+	 * @param $result
+	 * @return mixed
+	 */
+	public function afterAction($action, $result = NULL)
+	{
+		return TRUE;
+	}
 }

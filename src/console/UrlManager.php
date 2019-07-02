@@ -25,21 +25,89 @@ class UrlManager extends BUrlManager
 	public $response;
 
 	public $namespace = 'commands\\';
+	public $commandDir = APP_PATH . '/command';
+
 
 	public $route = [];
 
 	/**
-	 * @param \swoole_http_request $request
-	 * @return \Yoc\web\Action
+	 * @param $request
+	 * @return mixed
 	 * @throws RequestException
 	 * @throws \ReflectionException|\Exception
 	 */
 	public function requestHandler($param)
 	{
 		$this->regRequest($param);
-		$controller = $this->createController();
-		return $controller->action;
+
+		$commands = $this->getCommandList();
+		$commands['list'] = ['', $this];
+
+		if (!isset($commands[$param[1]])) {
+			return '命令不存在！请仔细检查';
+		}
+
+		list($desc, $command) = $commands[$param[1]];
+		return $command;
 	}
+
+
+	/**
+	 * @throws \ReflectionException
+	 * 加载全部命令
+	 */
+	protected function getCommandList()
+	{
+		$controllers = [];
+		foreach (glob($this->commandDir . '/*') as $value) {
+			$explode = explode('/', $value);
+
+			$_contro = str_replace('.php', '', $explode[count($explode) - 1]);
+
+			array_push($controllers, $_contro);
+		}
+
+		$methods = [];
+		foreach ($controllers as $val) {
+			$this->reflect('commands\\' . $val, $methods);
+		}
+		return $methods;
+	}
+
+	/**
+	 * @throws \ReflectionException
+	 */
+	public function handler()
+	{
+		$methods = $this->getCommandList();
+
+		echo str_pad('Commands', 20) . '注释' . PHP_EOL;
+		foreach ($methods as $key => $val) {
+			list($method, $ts) = $val;
+
+//			echo "\033[32;40;1;1m " . $method . " \033[0m" . str_pad(Str::cut_str_utf8($ts, 1000), 20, ' ', STR_PAD_LEFT);
+			echo str_pad("\033[32;40;1;1m " . $key . " \033[0m", 50, ' ') . $method;
+			echo PHP_EOL;
+		}
+	}
+
+	/**
+	 * @param $class
+	 * @param $methods
+	 * @return array
+	 * @throws \ReflectionException
+	 */
+	private function reflect($class, &$methods)
+	{
+		$class = new \ReflectionClass($class);
+
+		$object = $class->newInstance();
+
+		$methods[$object->command] = [$object->description, $object];
+
+		return $methods;
+	}
+
 
 	/**
 	 * @param array $request
@@ -74,6 +142,9 @@ class UrlManager extends BUrlManager
 			return $arr;
 		}
 		foreach ($data as $key => $val) {
+			if (empty($val)) {
+				continue;
+			}
 			if (strpos($val, '=') === FALSE) {
 				continue;
 			}
