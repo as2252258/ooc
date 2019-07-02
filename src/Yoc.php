@@ -20,7 +20,6 @@ class Yoc
 
 	/** @var array */
 	public static $classMap = [
-		'Db' => APP_PATH . '/vendor/yoc/db/Db.php',
 	];
 
 	/**
@@ -339,3 +338,4 @@ Yoc::$router = new Yoc\route\Router();
 
 require_once "Code.php";
 require_once "func.php";
+require_once __DIR__ . "/db/Db.php";
