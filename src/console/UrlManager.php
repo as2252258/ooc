@@ -84,9 +84,7 @@ class UrlManager extends BUrlManager
 		echo str_pad('Commands', 24, ' ',STR_PAD_RIGHT) . '注释' . PHP_EOL;
 		foreach ($methods as $key => $val) {
 			list($method, $ts) = $val;
-
-//			echo "\033[32;40;1;1m " . $method . " \033[0m" . str_pad(Str::cut_str_utf8($ts, 1000), 20, ' ', STR_PAD_LEFT);
-			echo str_pad("\033[32;40;1;1m " . $key . " \033[0m", 40, ' ',STR_PAD_RIGHT) . $method;
+			echo str_pad("\033[32;40;1;1m" . $key . " \033[0m", 40, ' ',STR_PAD_RIGHT) . $method;
 			echo PHP_EOL;
 		}
 	}
