@@ -19,9 +19,9 @@
             "Yoc\\": "src/"
         },
         "files": [
+            "src/func.php",
             "src/Code.php",
             "src/Yoc.php",
-            "src/func.php",
             "src/Db.php"
         ]
     },
