@@ -45,8 +45,7 @@ class DbConnection extends ConnectPool
 	public function commit()
 	{
 		$this->inTransaction--;
-		var_dump('submit ',$this->inTransaction);
-		if ($this->inTransaction == 1) {
+		if ($this->inTransaction == 0) {
 			$this->getConnect()->commit();
 		}
 	}
@@ -57,7 +56,7 @@ class DbConnection extends ConnectPool
 	public function rollback()
 	{
 		$this->inTransaction--;
-		if ($this->inTransaction == 1) {
+		if ($this->inTransaction == 0) {
 			$this->getConnect()->rollBack();
 		}
 	}
