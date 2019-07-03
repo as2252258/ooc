@@ -109,9 +109,11 @@ class Connection extends Component
 
 	/**
 	 * @return bool
+	 * @throws
 	 */
 	public function isTran()
 	{
+		$this->getMasterConnect();
 		return $this->masterInstance->inTransaction();
 	}
 
@@ -180,7 +182,6 @@ class Connection extends Component
 	 */
 	public function rollback()
 	{
-		$this->getMasterConnect();
 		$this->masterInstance->rollBack();
 	}
 
@@ -190,7 +191,6 @@ class Connection extends Component
 	 */
 	public function commit()
 	{
-		$this->getMasterConnect();
 		$this->masterInstance->commit();
 	}
 
