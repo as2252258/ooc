@@ -243,8 +243,10 @@ class Command extends Component
 	public function exec()
 	{
 		if (!$this->query()->execute()) {
-			Logger::error($this->prepare->errorInfo(), 'mysql');
-		};
+			$error = $this->prepare->errorInfo()[2] ?? 'db error';
+			$this->close();
+			return $this->addError($error, 'mysql');
+		}
 		$this->close();
 		return $this->lastId();
 	}
