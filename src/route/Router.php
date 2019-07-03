@@ -279,7 +279,7 @@ class Router extends Component
 		/** @var \Yoc\route\Node $node */
 		$node = $this->findByPath('/' . implode('/', $_tmp));
 		if (!($node instanceof Node)) {
-			throw new NotFindClassException();
+			throw new NotFindClassException('/' . implode('/', $_tmp));
 		}
 
 		if (request()->getMethod() == 'options') {
