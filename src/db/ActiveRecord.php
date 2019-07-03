@@ -12,6 +12,7 @@ namespace Yoc\db;
 use Exception;
 use Yoc\base\BaseActiveRecord;
 use Yoc\core\ArrayAccess;
+use Yoc\error\Logger;
 use Yoc\exception\DbException;
 
 defined('SAVE_FAILs') or define('SAVE_FAIL', 3227);
@@ -116,6 +117,8 @@ class ActiveRecord extends BaseActiveRecord
 		$builder = static::getDb()->getSchema()->getQueryBuilder();
 
 		$mysqlLanguage = $builder->insertOrUpdateByDUPLICATE($table, $params);
+
+		Logger::debug($mysqlLanguage,'mysql');
 
 		$command = static::getDb()->createCommand($mysqlLanguage);
 		if (false === ($id = $command->exec())) {
