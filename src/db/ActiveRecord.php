@@ -118,7 +118,7 @@ class ActiveRecord extends BaseActiveRecord
 		$mysqlLanguage = $builder->insertOrUpdateByDUPLICATE($table, $params);
 
 		$command = static::getDb()->createCommand($mysqlLanguage);
-		if (!($id = $command->exec())) {
+		if (false === ($id = $command->exec())) {
 			throw new Exception($command->getError());
 		}
 
