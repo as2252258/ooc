@@ -45,6 +45,7 @@ class DbConnection extends ConnectPool
 	public function commit()
 	{
 		$this->inTransaction--;
+		var_dump('submit ',$this->inTransaction);
 		if ($this->inTransaction == 1) {
 			$this->getConnect()->commit();
 		}
