@@ -90,7 +90,7 @@ class Socket extends Service
 		$this->server = new \swoole_websocket_server(...$array);
 
 		$default = $this->getDefaultConfig();
-		$this->server->set(array_merge($default,$this->config));
+		$this->server->set(array_merge($default, $this->config));
 
 		new Worker();
 
@@ -118,7 +118,13 @@ class Socket extends Service
 
 		//进程执行
 		$this->server->on('start', [$this, 'onStart']);
-		$this->server->start();
+
+		echo '启动中. 请稍后....' . PHP_EOL;
+
+		$server = $this->server;
+		swoole_timer_after(1500, function () use ($server) {
+			$server->start();
+		});
 	}
 
 	/**
