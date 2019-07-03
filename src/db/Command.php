@@ -44,7 +44,7 @@ class Command extends Component
 	{
 		$this->getPdo();
 		$this->prepare = $this->pdo->prepare($this->sql);
-		Logger::debug($this->sql,'mysql');
+		Logger::debug($this->sql, 'mysql');
 		if (!$this->prepare) {
 			throw new \PDOException($this->getError());
 		}
@@ -57,7 +57,7 @@ class Command extends Component
 	 */
 	public function incrOrDecr()
 	{
-		Logger::debug($this->sql,'mysql');
+		Logger::debug($this->sql, 'mysql');
 		return $this->getPdo()->exec($this->sql);
 	}
 
@@ -242,7 +242,9 @@ class Command extends Component
 	 */
 	public function exec()
 	{
-		$this->query()->execute();
+		if (!$this->query()->execute()) {
+			Logger::error($this->prepare->errorInfo(), 'mysql');
+		};
 		$this->close();
 		return $this->lastId();
 	}
