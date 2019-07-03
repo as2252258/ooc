@@ -11,6 +11,7 @@ namespace Yoc\server;
 
 use Yoc\base\Component;
 use Yoc\db\DbPool;
+use Yoc\error\Logger;
 use Yoc\route\Router;
 
 class Worker extends Base
@@ -67,6 +68,7 @@ class Worker extends Base
 				echo 'Error: '.$exception->getMessage() . PHP_EOL;
 				$this->addError($exception);
 			}
+			Logger::insert();
 			if (function_exists('swoole_set_process_name')) {
 				swoole_set_process_name('PHP_' . \Yoc::$app->id . ': worker: No.' . $workeer_id);
 			}

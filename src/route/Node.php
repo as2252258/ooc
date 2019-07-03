@@ -44,23 +44,24 @@ class Node
 			if (!empty($this->namespace)) {
 				$controller = implode('\\', $this->namespace) . '\\' . $controller;
 			}
+			try {
+				$reflect = new \ReflectionClass($controller);
+				if (!$reflect->isInstantiable()) {
+					throw new Exception($controller . ' Class is con\'t Instantiable.');
+				}
 
-			$reflect = new \ReflectionClass($controller);
-			if (!$reflect->isInstantiable()) {
-				throw new Exception('Controller Class is con\'t Instantiable.');
-			}
-
-			if (!$reflect->hasMethod($action)) {
-				Logger::error('method ' . $action . ' not exists at ' . $controller . '.');
-
+				if (!$reflect->hasMethod($action)) {
+					throw new Exception('method ' . $action . ' not exists at ' . $controller . '.');
+				}
+				$this->handler = [$reflect->newInstance(), $action];
+			} catch (Exception $exception) {
+				Logger::error($exception->getMessage(), 'router');
 				return;
 			}
-
-			$this->handler = [$reflect->newInstance(), $action];
 		} else if ($handler instanceof \Closure) {
 			$this->handler = $handler;
 		} else if ($handler != null && !is_callable($handler, true)) {
-			throw new Exception('Controller is con\'t exec.');
+			Logger::error('Controller is con\'t exec.');
 		} else {
 			$this->handler = $handler;
 		}
