@@ -50,7 +50,7 @@ class Node
 			}
 
 			if (!$reflect->hasMethod($action)) {
-				throw new Exception('method not exists at Controller.');
+				throw new Exception('method ' . $action . ' not exists at ' . $controller . '.');
 			}
 
 			$this->handler = [$reflect->newInstance(), $action];
