@@ -5,6 +5,7 @@ namespace Yoc\route;
 
 
 use Exception;
+use Yoc\error\Logger;
 use Yoc\exception\NotFindClassException;
 
 /**
@@ -50,7 +51,9 @@ class Node
 			}
 
 			if (!$reflect->hasMethod($action)) {
-				throw new Exception('method ' . $action . ' not exists at ' . $controller . '.');
+				Logger::error('method ' . $action . ' not exists at ' . $controller . '.');
+
+				return;
 			}
 
 			$this->handler = [$reflect->newInstance(), $action];
