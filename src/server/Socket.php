@@ -121,10 +121,8 @@ class Socket extends Service
 
 		echo '启动中. 请稍后....' . PHP_EOL;
 
-		$server = $this->server;
-		swoole_timer_after(1500, function () use ($server) {
-			$server->start();
-		});
+		sleep(1.5);
+		$this->server->start();
 	}
 
 	/**
