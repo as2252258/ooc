@@ -906,7 +906,7 @@ class ' . $managerName . ' extends ActiveRecord
 		$_key = Input()->int(\'id\', true);
 		$pass = Input()->string(\'password\', true, 32);		
 		
-		$user = Authorize::getUserInfo();
+		$user = Authorize::getAuthorizationInfo();
 		if (strcmp(Str::encrypt($pass), $user->password)) {
 			return JSON::to(500, \'密码错误\');
 		}
