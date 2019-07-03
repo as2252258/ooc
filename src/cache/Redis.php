@@ -101,6 +101,9 @@ class Redis extends Component implements ICache
 	 */
 	public function close()
 	{
+		if (!($this->redis instanceof \Redis)) {
+			return;
+		}
 		$this->redis->close();
 		$this->redis = NULL;
 	}
