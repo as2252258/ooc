@@ -169,6 +169,7 @@ class Connection extends Component
 	 */
 	public function beginTransaction()
 	{
+		$this->getMasterConnect();
 		$this->masterInstance->beginTransaction();
 		return $this;
 	}
@@ -179,6 +180,7 @@ class Connection extends Component
 	 */
 	public function rollback()
 	{
+		$this->getMasterConnect();
 		$this->masterInstance->rollBack();
 	}
 
@@ -188,6 +190,7 @@ class Connection extends Component
 	 */
 	public function commit()
 	{
+		$this->getMasterConnect();
 		$this->masterInstance->commit();
 	}
 
