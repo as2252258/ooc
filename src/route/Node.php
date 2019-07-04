@@ -166,12 +166,16 @@ class Node
 	 */
 	public function bindOptions($options)
 	{
-		$options = array_filter($options);
-		$last = $options[count($options) - 1];
-		if (empty($last)) {
-			return $this;
+		if (is_object($options)) {
+			$this->options = $options;
+		} else {
+			$options = array_filter($options);
+			$last = $options[count($options) - 1];
+			if (empty($last)) {
+				return $this;
+			}
+			$this->options = $last;
 		}
-		$this->options = $last;
 		return $this;
 	}
 
