@@ -86,6 +86,9 @@ class Socket extends Service
 	 */
 	public function run()
 	{
+		echo '启动中. 请稍后....' . PHP_EOL;
+		sleep(1.5);
+
 		$array = [$this->host, $this->port];
 		$this->server = new \swoole_websocket_server(...$array);
 
@@ -118,10 +121,6 @@ class Socket extends Service
 
 		//进程执行
 		$this->server->on('start', [$this, 'onStart']);
-
-		echo '启动中. 请稍后....' . PHP_EOL;
-
-		sleep(1.5);
 		$this->server->start();
 	}
 
