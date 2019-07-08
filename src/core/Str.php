@@ -172,4 +172,17 @@ class Str extends BObject
 		}
 		return md5_file($file);
 	}
+
+
+	/**
+	 * @param string $string
+	 * @return string|string[]|null
+	 * 清除标点符号
+	 */
+	public static function clear(string $string)
+	{
+		$char = '。、！？：；﹑•＂…‘’“”〝〞∕¦‖—　〈〉﹞﹝「」‹›〖〗】【»«』『〕〔》《﹐¸﹕︰﹔！¡？¿﹖﹌﹏﹋＇´ˊˋ―﹫︳︴¯＿￣﹢﹦﹤‐­˜﹟﹩﹠﹪﹡﹨﹍﹉﹎﹊ˇ︵︶︷︸︹︿﹀︺︽︾ˉ﹁﹂﹃﹄︻︼（）';
+		return preg_replace(array("/[[:punct:]]/i", '/[' . $char . ']/u', '/[ ]{2,}/'), '', $string);
+	}
+
 }
