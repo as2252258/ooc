@@ -53,6 +53,17 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	protected $actions = [];
 
 	/**
+	 * @throws Exception
+	 */
+	public function init()
+	{
+		$column = $this->getColumns()->format();
+
+		$this->_attributes = $column;
+		$this->_oldAttributes = $column;
+	}
+
+	/**
 	 * @param $column
 	 * @param $value
 	 * @return $this
