@@ -9,7 +9,6 @@
 namespace Yoc\web;
 
 
-use components\Authorize;
 use Yoc\base\BApp;
 use Yoc\base\Config;
 use Yoc\cache\Redis;
@@ -28,7 +27,7 @@ use Yoc\server\Socket;
  *
  * @package Yoc\web
  *
- * @property-read \Redis|Redis $redis
+ * @property-read Redis $redis
  * @property-read Socket $socket
  * @property-read Request $request
  * @property-read Response $response
@@ -38,7 +37,6 @@ use Yoc\server\Socket;
  * @property-read Qn $qn
  * @property-read DbPool $dbPool
  * @property-read Permis $permis
- * @property-read Authorize $auth
  * @property-read Config $config
  */
 class Application extends BApp
