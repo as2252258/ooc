@@ -24,22 +24,6 @@ abstract class Command extends Component implements ICommand
 	}
 
 	/**
-	 * @param mixed ...$param
-	 * @return string
-	 * @throws
-	 */
-	public function output(...$param)
-	{
-		/** @var IFormatter $build */
-		$build = \Yoc::$app->response->sender(...$param);
-		if (!empty($build)) {
-			print_r($build);
-		}
-		echo 'Command Success!' . PHP_EOL;
-		exit;
-	}
-
-	/**
 	 * @param Action $action
 	 * @return bool
 	 */
