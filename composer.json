@@ -20,9 +20,9 @@
         },
         "files": [
             "src/Yoc.php",
-            "Code.php",
-            "func.php",
-            "Db.php"
+            "src/Code.php",
+            "src/func.php",
+            "src/Db.php"
         ]
     },
     "require-dev": {
