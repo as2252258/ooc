@@ -87,7 +87,6 @@ class Command extends Component
 	public function save($isInsert = TRUE)
 	{
 		$exec = $this->query()->execute();
-		echo $this->sql . PHP_EOL;
 		if (!$exec) {
 			$ok = $this->addErrorLog();
 		} else if ($isInsert) {
@@ -155,9 +154,7 @@ class Command extends Component
 	public function incr($tableName, $param, $condition)
 	{
 		$sql = $this->db->getBuild()->incrOrDecr($tableName, $param, $condition);
-		echo $sql . PHP_EOL;
 		return $this->setSql($sql)->bindValues($param);
-
 	}
 
 	/**
@@ -224,7 +221,6 @@ class Command extends Component
 	}
 
 	/**
-	 * @param $type
 	 * @return bool|int
 	 * @throws \Exception
 	 */
@@ -236,7 +232,6 @@ class Command extends Component
 	}
 
 	/**
-	 * @param $type
 	 * @return bool|int
 	 * @throws \Exception
 	 */
@@ -261,6 +256,7 @@ class Command extends Component
 	}
 
 	/**
+	 * @param array $data
 	 * @return $this
 	 */
 	public function bindValues(array $data = NULL)

@@ -8,6 +8,7 @@
 
 namespace Yoc\server;
 
+use Swoole\WebSocket\Server;
 use Yoc\base\Config;
 use Yoc\di\Service;
 
@@ -90,7 +91,7 @@ class Socket extends Service
 		sleep(1.5);
 
 		$array = [$this->host, $this->port];
-		$this->server = new \swoole_websocket_server(...$array);
+		$this->server = new Server(...$array);
 
 		$default = $this->getDefaultConfig();
 		$this->server->set(array_merge($default, $this->config));

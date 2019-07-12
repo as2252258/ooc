@@ -11,6 +11,7 @@ namespace Yoc\db;
 
 use Yoc\base\Component;
 use Yoc\db\mysql\Schema;
+use Yoc\db\pool\DbManager;
 use Yoc\db\pool\Master;
 use Yoc\db\pool\Slave;
 use Yoc\error\Logger;
@@ -46,12 +47,15 @@ class Connection extends Component
 	private $slaveInstance = NULL;
 
 	/**
+	 * @throws \Exception
 	 * register a release event.
 	 */
 	public function init()
 	{
 		Event::on('AFTER_REQUEST', [$this, 'releaseAll']);
 		Event::on('AFTER_TASK', [$this, 'disconnect']);
+
+		DbManager::register($this->id, $this);
 	}
 
 	/**

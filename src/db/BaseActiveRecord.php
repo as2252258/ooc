@@ -6,17 +6,10 @@
  * Time: 14:39
  */
 
-namespace Yoc\base;
+namespace Yoc\db;
 
 
-use Yoc\db\AfterSaveEvent;
-use Yoc\db\BeforeSaveEvent;
-use Yoc\db\HasMany;
-use Yoc\db\HasOne;
-use Yoc\db\IOrm;
-use Yoc\db\Connection;
-use Yoc\db\ActiveQuery;
-use Yoc\db\ActiveRecord;
+use Yoc\base\Component;
 use Yoc\validator\Validator;
 use Yoc\error\Logger;
 use Exception;

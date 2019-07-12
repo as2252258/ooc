@@ -10,7 +10,6 @@ namespace Yoc\db;
 
 
 use Exception;
-use Yoc\base\BaseActiveRecord;
 use Yoc\core\ArrayAccess;
 use Yoc\error\Logger;
 use Yoc\exception\DbException;

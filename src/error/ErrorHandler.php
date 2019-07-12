@@ -9,9 +9,7 @@
 namespace Yoc\error;
 
 use Yoc\base\Component;
-use Yoc\base\Config;
-use Yoc\http\IFormatter;
-use Yoc\server\Request;
+use Yoc\http\formatter\IFormatter;
 
 /**
  * Class ErrorHandler
@@ -112,6 +110,7 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 
 	/**
 	 * @param $message
+	 * @param $category
 	 *
 	 * @throws \Exception
 	 */

@@ -14,6 +14,7 @@ use Yoc\route\Router;
 use Yoc\di\Container;
 
 defined('APP_PATH') or define('APP_PATH', __DIR__);
+defined('DISPLAY_ERRORS') or define('DISPLAY_ERRORS', true);
 defined('IMG_TYPES') or define('IMG_TYPES', [
 	IMAGETYPE_GIF => '.gif',
 	IMAGETYPE_JPEG => '.jpeg',

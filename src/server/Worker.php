@@ -64,14 +64,14 @@ class Worker extends Base
 		/** @var DbPool $dbPool */
 		try {
 			\router()->loader();
-			$workeer_name = ': task: No.' . $workeer_id;
+			$worker_name = ': task: No.' . $workeer_id;
 			if ($workeer_id < $socket->config['worker_num']) {
-				$workeer_name = ': worker: No.' . $workeer_id;
+				$worker_name = ': worker: No.' . $workeer_id;
 			}
 
-			$workeer_name = 'PHP_' . \Yoc::$app->id . $workeer_name;
+			$worker_name = 'PHP_' . \Yoc::$app->id . $worker_name;
 			if (function_exists('swoole_set_process_name')) {
-				swoole_set_process_name($workeer_name);
+				swoole_set_process_name($worker_name);
 			}
 		} catch (\Exception $exception) {
 			echo 'Error: ' . $exception->getMessage() . PHP_EOL;
