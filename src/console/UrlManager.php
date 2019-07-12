@@ -80,28 +80,27 @@ class UrlManager extends BUrlManager
 	public function exec()
 	{
 		$methods = $this->getCommandList();
-
 		ksort($methods, SORT_ASC);
 
 		$last = '';
 
-		echo str_pad('Commands', 24, ' ', STR_PAD_RIGHT) . '注释' . PHP_EOL;
+		$lists = [];
+		$lists[] = str_pad('Commands', 24, ' ', STR_PAD_RIGHT) . '注释';
 		foreach ($methods as $key => $val) {
 			$split = explode(':', $key);
 			if (empty($last) && isset($split[0])) {
-				echo str_pad("\033[32;40;1;1m" . $split[0] . " \033[0m", 40, ' ', STR_PAD_RIGHT);
-				echo PHP_EOL;
+				$lists[] = str_pad("\033[32;40;1;1m" . $split[0] . " \033[0m", 40, ' ', STR_PAD_RIGHT);
 			} else if (isset($split[0]) && $last != $split[0]) {
-				echo str_pad("\033[32;40;1;1m" . $split[0] . " \033[0m", 40, ' ', STR_PAD_RIGHT);
-				echo PHP_EOL;
+				$lists[] = str_pad("\033[32;40;1;1m" . $split[0] . " \033[0m", 40, ' ', STR_PAD_RIGHT);
 			}
 
 			$last = $split[0] ?? '';
 
 			list($method, $ts) = $val;
-			echo str_pad("\033[32;40;1;1m  " . $key . " \033[0m", 40, ' ', STR_PAD_RIGHT) . $method;
-			echo PHP_EOL;
+			$lists[] = str_pad("\033[32;40;1;1m  " . $key . " \033[0m", 40, ' ', STR_PAD_RIGHT) . $method;
 		}
+
+		return implode(PHP_EOL, $lists);
 	}
 
 	/**
