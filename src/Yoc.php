@@ -306,6 +306,5 @@ function process_exists($server_name = 'im server')
 	return (bool)trim(rtrim($ret, "\r\n"));
 }
 
-spl_autoload_register(['Yoc', 'autoload'], TRUE, TRUE);
 Yoc::$container = new Container();
 Yoc::$router = new Router();
