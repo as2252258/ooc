@@ -118,7 +118,6 @@ class Response extends Component
 	 */
 	private function printResult($result)
 	{
-		echo 'Command Result:' . PHP_EOL;
 		if (is_object($result)) {
 			if ($result instanceof Collection) {
 				$result = $result->toArray();
@@ -133,7 +132,8 @@ class Response extends Component
 		if (is_array($result)) {
 			$result = JSON::encode($result);
 		}
-		echo str_pad($result, 5, ' ', STR_PAD_LEFT) . PHP_EOL;
+		echo 'Command Result: ' . PHP_EOL;
+		echo '   ' . $result . PHP_EOL;
 		echo 'Command Success!' . PHP_EOL;
 	}
 
