@@ -19,9 +19,7 @@ class Socket extends Service
 
 	public $port;
 
-	public $serverHost;
-
-	public $serverPort;
+	public $http;
 
 	public $config = [];
 
@@ -90,26 +88,11 @@ class Socket extends Service
 		echo '启动中. 请稍后....' . PHP_EOL;
 		sleep(1.5);
 
-		$array = [$this->host, $this->port];
-		$this->server = new Server(...$array);
+		$this->server = new Server($this->host, $this->port);
 
-		$default = $this->getDefaultConfig();
-		$this->server->set(array_merge($default, $this->config));
+		$this->server->set(array_merge($this->getDefaultConfig(), $this->config));
 
-		new Worker();
-
-		$websock = Config::get('wss', false);
-		if (empty($websock)) {
-			$websock = WebSocket::class;
-		}
-		new $websock($this->host, $this->port);
-		if ($this->serverHost && $this->serverPort) {
-			$this->request = new Request($this->serverHost, $this->serverPort);
-		}
-
-		if ($config = Config::get('udp')) {
-			new Udp($config['host'], $config['port']);
-		}
+		$this->socketListen();
 		if (isset($this->config['task_worker_num'])) {
 			new Task();
 		}
@@ -123,6 +106,26 @@ class Socket extends Service
 		//进程执行
 		$this->server->on('start', [$this, 'onStart']);
 		$this->server->start();
+	}
+
+	public function workerProcessListen()
+	{
+		new Worker();
+	}
+
+	/**
+	 * @throws \Yoc\exception\ConfigException
+	 */
+	public function socketListen()
+	{
+		$this->workerProcessListen();
+		$callback = Config::get('wss', false, WebSocket::class);
+		new $callback($this->host, $this->port);
+
+		//监听HTTP_SERVER
+		if ($this->http['host'] && $this->http['port']) {
+			$this->request = new Request($this->http['host'], $this->http['port']);
+		}
 	}
 
 	/**
