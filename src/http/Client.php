@@ -10,6 +10,7 @@ namespace Yoc\http;
 
 
 use Yoc\base\Component;
+use \Swoole\Coroutine\Http\Client as SClient;
 
 class Client extends Component
 {
@@ -36,6 +37,7 @@ class Client extends Component
 	 * @param        $url
 	 * @param string $pushType
 	 * @param array $data
+	 * @param array $header
 	 *
 	 * @return Result
 	 */
@@ -51,6 +53,11 @@ class Client extends Component
 		if (!empty($header)) {
 			$this->setHeaders($header);
 		}
+
+		if (getIsCli() || getIsCommand()) {
+			return $this->continue($this->url, $url, $pushType, $data);
+		}
+
 		return $this->curl_push($url, $pushType, $data);
 	}
 
@@ -123,6 +130,36 @@ class Client extends Component
 			];
 		}
 		return new Result($body);
+	}
+
+	/**
+	 * @param $host
+	 * @param $url
+	 * @param string $type
+	 * @param array $data
+	 * @return mixed
+	 */
+	public function continue($host, $url, $type = 'get', $data = [])
+	{
+		$host = \Co::gethostbyname($host);
+		$client = new SClient($host, 443, true);
+		if (!empty($this->header)) {
+			$client->setHeaders($this->header);
+		}
+
+		if ($type == 'get') {
+			if (!empty($data)) {
+				$client->setData($data);
+			}
+			$client->get($url);
+		} else {
+			$client->post($url, $data);
+		}
+
+		$header = $client->getHeaders();
+		$result = $this->resolve($header, $client->body);
+		$client->close();
+		return $result;
 	}
 
 	/**
