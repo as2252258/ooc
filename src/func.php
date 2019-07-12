@@ -228,3 +228,17 @@ if (!function_exists('getIsCommand')) {
 	}
 
 }
+
+
+
+if (!function_exists('getIsCli')) {
+
+	/**
+	 * @return mixed
+	 */
+	function getIsCli()
+	{
+		return app()->isCli;
+	}
+
+}
