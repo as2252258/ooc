@@ -6,64 +6,63 @@
  * Time: 17:15
  */
 
+use Yoc\db\ActiveRecord;
+use Yoc\db\Collection;
+use Yoc\task\Task;
+use Yoc\web\Application;
+use Yoc\route\Router;
+use Yoc\di\Container;
+
+defined('APP_PATH') or define('APP_PATH', __DIR__);
+defined('IMG_TYPES') or define('IMG_TYPES', [
+	IMAGETYPE_GIF => '.gif',
+	IMAGETYPE_JPEG => '.jpeg',
+	IMAGETYPE_PNG => '.png',
+	IMAGETYPE_SWF => '.swf',
+	IMAGETYPE_PSD => '.psd',
+	IMAGETYPE_BMP => '.bmp',
+	IMAGETYPE_TIFF_II => '.tif_ii',
+	IMAGETYPE_TIFF_MM => '.tif_mm',
+	IMAGETYPE_JPC => '.jpc',
+	IMAGETYPE_JP2 => '.jp2',
+	IMAGETYPE_JPX => '.jpx',
+	IMAGETYPE_JB2 => '.jb2',
+	IMAGETYPE_SWC => '.swc',
+	IMAGETYPE_IFF => '.iff',
+	IMAGETYPE_WBMP => '.wbmp',
+	IMAGETYPE_XBM => '.xbm',
+	IMAGETYPE_ICO => '.ico',
+	IMAGETYPE_WEBP => '.webp',
+]);
+
 class Yoc
 {
 
-	/** @var \Yoc\web\Application */
+	/** @var Application */
 	public static $app;
 
-	/** @var \Yoc\route\Router */
+	/** @var Router */
 	public static $router;
 
-	/** @var \Yoc\di\Container */
+	/** @var Container */
 	public static $container;
 
-	/** @var array */
-	public static $classMap = [
-	];
-
 	/**
-	 * @param $className
-	 *
-	 * @throws Exception
-	 *
-	 * 类的自动加载
-	 */
-	public static function autoload($className)
-	{
-		$classFile = NULL;
-		if (isset(self::$classMap[$className])) {
-			$classFile = self::$classMap[$className];
-		} else {
-			$classFile = str_replace('\\', '/', $className) . '.php';
-			$className = lcfirst($classFile);
-			if (strpos($className, 'yoc') === 0) {
-				$classFile = __DIR__ . str_replace('yoc', '', $className);
-			} else {
-				$classFile = APP_PATH . '/' . $className;
-			}
-		}
-		if (!file_exists($classFile)) {
-			//echo 'File Not Exists: ' . $classFile . PHP_EOL;
-			return;
-		}
-		include $classFile;
-	}
-
-	/**
-	 * @param $tmp_file
-	 * @param $file_type
+	 * @param $tmp
 	 * @return string
-	 * 生成图片名称
 	 */
 	public static function rename($tmp)
 	{
-		$tmp_file = $tmp['tmp_name'];
-		$file_type = $tmp['name'];
+		$hash = md5_file($tmp['tmp_name']);
 
-		$tmp = md5_file($tmp_file);
-		$tmp .= strchr($file_type, '.');
-		$tmp = preg_replace('/(\w{12})(\w{5})(\w{9})(\w{6})/', '$1-$2-$3-$4', $tmp);
+		$later = exif_imagetype($tmp['tmp_name']);
+		if (!isset(IMG_TYPES[$later])) {
+			$later = '.jpg';
+		}
+
+		$match = '/(\w{12})(\w{5})(\w{9})(\w{6})/';
+		$tmp = preg_replace($match, '$1-$2-$3-$4', $hash . $later);
+
 		return strtoupper($tmp);
 	}
 
@@ -108,9 +107,9 @@ class Yoc
 
 	/**
 	 * @param string $event
-	 * @param        $userId
-	 * @param        $data
-	 * @throws
+	 * @param $user_id
+	 * @param null $data
+	 * @throws Exception
 	 */
 	public static function push(string $event, $user_id, $data = NULL)
 	{
@@ -145,7 +144,7 @@ class Yoc
 	public static function param(string $event, $data = NULL)
 	{
 		if (is_object($data)) {
-			if ($data instanceof \Yoc\db\ActiveRecord || $data instanceof \Yoc\db\Collection) {
+			if ($data instanceof ActiveRecord || $data instanceof Collection) {
 				$data = $data->toArray();
 			} else {
 				$data = get_object_vars($data);
@@ -215,15 +214,6 @@ class Yoc
 	}
 
 	/**
-	 * @return \Yoc\db\DbPool
-	 * @throws Exception
-	 */
-	public static function getDbPool()
-	{
-		return Yoc::$app->get('dbPool');
-	}
-
-	/**
 	 * @param $command
 	 * @param array $param
 	 * @param null $ms
@@ -244,27 +234,11 @@ class Yoc
 		return trim($data);
 	}
 
-	public static function listenCommand(swoole_process $process)
-	{
-		while (1 == 1) {
-			$data = json_decode($process->read(), TRUE);
-			if (!is_array($data)) {
-				continue;
-			}
-			try {
-				$result = $process->exec(PHP_BINDIR . '/php', json_decode($process->read(), TRUE));
-				$process->write(json_encode(['cmd' => 'success', 'result' => json_decode($result, TRUE)]));
-			} catch (Exception $exception) {
-				$process->write(json_encode(['cmd' => 'fail', 'result' => $exception->getMessage()]));
-			}
-		}
-	}
-
 	/**
 	 * @param \Yoc\task\Task $task
 	 * @return false|int
 	 */
-	public static function Delivery(\Yoc\task\Task $task)
+	public static function putin(Task $task)
 	{
 		$server = \Yoc::$app->socket;
 
@@ -333,9 +307,5 @@ function process_exists($server_name = 'im server')
 }
 
 spl_autoload_register(['Yoc', 'autoload'], TRUE, TRUE);
-Yoc::$container = new \Yoc\di\Container();
-Yoc::$router = new Yoc\route\Router();
-
-require_once "Code.php";
-require_once "func.php";
-require_once __DIR__ . "/Db.php";
+Yoc::$container = new Container();
+Yoc::$router = new Router();
