@@ -9,6 +9,10 @@
 namespace Yoc\http;
 
 use Yoc\base\Component;
+use Yoc\core\ArrayAccess;
+use Yoc\core\JSON;
+use Yoc\db\ActiveRecord;
+use Yoc\db\Collection;
 use Yoc\event\Event;
 use Yoc\http\formatter\HtmlFormatter;
 use Yoc\http\formatter\IFormatter;
@@ -75,6 +79,27 @@ class Response extends Component
 	{
 		$this->statusCode = $statusCode;
 
+		/** @var IFormatter $formatter */
+		if (getIsCommand()) {
+			$this->printResult($context);
+		} else if ($this->response instanceof \swoole_http_response) {
+			$this->sendContext($context);
+		}
+
+		$this->triDefer();
+		Event::trigger('AFTER_REQUEST');
+
+		$this->response = null;
+		$formatter = null;
+		return true;
+	}
+
+	/**
+	 * @param $context
+	 * @throws \Exception
+	 */
+	private function sendContext($context)
+	{
 		if ($this->format == self::JSON) {
 			$config['class'] = JsonFormatter::class;
 		} else if ($this->format == self::XML) {
@@ -83,18 +108,33 @@ class Response extends Component
 			$config['class'] = HtmlFormatter::class;
 		}
 		$formatter = \Yoc::createObject($config);
-		/** @var IFormatter $formatter */
-		if ($this->response instanceof \swoole_http_response) {
-			$this->setHeaders()->end($formatter->send($context)->getData());
+
+		$this->setHeaders()->end($formatter->send($context)->getData());
+	}
+
+	/**
+	 * @param $result
+	 * @throws \Exception
+	 */
+	private function printResult($result)
+	{
+		echo 'Command Result:' . PHP_EOL;
+		if (is_object($result)) {
+			if ($result instanceof Collection) {
+				$result = $result->toArray();
+			} else if ($result instanceof ActiveRecord) {
+				$result = $result->toArray();
+			} else {
+				$result = get_object_vars($result);
+			}
+		} else if (is_array($result)) {
+			$result = ArrayAccess::toArray($result);
 		}
-
-		$this->triDefer();
-
-		Event::trigger('AFTER_REQUEST');
-
-		$this->response = null;
-		$formatter = null;
-		return true;
+		if (is_array($result)) {
+			$result = JSON::encode($result);
+		}
+		echo str_pad($result, 5, ' ', STR_PAD_LEFT) . PHP_EOL;
+		echo 'Command Success!' . PHP_EOL;
 	}
 
 	/**

@@ -29,6 +29,10 @@ abstract class BApp extends Service
 	public $runtimePath = APP_PATH . '/runtime';
 
 
+	public $isCli = true;
+
+	public $isCommand = false;
+
 	/**
 	 * Init constructor.
 	 *
@@ -145,6 +149,15 @@ abstract class BApp extends Service
 	public function getError()
 	{
 		return $this->get('error');
+	}
+
+	/**
+	 * @return Router
+	 * @throws \Yoc\exception\ComponentException
+	 */
+	public function getRouter()
+	{
+		return $this->get('router');
 	}
 
 	/**

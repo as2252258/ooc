@@ -29,14 +29,16 @@ class Application extends BApp
 	{
 		global $argv;
 
-		/** @var UrlManager $urlManager */
-		$urlManager = $this->get('urlManager');
 		try {
+			setCommand(true);
+			/** @var UrlManager $urlManager */
+			$urlManager = $this->get('urlManager');
+
 			/** @var Command $action */
 			$action = $urlManager->requestHandler($argv);
-			$action->exec();
+			return response()->send($action->exec());
 		} catch (\Exception $exception) {
-			echo 'error: ' . $exception->getMessage() . PHP_EOL;
+			return response()->send($exception->getMessage());
 		}
 	}
 

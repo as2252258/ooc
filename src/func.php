@@ -201,3 +201,30 @@ if (!function_exists('env')) {
 	}
 
 }
+
+
+if (!function_exists('setCommand')) {
+
+	/**
+	 * @param bool $isCommand
+	 * @return mixed
+	 */
+	function setCommand($isCommand = true)
+	{
+		return app()->isCommand = $isCommand;
+	}
+
+}
+
+
+if (!function_exists('getIsCommand')) {
+
+	/**
+	 * @return mixed
+	 */
+	function getIsCommand()
+	{
+		return app()->isCommand;
+	}
+
+}
