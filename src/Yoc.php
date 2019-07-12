@@ -305,6 +305,5 @@ function process_exists($server_name = 'im server')
 	$ret = shell_exec("$cmd");
 	return (bool)trim(rtrim($ret, "\r\n"));
 }
-//
-//Yoc::$container = new Container();
+Yoc::$container = new Container();
 //Yoc::$router = new Router();
