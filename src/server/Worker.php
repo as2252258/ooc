@@ -60,22 +60,23 @@ class Worker extends Base
 	public function onWorkerStart(\swoole_server $request, $workeer_id)
 	{
 		$socket = \Yoc::$app->socket;
-		if ($workeer_id < $socket->config['worker_num']) {
-			/** @var DbPool $dbPool */
-			try {
-				\router()->loader();
-			} catch (\Exception $exception) {
-				echo 'Error: '.$exception->getMessage() . PHP_EOL;
-				$this->addError($exception);
+
+		/** @var DbPool $dbPool */
+		try {
+			\router()->loader();
+			$workeer_name = ': task: No.' . $workeer_id;
+			if ($workeer_id < $socket->config['worker_num']) {
+				$workeer_name = ': worker: No.' . $workeer_id;
 			}
-			Logger::insert();
+
+			$workeer_name = 'PHP_' . \Yoc::$app->id . $workeer_name;
 			if (function_exists('swoole_set_process_name')) {
-				swoole_set_process_name('PHP_' . \Yoc::$app->id . ': worker: No.' . $workeer_id);
+				swoole_set_process_name($workeer_name);
 			}
-		} else {
-			if (function_exists('swoole_set_process_name')) {
-				swoole_set_process_name('PHP_' . \Yoc::$app->id . ': task: No.' . $workeer_id);
-			}
+		} catch (\Exception $exception) {
+			echo 'Error: ' . $exception->getMessage() . PHP_EOL;
+			$this->addError($exception);
 		}
+		Logger::insert();
 	}
 }
