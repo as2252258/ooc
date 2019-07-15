@@ -108,17 +108,13 @@ class Socket extends Service
 		$this->server->start();
 	}
 
-	public function workerProcessListen()
-	{
-		new Worker();
-	}
-
 	/**
 	 * @throws \Yoc\exception\ConfigException
 	 */
 	public function socketListen()
 	{
-		$this->workerProcessListen();
+		new Worker();
+
 		$callback = Config::get('wss', false, WebSocket::class);
 		new $callback($this->host, $this->port);
 
