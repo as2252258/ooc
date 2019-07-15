@@ -29,11 +29,6 @@ class Process
 	 */
 	public static function listen(\swoole_process $process)
 	{
-//		if (!extension_loaded('inotify')) {
-//			swoole_timer_tick(3000, function () {
-//				echo 'Waite check.' . PHP_EOL;
-//			});
-//		} else {
 		static::$inotify = inotify_init();
 		static::watch(APP_PATH);
 		$process->name('Listen file modify event.');
