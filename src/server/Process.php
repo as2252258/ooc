@@ -62,18 +62,22 @@ class Process
 				continue;
 			}
 			if ($ev['mask'] == IN_IGNORED) {
+				echo $ev['name'] . ' IS IN_IGNORED.' . PHP_EOL;
 				continue;
 			} else if (in_array($ev['mask'], $eventList)) {
 				$fileType = strstr($ev['name'], '.');
 				//非重启类型
 				if ($fileType !== '.php') {
+					echo $ev['name'] . ' IS FILE TYPE ERROR.' . PHP_EOL;
 					continue;
 				}
 			} else {
+				echo $ev['name'] . ' UNKNOWN ERROR.' . PHP_EOL;
 				continue;
 			}
 			try {
 				if (static::$int !== -1) {
+					echo $ev['name'] . ' AT LOADING.' . PHP_EOL;
 					return;
 				}
 				static::$int = @swoole_timer_after(2000, [static::class, 'reload']);
@@ -140,7 +144,7 @@ class Process
 			static::$dirs[] = $dir;
 		}
 
-		echo '监听目录: '.APP_PATH . PHP_EOL;
+		echo '监听目录: ' . APP_PATH . PHP_EOL;
 		if (in_array($dir, [APP_PATH . '/commands', APP_PATH . '/.git', APP_PATH . '/.gitee'])) {
 			return FALSE;
 		}
