@@ -30,12 +30,13 @@ class Process
 	public static function listen(\swoole_process $process)
 	{
 		static::$inotify = inotify_init();
-		static::watch(APP_PATH);
 		$process->name('event: file change.');
 
 		Event::add(static::$inotify, function ($fp) {
 			var_dump(inotify_read($fp));
 		});
+
+		static::watch(APP_PATH);
 
 		swoole_timer_tick(1000, function () {
 			echo 'Check.' . PHP_EOL;
