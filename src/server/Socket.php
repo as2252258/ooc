@@ -88,7 +88,7 @@ class Socket extends Service
 		echo '启动中. 请稍后....' . PHP_EOL;
 		sleep(1.5);
 
-		$this->server = new \swoole_websocket_server($this->host, $this->port);
+		$this->server = new Server($this->host, $this->port);
 
 		$this->server->set(array_merge($this->getDefaultConfig(), $this->config));
 

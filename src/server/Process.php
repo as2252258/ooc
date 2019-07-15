@@ -39,7 +39,8 @@ class Process
 			swoole_set_process_name('Listen file modify event.');
 		}
 		static::watch(APP_PATH);
-		swoole_event_add(static::$inotify, [Process::class, 'check']);
+		Event::add(static::$inotify, [Process::class, 'check']);
+		Event::wait();
 	}
 
 	/**
