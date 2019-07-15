@@ -9,6 +9,7 @@
 namespace Yoc\server;
 
 
+use Swoole\Event;
 use Yoc\core\JSON;
 
 class Process
@@ -40,7 +41,8 @@ class Process
 		static::watch(APP_PATH);
 
 		var_dump(static::$inotify);
-		swoole_event_add(static::$inotify, [Process::class, 'check']);
+		Event::add(static::$inotify, [Process::class, 'check']);
+		Event::wait();
 	}
 
 	/**
