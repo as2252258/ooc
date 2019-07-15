@@ -177,7 +177,5 @@ class Socket extends Service
 		$this->isRun = true;
 
 		$this->triDefer();
-
-		Event::wait();
 	}
 }

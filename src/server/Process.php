@@ -146,7 +146,6 @@ class Process
 			static::$dirs[] = $dir;
 		}
 
-		echo '监听目录: ' . APP_PATH . PHP_EOL;
 		if (in_array($dir, [APP_PATH . '/commands', APP_PATH . '/.git', APP_PATH . '/.gitee'])) {
 			return FALSE;
 		}
@@ -169,9 +168,6 @@ class Process
 			$fileType = strstr($f, '.');
 			if ($fileType == '.php') {
 				try {
-
-					echo 'LISTEN FILE ' . $path . PHP_EOL;
-
 					$wd = @inotify_add_watch(static::$inotify, $path, static::$events);
 					static::$watchFiles[$path] = $wd;
 				} catch (\Exception $exception) {
