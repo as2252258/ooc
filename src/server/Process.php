@@ -140,6 +140,7 @@ class Process
 			static::$dirs[] = $dir;
 		}
 
+		echo '监听目录: '.APP_PATH . PHP_EOL;
 		if (in_array($dir, [APP_PATH . '/commands', APP_PATH . '/.git', APP_PATH . '/.gitee'])) {
 			return FALSE;
 		}
