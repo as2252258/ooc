@@ -48,6 +48,7 @@ class Process
 	 */
 	public static function check()
 	{
+		echo 'START LISTEN' . PHP_EOL;
 		$events = inotify_read(static::$inotify);
 		if (!$events) {
 			echo("Events not found." . PHP_EOL);
