@@ -8,6 +8,7 @@
 
 namespace Yoc\server;
 
+use Swoole\Event;
 use Swoole\WebSocket\Server;
 use Yoc\base\Config;
 use Yoc\di\Service;
@@ -176,5 +177,7 @@ class Socket extends Service
 		$this->isRun = true;
 
 		$this->triDefer();
+
+		Event::wait();
 	}
 }

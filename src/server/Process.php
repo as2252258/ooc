@@ -40,7 +40,6 @@ class Process
 		}
 		static::watch(APP_PATH);
 		Event::add(static::$inotify, [Process::class, 'check']);
-		Event::wait();
 	}
 
 	/**
