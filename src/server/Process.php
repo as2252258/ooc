@@ -35,7 +35,9 @@ class Process
 		var_dump(static::$inotify);
 		Event::add(static::$inotify, function ($fp) {
 			var_dump(inotify_read($fp));
-		});
+		}, function ($fp) {
+			var_dump(inotify_read($fp));
+		}, SWOOLE_EVENT_READ);
 
 		static::watch(APP_PATH);
 
