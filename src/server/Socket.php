@@ -158,6 +158,12 @@ class Socket extends Service
 		return $this->server;
 	}
 
+
+	public function reload()
+	{
+		$this->server->reload();
+	}
+
 	/**
 	 * @param \swoole_server $server
 	 *
