@@ -24,15 +24,15 @@ class Process
 
 
 	/**
+	 * @param \swoole_process $process
 	 * @throws \Exception
 	 */
-	public static function listen()
+	public static function listen(\swoole_process $process)
 	{
 		static::$inotify = inotify_init();
 		static::watch(APP_PATH);
-
+		$process->name('event: file change.');
 		Event::add(static::$inotify, [Process::class, 'check']);
-		Event::wait();
 	}
 
 	/**
