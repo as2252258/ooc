@@ -100,7 +100,7 @@ class Socket extends Service
 			new PipeMessage();
 		}
 
-		$pro = new Process('Yoc\\server\\Process::listen');
+		$pro = new \Swoole\Process([Process::class, 'listen']);
 		$this->server->addProcess($pro);
 
 		//进程执行

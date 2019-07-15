@@ -11,7 +11,7 @@ namespace Yoc\server;
 
 use Yoc\core\JSON;
 
-class Process extends \Swoole\Process
+class Process
 {
 	private static $inotify;
 	private static $isReloading = false;
