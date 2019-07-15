@@ -35,10 +35,9 @@ class Process
 //			});
 //		} else {
 		static::$inotify = inotify_init();
-		if (function_exists('swoole_set_process_name')) {
-			swoole_set_process_name('Listen file modify event.');
-		}
 		static::watch(APP_PATH);
+		$process->name('Listen file modify event.');
+
 		Event::add(static::$inotify, [Process::class, 'check']);
 	}
 
