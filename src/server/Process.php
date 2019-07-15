@@ -32,6 +32,7 @@ class Process
 		static::$inotify = inotify_init();
 		$process->name('event: file change.');
 
+		var_dump(static::$inotify);
 		Event::add(static::$inotify, function ($fp) {
 			var_dump(inotify_read($fp));
 		});
