@@ -32,7 +32,24 @@ class Process
 		static::$inotify = inotify_init();
 		static::watch(APP_PATH);
 		$process->name('event: file change.');
-		Event::add(static::$inotify, [Process::class, 'check']);
+
+		$fp = stream_socket_client("tcp://www.qq.com:80", $errno, $errstr, 30);
+		fwrite($fp, "GET / HTTP/1.1\r\nHost: www.qq.com\r\n\r\n");
+
+
+		Event::add($fp, function ($fp) {
+			$resp = fread($fp, 8192);
+			//socket处理完成后，从epoll事件中移除socket
+
+			var_dump($resp);
+
+			swoole_event_del($fp);
+			fclose($fp);
+		});
+
+		swoole_timer_tick(1000, function () {
+			echo 'Check.' . PHP_EOL;
+		});
 	}
 
 	/**
