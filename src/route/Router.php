@@ -30,7 +30,7 @@ class Router extends Component
 			$path = $prefix . $path;
 		}
 
-		if (strpos($path, '/') === false) {
+		if (strpos($path, '/') !== false) {
 			$path = '/' . $path;
 		}
 
