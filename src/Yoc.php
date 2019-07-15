@@ -13,7 +13,7 @@ use Yoc\web\Application;
 use Yoc\route\Router;
 use Yoc\di\Container;
 
-defined('APP_PATH') or define('APP_PATH', realpath(__DIR__ . '/../../../..'));
+//defined('APP_PATH') or define('APP_PATH', realpath(__DIR__ . '/../../../..'));
 defined('DISPLAY_ERRORS') or define('DISPLAY_ERRORS', true);
 defined('IMG_TYPES') or define('IMG_TYPES', [
 	IMAGETYPE_GIF => '.gif',
