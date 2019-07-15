@@ -73,6 +73,10 @@ class Worker extends Base
 			if (function_exists('swoole_set_process_name')) {
 				swoole_set_process_name($worker_name);
 			}
+
+			if ($workeer_id < $socket->config['worker_num']) {
+				Process::listen();
+			}
 		} catch (\Exception $exception) {
 			echo 'Error: ' . $exception->getMessage() . PHP_EOL;
 			$this->addError($exception);
