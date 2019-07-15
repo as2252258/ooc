@@ -167,6 +167,9 @@ class Process
 			$fileType = strstr($f, '.');
 			if ($fileType == '.php') {
 				try {
+
+					echo 'LISTEN FILE ' . $path . PHP_EOL;
+
 					$wd = @inotify_add_watch(static::$inotify, $path, static::$events);
 					static::$watchFiles[$path] = $wd;
 				} catch (\Exception $exception) {
