@@ -33,11 +33,8 @@ class Process
 		$process->name('event: file change.');
 
 		static::watch(APP_PATH);
-		$isAdd = swoole_event_add(static::$inotify, [Process::class, 'check']);
-		if (!$isAdd) {
-			echo 'add process error. ' . swoole_last_error();
-		}
-		swoole_event_wait();
+		Event::add(static::$inotify, [Process::class, 'check']);
+		Event::wait();
 	}
 
 	/**
@@ -45,7 +42,6 @@ class Process
 	 */
 	public static function check()
 	{
-		echo 'START LISTEN' . PHP_EOL;
 		$events = inotify_read(static::$inotify);
 		if (!$events) {
 			echo("Events not found." . PHP_EOL);
@@ -94,8 +90,6 @@ class Process
 	 */
 	public static function reload()
 	{
-		echo 'reloading ....' . PHP_EOL;
-
 		$val = \Yoc::$app->runtimePath . '/socket.sock';
 		posix_kill(file_get_contents($val), SIGUSR1);
 
