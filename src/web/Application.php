@@ -91,21 +91,16 @@ class Application extends BApp
 	{
 		$socket = $this->runtimePath . '/socket.sock';
 
-		$pathIds = $this->getPathIdsByProcess($this->id);
-
 		if (!file_exists($socket)) {
-			$pathId = current($pathIds);
-		} else {
-			$pathId = file_get_contents($socket);
-			if (empty($pathId) || !is_numeric($pathId)) {
-				$pathId = current($pathIds);
-			}
-			@unlink($socket);
-		}
-		if (empty($pathId)) {
 			return $this->closeChildProcess();
 		}
 
+		$pathId = file_get_contents($socket);
+		if (empty($pathId) || !is_numeric($pathId)) {
+			return $this->closeChildProcess();
+		}
+
+		@unlink($socket);
 		$shell = shell_exec("ps aux | awk '{print $2}'");
 		if (!in_array($pathId, explode(PHP_EOL, $shell))) {
 			return $this->closeChildProcess();
@@ -125,6 +120,8 @@ class Application extends BApp
 			};
 			sleep(1);
 			echo '.';
+
+			$this->closeChildProcess();
 		}
 		echo PHP_EOL . 'Stop Ok...' . PHP_EOL;
 	}
