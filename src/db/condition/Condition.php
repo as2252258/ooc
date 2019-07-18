@@ -19,14 +19,36 @@ abstract class Condition extends BObject
 	public function __construct($column, $opera, array $config = [])
 	{
 		$this->column = $column;
-		$this->column = $opera;
+		$this->opera = $opera;
 		parent::__construct($config);
 	}
 
 
 	abstract public function builder();
 
+	/**
+	 * @param string $column
+	 */
+	public function setColumn(string $column): void
+	{
+		$this->column = $column;
+	}
 
+	/**
+	 * @param string $opera
+	 */
+	public function setOpera(string $opera): void
+	{
+		$this->opera = $opera;
+	}
+
+	/**
+	 * @param array $value
+	 */
+	public function setValue(array $value): void
+	{
+		$this->value = $value;
+	}
 
 	/**
 	 * @param $column

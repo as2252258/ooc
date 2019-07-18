@@ -17,9 +17,12 @@ use Yoc\db\condition\Condition;
 use Yoc\db\condition\DefaultCondition;
 use Yoc\db\condition\InCondition;
 use Yoc\db\condition\LikeCondition;
+use Yoc\db\condition\LLikeCondition;
+use Yoc\db\condition\MathematicsCondition;
 use Yoc\db\condition\NotBetweenCondition;
 use Yoc\db\condition\NotInCondition;
 use Yoc\db\condition\NotLikeCondition;
+use Yoc\db\condition\RLikeCondition;
 use Yoc\db\traits\QueryTrait;
 
 class QueryBuilder extends BObject
@@ -43,17 +46,37 @@ class QueryBuilder extends BObject
 	 * [NOT] BETWEEN    （不在）区间查询
 	 * [NOT] IN    （不在）IN 查询
 	 */
-	private $dsaad = [
+	private $conditionMap = [
 		'IN' => InCondition::class,
 		'NOT IN' => NotInCondition::class,
 		'LIKE' => LikeCondition::class,
 		'NOT LIKE' => NotLikeCondition::class,
-		'EQ' => '',
-		'NEQ' => '',
-		'GT' => '',
-		'EGT' => '',
-		'LT' => '',
-		'ELT' => '',
+		'LLike' => LLikeCondition::class,
+		'RLike' => RLikeCondition::class,
+		'EQ' => [
+			'class' => MathematicsCondition::class,
+			'type' => 'EQ'
+		],
+		'NEQ' => [
+			'class' => MathematicsCondition::class,
+			'type' => 'NEQ'
+		],
+		'GT' => [
+			'class' => MathematicsCondition::class,
+			'type' => 'GT'
+		],
+		'EGT' => [
+			'class' => MathematicsCondition::class,
+			'type' => 'EGT'
+		],
+		'LT' => [
+			'class' => MathematicsCondition::class,
+			'type' => 'LT'
+		],
+		'ELT' => [
+			'class' => MathematicsCondition::class,
+			'type' => 'ELT'
+		],
 		'BETWEEN' => BetweenCondition::class,
 		'NOT BETWEEN' => NotBetweenCondition::class,
 	];
@@ -496,9 +519,9 @@ class QueryBuilder extends BObject
 		$option['opera'] = $opera;
 		$option['column'] = $column;
 
-		$uper = strtoupper($column);
-		if (isset($this->dsaad[$uper])) {
-			$option['class'] = $this->dsaad[$uper];
+		$strPer = strtoupper($opera);
+		if (isset($this->conditionMap[$strPer])) {
+			$option['class'] = $this->conditionMap[$strPer];
 		} else if (isset($value) && $value instanceof ActiveQuery) {
 			$option['value'] = $value->adaptation();
 			$option['class'] = ChildCondition::class;

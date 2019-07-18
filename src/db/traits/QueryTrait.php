@@ -179,7 +179,7 @@ trait QueryTrait
 	 */
 	public function sum($field)
 	{
-		$this->select[] = 'SUM(' . $field . ')';
+		$this->select[] = 'SUM(' . $field . ') AS ' . $field;
 		return $this;
 	}
 
@@ -325,9 +325,7 @@ trait QueryTrait
 			$columns = 'CONCAT(' . implode(',^,', $columns) . ')';
 		}
 
-		$value = trim('%', $value);
-
-		$this->where[] = "{$columns} like '%{$value}%'";
+		$this->where[] = ['like', $columns, trim('%', $value)];
 
 		return $this;
 	}
@@ -348,9 +346,7 @@ trait QueryTrait
 			$columns = 'CONCAT(' . implode(',^,', $columns) . ')';
 		}
 
-		$value = trim('%', $value);
-
-		$this->where[] = "{$columns} like '%{$value}'";
+		$this->where[] = ['llike', $columns, trim('%', $value)];
 
 		return $this;
 	}
@@ -371,10 +367,100 @@ trait QueryTrait
 			$columns = 'CONCAT(' . implode(',^,', $columns) . ')';
 		}
 
-		$value = trim('%', $value);
+		$this->where[] = ['rlike', $columns, trim('%', $value)];
 
-		$this->where[] = "{$columns} like '{$value}%'";
+		return $this;
+	}
 
+
+	/**
+	 * @param array|string $columns
+	 * @param string $value
+	 *
+	 * @return $this
+	 */
+	public function whereNotLike($columns, string $value)
+	{
+		if (empty($columns) || empty($value)) {
+			return $this;
+		}
+
+		if (is_array($columns)) {
+			$columns = 'CONCAT(' . implode(',^,', $columns) . ')';
+		}
+
+		$this->where[] = ['not like', $columns, trim('%', $value)];
+
+		return $this;
+	}
+
+	/**
+	 * @param string $column
+	 * @param int $value
+	 * @return $this
+	 */
+	public function eq(string $column, int $value)
+	{
+		$this->where[] = [$column => $value];
+		return $this;
+	}
+
+
+	/**
+	 * @param string $column
+	 * @param int $value
+	 * @return $this
+	 */
+	public function neq(string $column, int $value)
+	{
+		$this->where[] = ['<>', $column, $value];
+		return $this;
+	}
+
+
+	/**
+	 * @param string $column
+	 * @param int $value
+	 * @return $this
+	 */
+	public function gt(string $column, int $value)
+	{
+		$this->where[] = ['>', $column, $value];
+		return $this;
+	}
+
+
+	/**
+	 * @param string $column
+	 * @param int $value
+	 * @return $this
+	 */
+	public function ngt(string $column, int $value)
+	{
+		$this->where[] = ['>=', $column, $value];
+		return $this;
+	}
+
+
+	/**
+	 * @param string $column
+	 * @param int $value
+	 * @return $this
+	 */
+	public function lt(string $column, int $value)
+	{
+		$this->where[] = ['<', $column, $value];
+		return $this;
+	}
+
+	/**
+	 * @param string $column
+	 * @param int $value
+	 * @return $this
+	 */
+	public function elt(string $column, int $value)
+	{
+		$this->where[] = ['<=', $column, $value];
 		return $this;
 	}
 
@@ -415,11 +501,8 @@ trait QueryTrait
 			return $this;
 		}
 
-		if (is_string($start) || is_string($end)) {
-			$this->where[] = "$column between '$start' '$end'";
-		} else {
-			$this->where[] = "$column between $start $end";
-		}
+		$this->where[] = ['between', $column, [$start, $end]];
+
 		return $this;
 	}
 
@@ -436,11 +519,8 @@ trait QueryTrait
 			return $this;
 		}
 
-		if (is_string($start) || is_string($end)) {
-			$this->where[] = "$column not between '$start' '$end'";
-		} else {
-			$this->where[] = "$column not between $start $end";
-		}
+		$this->where[] = ['not between', $column, [$start, $end]];
+
 		return $this;
 	}
 
