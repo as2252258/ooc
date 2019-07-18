@@ -15,15 +15,6 @@ abstract class Condition extends BObject
 
 	const INT_TYPE = ['bit', 'bool', 'tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'float', 'double', 'decimal', 'timestamp'];
 
-
-	public function __construct($column, $opera, array $config = [])
-	{
-		$this->column = $column;
-		$this->opera = $opera;
-		parent::__construct($config);
-	}
-
-
 	abstract public function builder();
 
 	/**
