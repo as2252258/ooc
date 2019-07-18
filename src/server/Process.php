@@ -32,8 +32,11 @@ class Process
 		static::$inotify = inotify_init();
 		$process->name('event: file change.');
 
-		Event::add(static::$inotify, [static::class, 'check']);
 		static::watch(APP_PATH);
+		$isAdd = swoole_event_add(static::$inotify, [Process::class, 'check']);
+		if (!$isAdd) {
+			echo 'add process error. ' . swoole_last_error();
+		}
 	}
 
 	/**
