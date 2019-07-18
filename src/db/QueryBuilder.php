@@ -11,10 +11,15 @@ namespace Yoc\db;
 
 use function Amp\first;
 use Yoc\base\BObject;
+use Yoc\db\condition\BetweenCondition;
 use Yoc\db\condition\ChildCondition;
 use Yoc\db\condition\Condition;
 use Yoc\db\condition\DefaultCondition;
 use Yoc\db\condition\InCondition;
+use Yoc\db\condition\LikeCondition;
+use Yoc\db\condition\NotBetweenCondition;
+use Yoc\db\condition\NotInCondition;
+use Yoc\db\condition\NotLikeCondition;
 use Yoc\db\traits\QueryTrait;
 
 class QueryBuilder extends BObject
@@ -40,18 +45,17 @@ class QueryBuilder extends BObject
 	 */
 	private $dsaad = [
 		'IN' => InCondition::class,
-		'NOT IN' => '',
-		'LIKE' => '',
-		'NOT LIKE' => '',
-		'OR' => '',
+		'NOT IN' => NotInCondition::class,
+		'LIKE' => LikeCondition::class,
+		'NOT LIKE' => NotLikeCondition::class,
 		'EQ' => '',
 		'NEQ' => '',
 		'GT' => '',
 		'EGT' => '',
 		'LT' => '',
 		'ELT' => '',
-		'BETWEEN' => '',
-		'NOT BETWEEN' => '',
+		'BETWEEN' => BetweenCondition::class,
+		'NOT BETWEEN' => NotBetweenCondition::class,
 	];
 
 	/** @var */
