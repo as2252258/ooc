@@ -488,8 +488,10 @@ class QueryBuilder extends BObject
 	 */
 	private function eachCondition($array, $_tmp)
 	{
-		$array = array_filter($array);
 		foreach ($array as $key => $val) {
+			if (empty($val)) {
+				continue;
+			}
 			if (is_array($val)) {
 				$_o = $this->addArrayCondition($val);
 			} else if (is_string($key)) {
