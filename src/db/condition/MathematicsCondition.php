@@ -9,18 +9,61 @@ class MathematicsCondition extends Condition
 
 	public $type = '';
 
-
 	/**
-	 *     * EQ    等于（=）
-	 * NEQ    不等于（<>）
-	 * GT    大于（>）
-	 * EGT    大于等于（>=）
-	 * LT    小于（<）
-	 * ELT    小于等于（<=）
+	 * @return mixed
 	 */
 	public function builder()
 	{
-		return $this->column . $this->opera . $this->value;
+		return $this->{strtolower($this->type)}();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function eq()
+	{
+		return $this->column . '=' . $this->value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function neq()
+	{
+		return $this->column . '<>' . $this->value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function gt()
+	{
+		return $this->column . '>' . $this->value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function egt()
+	{
+		return $this->column . '>=' . $this->value;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function lt()
+	{
+		return $this->column . '<' . $this->value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function elt()
+	{
+		return $this->column . '<=' . $this->value;
 	}
 
 }

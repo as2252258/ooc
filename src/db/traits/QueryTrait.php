@@ -401,7 +401,7 @@ trait QueryTrait
 	 */
 	public function eq(string $column, int $value)
 	{
-		$this->where[] = [$column => $value];
+		$this->where[] = ['eq', $column, $value];
 		return $this;
 	}
 
@@ -413,7 +413,7 @@ trait QueryTrait
 	 */
 	public function neq(string $column, int $value)
 	{
-		$this->where[] = ['<>', $column, $value];
+		$this->where[] = ['neq', $column, $value];
 		return $this;
 	}
 
@@ -425,7 +425,7 @@ trait QueryTrait
 	 */
 	public function gt(string $column, int $value)
 	{
-		$this->where[] = ['>', $column, $value];
+		$this->where[] = ['gt', $column, $value];
 		return $this;
 	}
 
@@ -437,7 +437,7 @@ trait QueryTrait
 	 */
 	public function ngt(string $column, int $value)
 	{
-		$this->where[] = ['>=', $column, $value];
+		$this->where[] = ['ngt', $column, $value];
 		return $this;
 	}
 
@@ -449,7 +449,7 @@ trait QueryTrait
 	 */
 	public function lt(string $column, int $value)
 	{
-		$this->where[] = ['<', $column, $value];
+		$this->where[] = ['lt', $column, $value];
 		return $this;
 	}
 
@@ -460,7 +460,7 @@ trait QueryTrait
 	 */
 	public function elt(string $column, int $value)
 	{
-		$this->where[] = ['<=', $column, $value];
+		$this->where[] = ['elt', $column, $value];
 		return $this;
 	}
 

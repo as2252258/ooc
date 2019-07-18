@@ -521,8 +521,13 @@ class QueryBuilder extends BObject
 
 		$strPer = strtoupper($opera);
 		if (isset($this->conditionMap[$strPer])) {
-			$option['class'] = $this->conditionMap[$strPer];
-		} else if (isset($value) && $value instanceof ActiveQuery) {
+			$class = $this->conditionMap[$strPer];
+			if (is_array($class)) {
+				$option = array_merge($option, $class);
+			} else {
+				$option['class'] = $class;
+			}
+		} else if ($value instanceof ActiveQuery) {
 			$option['value'] = $value->adaptation();
 			$option['class'] = ChildCondition::class;
 		} else {
