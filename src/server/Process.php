@@ -34,6 +34,7 @@ class Process
 
 		static::watch(APP_PATH);
 		$isAdd = swoole_event_add(static::$inotify, [Process::class, 'check']);
+		var_dump($isAdd);
 		if (!$isAdd) {
 			echo 'add process error. ' . swoole_last_error();
 		}
