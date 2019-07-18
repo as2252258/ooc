@@ -32,8 +32,8 @@ class Process
 		static::$inotify = inotify_init();
 		$process->name('event: file change.');
 
-		static::watch(APP_PATH);
 		Event::add(static::$inotify, [static::class, 'check']);
+		static::watch(APP_PATH);
 	}
 
 	/**
