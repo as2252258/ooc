@@ -380,6 +380,14 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	 */
 	private function isRenew()
 	{
+		$_tmp = [];
+		foreach ($this->_attributes as $key => $val) {
+			if ($val === $this->_oldAttributes[$key]) {
+				continue;
+			}
+			$_tmp[$key] = $val;
+		}
+		return $_tmp;
 		return array_diff_assoc($this->_oldAttributes, $this->_attributes);
 	}
 
