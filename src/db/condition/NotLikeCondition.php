@@ -11,11 +11,7 @@ class NotLikeCondition extends Condition
 
 	public function builder()
 	{
-		switch ($this->pos) {
-
-		}
-
-		// TODO: Implement builder() method.
+		return $this->column . ' NOT LIKE \'%' . $this->value . '%\'';
 	}
 
 }
