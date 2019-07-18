@@ -32,13 +32,8 @@ class Process
 		static::$inotify = inotify_init();
 		$process->name('event: file change.');
 
-		Event::add(static::$inotify, [static::class, 'check']);
-
 		static::watch(APP_PATH);
-
-		swoole_timer_tick(1000, function () {
-			echo 'Check.' . PHP_EOL;
-		});
+		Event::add(static::$inotify, [static::class, 'check']);
 	}
 
 	/**
