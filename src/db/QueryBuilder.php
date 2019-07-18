@@ -11,6 +11,11 @@ namespace Yoc\db;
 
 use function Amp\first;
 use Yoc\base\BObject;
+use Yoc\db\condition\ChildCondition;
+use Yoc\db\condition\Condition;
+use Yoc\db\condition\DefaultCondition;
+use Yoc\db\condition\InCondition;
+use Yoc\db\traits\QueryTrait;
 
 class QueryBuilder extends BObject
 {
@@ -20,6 +25,34 @@ class QueryBuilder extends BObject
 	const COUNT = 'count';
 	const EXISTS = 'exists';
 	const INT_TYPE = ['bit', 'bool', 'tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'float', 'double', 'decimal', 'timestamp'];
+
+	/**
+	 * @var array
+	 * EQ    等于（=）
+	 * NEQ    不等于（<>）
+	 * GT    大于（>）
+	 * EGT    大于等于（>=）
+	 * LT    小于（<）
+	 * ELT    小于等于（<=）
+	 * LIKE    模糊查询
+	 * [NOT] BETWEEN    （不在）区间查询
+	 * [NOT] IN    （不在）IN 查询
+	 */
+	private $dsaad = [
+		'IN' => InCondition::class,
+		'NOT IN' => '',
+		'LIKE' => '',
+		'NOT LIKE' => '',
+		'OR' => '',
+		'EQ' => '',
+		'NEQ' => '',
+		'GT' => '',
+		'EGT' => '',
+		'LT' => '',
+		'ELT' => '',
+		'BETWEEN' => '',
+		'NOT BETWEEN' => '',
+	];
 
 	/** @var */
 	public $column;
@@ -36,26 +69,13 @@ class QueryBuilder extends BObject
 		}
 
 		$builder = $this->builderSelect($query->select);
-		if (!empty($query->from)) {
-			$builder .= $this->builderFrom($query->from);
-		}
-		if (!empty($query->alias)) {
-			$builder .= $this->builderAlias($query->alias);
-		}
-		if (!empty($query->join)) {
-			$builder .= $this->builderJoin($query->join);
-		}
-		if (!empty($query->where)) {
-			$builder .= $this->builderWhere($query->where);
-		}
-		if (!empty($query->group)) {
-			$builder .= $this->builderGroup($query->group);
-		}
-		if (!empty($query->order)) {
-			$builder .= $this->builderOrder($query->order);
-		}
-
-		$builder .= $this->builderLimit($query->offset, $query->limit);
+		$builder .= $this->builderFrom($query->from);
+		$builder .= $this->builderAlias($query->alias);
+		$builder .= $this->builderJoin($query->join);
+		$builder .= $this->builderWhere($query->where);
+		$builder .= $this->builderGroup($query->group);
+		$builder .= $this->builderOrder($query->order);
+		$builder .= $this->builderLimit($query);
 
 		return $builder;
 	}
@@ -140,21 +160,11 @@ class QueryBuilder extends BObject
 		$_tmp = $newParam = [];
 		$sql = "UPDATE {$table::getTable()} SET ";
 		if (isset($params['incr']) && is_array($params['incr'])) {
-			foreach ($params['incr'] as $key => $val) {
-				$_tmp[] = $key . '=' . $key . ' + ' . $val;
-				if (!is_numeric($val)) {
-					throw new \Exception('Incr And Decr action. The value must a numeric.');
-				}
-			}
+			$_tmp = $this->gz($params['incr'], ' + ', $_tmp);
 		}
 
 		if (isset($params['decr']) && is_array($params['decr'])) {
-			foreach ($params['decr'] as $key => $val) {
-				$_tmp[] = $key . '=' . $key . ' - ' . $val;
-				if (!is_numeric($val)) {
-					throw new \Exception('Incr And Decr action. The value must a numeric.');
-				}
-			}
+			$_tmp = $this->gz($params['decr'], ' - ', $_tmp);
 		}
 
 		if (empty($_tmp)) {
@@ -164,6 +174,26 @@ class QueryBuilder extends BObject
 		$params = [];
 
 		return $sql . implode(',', $_tmp) . $this->builderWhere($condition);
+	}
+
+	/**
+	 * @param $params
+	 * @param $op
+	 * @param array $_tmp
+	 * @return array
+	 * @throws \Exception
+	 */
+	private function gz($params, $op, $_tmp)
+	{
+		$message = 'Incr And Decr action. The value must a numeric.';
+		foreach ($params as $key => $val) {
+			$_tmp[] = $key . '=' . $key . $op . $val;
+			if (!is_numeric($val)) {
+				throw new \Exception($message);
+			}
+		}
+
+		return $_tmp;
 	}
 
 	/**
@@ -245,6 +275,30 @@ class QueryBuilder extends BObject
 		return [$sql, $insertData];
 	}
 
+
+	/**
+	 * @param $table
+	 * @param $attributes
+	 * @param $condition
+	 * @return bool|string
+	 */
+	public function updateAll($table, $attributes, $condition)
+	{
+		$param = [];
+		foreach ($attributes as $key => $val) {
+			if ($val === null || $val === '') {
+				continue;
+			}
+			$param[] = $this->resolve($key, $val);
+		}
+
+		if (empty($param)) return true;
+		$condition = $this->builderWhere($condition);
+
+		return 'UPDATE ' . $table . ' SET ' . implode(',', $param) . $condition;
+	}
+
+
 	/**
 	 * @param $table
 	 * @return string
@@ -255,6 +309,7 @@ class QueryBuilder extends BObject
 	}
 
 	/**
+	 * @param null $select
 	 * @return string
 	 */
 	private function builderSelect($select = NULL)
@@ -270,6 +325,7 @@ class QueryBuilder extends BObject
 	}
 
 	/**
+	 * @param $alias
 	 * @return string
 	 */
 	private function builderAlias($alias)
@@ -278,8 +334,8 @@ class QueryBuilder extends BObject
 	}
 
 	/**
+	 * @param $table
 	 * @return string
-	 * @throws \Exception
 	 */
 	private function builderFrom($table)
 	{
@@ -293,6 +349,7 @@ class QueryBuilder extends BObject
 	}
 
 	/**
+	 * @param $join
 	 * @return string
 	 */
 	private function builderJoin($join)
@@ -328,6 +385,7 @@ class QueryBuilder extends BObject
 	}
 
 	/**
+	 * @param $group
 	 * @return string
 	 */
 	private function builderGroup($group)
@@ -340,8 +398,8 @@ class QueryBuilder extends BObject
 	}
 
 	/**
+	 * @param $order
 	 * @return string
-	 * @throws \Exception
 	 */
 	private function builderOrder($order)
 	{
@@ -354,15 +412,18 @@ class QueryBuilder extends BObject
 	}
 
 	/**
+	 * @param QueryTrait $query
 	 * @return string
 	 */
-	private function builderLimit($offset, $limit)
+	private function builderLimit($query)
 	{
-		if (!empty($limit)) {
-			return ' LIMIT ' . $offset . ',' . $limit;
-		} else {
-			return '';
+		$limit = $query->limit;
+		if (!is_numeric($limit) || $limit < 1) {
+			return "";
 		}
+		$offset = $query->offset;
+
+		return ' LIMIT ' . $offset . ',' . $limit;
 	}
 
 
@@ -379,6 +440,7 @@ class QueryBuilder extends BObject
 		}
 		$_tmp = [];
 		$condition = ['like', 'in', 'or', '>', '<', '<=', '>=', '<>'];
+
 		if (in_array(($array[0] ?? ''), $condition)) {
 			$_tmp[] = $this->builderLike($array);
 		} else {
@@ -399,9 +461,8 @@ class QueryBuilder extends BObject
 	 */
 	private function eachCondition($array, $_tmp)
 	{
+		$array = array_filter($array);
 		foreach ($array as $key => $val) {
-			if ($val === NULL) continue;
-
 			if (is_array($val)) {
 				$_o = $this->addArrayCondition($val);
 			} else if (is_string($key)) {
@@ -425,27 +486,26 @@ class QueryBuilder extends BObject
 	private function builderLike($array)
 	{
 		$_tmp = [];
-		if (is_array($array[1])) {
-			list($columns, $valus) = $array[1];
-			$array[1] = $columns;
-			$array[2] = $valus;
-		}
-		if ($array[0] == 'in') {
-			if (!is_array($array[2])) {
-				return null;
-			}
-			$_tmp[] = $array[1] . ' in (' . implode(',', $array[2]) . ')';
-		} else if ($array[0] == 'like') {
-			$_tmp[] = $array[1] . ' like \'%' . $array[2] . '%\'';
-		} else if ($array[0] == 'or') {
-			$_tmp[] = $this->resolve($array[1], $array[2]);
-		} else if (isset($array[2]) && $array[2] instanceof ActiveQuery) {
-			$values = $array[2]->adaptation();
+		list($opera, $column, $value) = $array;
 
-			$_tmp[] = $array[1] . ' ' . $array[0] . ' (' . $values . ')';
+		$option['value'] = $value;
+		$option['opera'] = $opera;
+		$option['column'] = $column;
+
+		$uper = strtoupper($column);
+		if (isset($this->dsaad[$uper])) {
+			$option['class'] = $this->dsaad[$uper];
+		} else if (isset($value) && $value instanceof ActiveQuery) {
+			$option['value'] = $value->adaptation();
+			$option['class'] = ChildCondition::class;
 		} else {
-			$_tmp[] = $this->resolve($array[1], $array[2], $array[0]);
+			$option['class'] = DefaultCondition::class;
 		}
+
+		/** @var Condition $class */
+		$class = \Yoc::createObject($option);
+		$_tmp[] = $class->builder();
+
 		return [$array[0], array_shift($_tmp)];
 	}
 

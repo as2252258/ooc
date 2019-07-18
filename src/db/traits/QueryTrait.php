@@ -333,6 +333,52 @@ trait QueryTrait
 	}
 
 	/**
+	 * @param array|string $columns
+	 * @param string $value
+	 *
+	 * @return $this
+	 */
+	public function whereLLike($columns, string $value)
+	{
+		if (empty($columns) || empty($value)) {
+			return $this;
+		}
+
+		if (is_array($columns)) {
+			$columns = 'CONCAT(' . implode(',^,', $columns) . ')';
+		}
+
+		$value = trim('%', $value);
+
+		$this->where[] = "{$columns} like '%{$value}'";
+
+		return $this;
+	}
+
+	/**
+	 * @param array|string $columns
+	 * @param string $value
+	 *
+	 * @return $this
+	 */
+	public function whereRLike($columns, string $value)
+	{
+		if (empty($columns) || empty($value)) {
+			return $this;
+		}
+
+		if (is_array($columns)) {
+			$columns = 'CONCAT(' . implode(',^,', $columns) . ')';
+		}
+
+		$value = trim('%', $value);
+
+		$this->where[] = "{$columns} like '{$value}%'";
+
+		return $this;
+	}
+
+	/**
 	 * @param $columns
 	 * @param $value
 	 *
@@ -341,6 +387,18 @@ trait QueryTrait
 	public function whereIn($columns, $value)
 	{
 		$this->where[] = ['in', $columns, $value];
+		return $this;
+	}
+
+	/**
+	 * @param $columns
+	 * @param $value
+	 *
+	 * @return $this
+	 */
+	public function whereNotIn($columns, $value)
+	{
+		$this->where[] = ['not in', $columns, $value];
 		return $this;
 	}
 
@@ -361,6 +419,27 @@ trait QueryTrait
 			$this->where[] = "$column between '$start' '$end'";
 		} else {
 			$this->where[] = "$column between $start $end";
+		}
+		return $this;
+	}
+
+	/**
+	 * @param string $column
+	 * @param string $start
+	 * @param string $end
+	 *
+	 * @return $this
+	 */
+	public function whereNotBetween(string $column, string $start, string $end)
+	{
+		if (empty($column) || empty($start) || empty($end)) {
+			return $this;
+		}
+
+		if (is_string($start) || is_string($end)) {
+			$this->where[] = "$column not between '$start' '$end'";
+		} else {
+			$this->where[] = "$column not between $start $end";
 		}
 		return $this;
 	}

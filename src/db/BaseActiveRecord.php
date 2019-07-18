@@ -362,10 +362,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 		}
 
 		$command = static::getDb()->createCommand();
-
-		$fields = $this->getColumns()->getFields();
-
-		$command = $command->update($this, $attributes, $condition, $param, $fields);
+		$command = $command->update($this, $attributes, $condition, $param, $this->getColumns()->getFields());
 		if (!$command->save(false)) {
 			return $this->addError($command->getError());
 		}
@@ -383,14 +380,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	 */
 	private function isRenew()
 	{
-		$_tmp = [];
-		foreach ($this->_attributes as $key => $val) {
-			if ($val === $this->_oldAttributes[$key]) {
-				continue;
-			}
-			$_tmp[$key] = $val;
-		}
-		return $_tmp;
+		return array_diff_assoc($this->_oldAttributes, $this->_attributes);
 	}
 
 	/**
@@ -498,9 +488,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	public function populate($data)
 	{
 		$this->_attributes = $data;
-
 		$this->_oldAttributes = $this->_attributes;
-
 		$this->setIsCreate(false);
 		return $this;
 	}
