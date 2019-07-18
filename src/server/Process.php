@@ -32,12 +32,7 @@ class Process
 		static::$inotify = inotify_init();
 		$process->name('event: file change.');
 
-		var_dump(static::$inotify);
-		Event::add(static::$inotify, function ($fp) {
-			var_dump(inotify_read($fp));
-		}, function ($fp) {
-			var_dump(inotify_read($fp));
-		}, SWOOLE_EVENT_READ);
+		Event::add(static::$inotify, [static::class, 'check']);
 
 		static::watch(APP_PATH);
 
