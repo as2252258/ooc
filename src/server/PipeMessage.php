@@ -26,8 +26,10 @@ class PipeMessage
 			return;
 		}
 		$remove = [];
+
+		$socket = app()->socket->getSocket();
 		foreach ($redis->sMembers('debug_list') as $val) {
-			if (!$server->exist($val)) {
+			if (!$socket->exist($val)) {
 				$remove[] = $val;
 			} else {
 				if (is_array($message)) {
@@ -35,7 +37,7 @@ class PipeMessage
 				} else if (is_object($message)) {
 					$message = print_r(get_object_vars($message), TRUE);
 				}
-				$server->push($val, $message);
+				$socket->push($val, $message);
 			}
 		}
 		if (!empty($remove)) {
