@@ -11,16 +11,8 @@ namespace Yoc\server;
 
 use Swoole\Server;
 
-class PipeMessage extends Base
+class PipeMessage
 {
-	
-	/**
-	 * @param mixed ...$value
-	 */
-	public function onHandler(...$value)
-	{
-		$this->server->on('pipeMessage', [$this, 'onCallback']);
-	}
 	
 	/**
 	 * @param Server $server
@@ -30,13 +22,12 @@ class PipeMessage extends Base
 	public function onCallback(Server $server, int $src_worker_id, $message)
 	{
 		$redis = \Yoc::$app->redis;
-		$socket = $this->server;
 		if ($redis->sCard('debug_list') < 1) {
 			return;
 		}
 		$remove = [];
 		foreach ($redis->sMembers('debug_list') as $val) {
-			if (!$socket->exist($val)) {
+			if (!$server->exist($val)) {
 				$remove[] = $val;
 			} else {
 				if (is_array($message)) {
@@ -44,7 +35,7 @@ class PipeMessage extends Base
 				} else if (is_object($message)) {
 					$message = print_r(get_object_vars($message), TRUE);
 				}
-				$socket->push($val, $message);
+				$server->push($val, $message);
 			}
 		}
 		if (!empty($remove)) {
