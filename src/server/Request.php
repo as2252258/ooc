@@ -8,13 +8,14 @@
 
 namespace Yoc\server;
 
+use Yoc\base\Component;
 use Yoc\core\JSON;
 use Yoc\core\Xml;
 use Yoc\http\Response;
 use Yoc\http\HttpParams;
 use Yoc\http\HttpHeaders;
 
-class Request
+class Request extends Component
 {
 
 	/**
