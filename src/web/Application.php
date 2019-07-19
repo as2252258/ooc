@@ -134,7 +134,7 @@ class Application extends BApp
 		$ids = $this->getPathIdsByProcess('PHP_' . $this->id);
 		echo implode(',', $ids) . PHP_EOL;
 		foreach ($ids as $pathId) {
-			shell_exec('kill ' . $pathId);
+			shell_exec('kill -9 ' . $pathId);
 		}
 		return true;
 	}
