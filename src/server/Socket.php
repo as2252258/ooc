@@ -88,11 +88,8 @@ class Socket extends Service
 	 */
 	public function run()
 	{
-		echo '启动中. 请稍后....' . PHP_EOL;
 		sleep(1.5);
-
 		$this->server = new Server($this->host, $this->port);
-
 		$this->server->set($this->getDefaultConfig());
 
 		$worker = Yoc::createObject(Worker::class);
@@ -105,6 +102,13 @@ class Socket extends Service
 		$this->server->on('handshake', [$socket, 'onHandshake']);
 		$this->server->on('message', [$socket, 'onMessage']);
 		$this->server->on('close', [$socket, 'onClose']);
+
+		if (!empty($this->http)) {
+			$this->server->addlistener($this->http['host'], $this->http['port'], SWOOLE_TCP);
+
+			$request = Yoc::createObject(Request::class);
+			$this->server->on('request', [$request, 'onRequest']);
+		}
 
 		$taskNumber = $this->config['task_worker_num'] ?? 0;
 		if ($taskNumber > 0) {

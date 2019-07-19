@@ -14,16 +14,8 @@ use Yoc\db\DbPool;
 use Yoc\error\Logger;
 use Yoc\route\Router;
 
-class Worker extends Base
+class Worker
 {
-
-	public function onHandler(...$server)
-	{
-		$this->server->on('workerStart', [$this, 'onWorkerStart']);
-		$this->server->on('workerError', [$this, 'onWorkerError']);
-		$this->server->on('workerStop', [$this, 'onWorkerStop']);
-		$this->server->on('workerExit', [$this, 'onWorkerExit']);
-	}
 
 	public function onWorkerError(\swoole_server $server, int $worker_id)
 	{
@@ -74,8 +66,7 @@ class Worker extends Base
 				swoole_set_process_name($worker_name);
 			}
 		} catch (\Exception $exception) {
-			echo 'Error: ' . $exception->getMessage() . PHP_EOL;
-			$this->addError($exception);
+			Logger::error($exception->getMessage());
 		}
 		Logger::insert();
 	}

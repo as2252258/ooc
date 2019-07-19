@@ -14,19 +14,8 @@ use Yoc\http\Response;
 use Yoc\http\HttpParams;
 use Yoc\http\HttpHeaders;
 
-class Request extends Base
+class Request
 {
-
-	/**
-	 * @param mixed ...$data
-	 * @throws \Exception
-	 */
-	public function onHandler(...$data)
-	{
-		$this->server->addListener($data[0], $data[1], SWOOLE_TCP);
-
-		$this->server->on('request', [$this, 'onRequest']);
-	}
 
 	/**
 	 * @param \Swoole\Http\Request $request
