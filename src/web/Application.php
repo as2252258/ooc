@@ -132,6 +132,7 @@ class Application extends BApp
 	private function closeChildProcess()
 	{
 		$ids = $this->getPathIdsByProcess('PHP_' . $this->id);
+		echo implode(',', $ids) . PHP_EOL;
 		foreach ($ids as $pathId) {
 			shell_exec('kill ' . $pathId);
 		}
