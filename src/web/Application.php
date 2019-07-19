@@ -92,18 +92,18 @@ class Application extends BApp
 		$socket = $this->runtimePath . '/socket.sock';
 
 		if (!file_exists($socket)) {
-			return $this->closeChildProcess();
+			return $this->checkProcessIsRuning();
 		}
 
 		$pathId = file_get_contents($socket);
 		if (empty($pathId) || !is_numeric($pathId)) {
-			return $this->closeChildProcess();
+			return $this->checkProcessIsRuning();
 		}
 
 		@unlink($socket);
 		$shell = shell_exec("ps aux | awk '{print $2}'");
 		if (!in_array($pathId, explode(PHP_EOL, $shell))) {
-			return $this->closeChildProcess();
+			return $this->checkProcessIsRuning();
 		}
 
 		shell_exec("kill -TERM $pathId");
@@ -135,7 +135,7 @@ class Application extends BApp
 		foreach ($ids as $pathId) {
 			shell_exec('kill ' . $pathId);
 		}
-		return $this->checkProcessIsRuning();
+		return true;
 	}
 
 	/**
