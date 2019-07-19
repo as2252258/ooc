@@ -21,6 +21,8 @@ class Socket extends Service
 
 	public $http;
 
+	public $udp;
+
 	public $config = [];
 
 	/** @var Request $request */
