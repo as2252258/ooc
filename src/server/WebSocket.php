@@ -58,4 +58,9 @@ class WebSocket
 		}
 		return TRUE;
 	}
+
+	public function onClose(Server $server, int $fd)
+	{
+
+	}
 }
