@@ -19,7 +19,7 @@ class PipeMessage
 	 * @param int $src_worker_id
 	 * @param $message
 	 */
-	public function onCallback(Server $server, int $src_worker_id, $message)
+	public function onPipeMessage(Server $server, int $src_worker_id, $message)
 	{
 		$redis = \Yoc::$app->redis;
 		if ($redis->sCard('debug_list') < 1) {
