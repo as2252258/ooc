@@ -489,7 +489,7 @@ class QueryBuilder extends BObject
 	private function eachCondition($array, $_tmp)
 	{
 		foreach ($array as $key => $val) {
-			if (empty($val)) {
+			if ($val === null || $val === '') {
 				continue;
 			}
 			if (is_array($val)) {
