@@ -112,8 +112,7 @@ class Logger
 			return;
 		}
 
-		$command = new LogTask();
-		$command->handler(static::$logs);
+		\Yoc::async(new LogTask(static::$logs));
 		static::$logs = [];
 	}
 

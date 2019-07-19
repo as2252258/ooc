@@ -26,14 +26,14 @@ class LogTask extends Task
 	 * @param $param
 	 * @throws
 	 */
-	public function handler($param)
+	public function handler()
 	{
 		$path = \Yoc::$app->runtimePath . '/log';
 		if (!is_dir($path)) mkdir($path, 777);
 
 		$_tmp = [];
 
-		foreach ($param as $val) {
+		foreach ($this->param as $val) {
 			list($category, $message) = $val;
 
 			$local = $path . '/' . (empty($category) ? 'app' : $category);
