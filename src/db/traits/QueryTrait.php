@@ -278,7 +278,7 @@ trait QueryTrait
 	 * @return $this|array|ActiveQuery
 	 * @throws \Exception
 	 */
-	public function whereOr($columns, $oprea = '=', $value = NULL)
+	public function or($columns, $oprea = '=', $value = NULL)
 	{
 		$this->where[] = ['or', func_get_args()];
 		return $this;
@@ -292,7 +292,7 @@ trait QueryTrait
 	 * @return array|ActiveQuery|mixed
 	 * @throws \Exception
 	 */
-	public function whereAnd($columns, $oprea = '=', $value = NULL)
+	public function and($columns, $oprea = '=', $value = NULL)
 	{
 		$this->where[] = func_get_args();
 		return $this;
@@ -315,7 +315,7 @@ trait QueryTrait
 	 *
 	 * @return $this
 	 */
-	public function whereLike($columns, string $value)
+	public function like($columns, string $value)
 	{
 		if (empty($columns) || empty($value)) {
 			return $this;
@@ -336,7 +336,7 @@ trait QueryTrait
 	 *
 	 * @return $this
 	 */
-	public function whereLLike($columns, string $value)
+	public function lLike($columns, string $value)
 	{
 		if (empty($columns) || empty($value)) {
 			return $this;
@@ -357,7 +357,7 @@ trait QueryTrait
 	 *
 	 * @return $this
 	 */
-	public function whereRLike($columns, string $value)
+	public function rLike($columns, string $value)
 	{
 		if (empty($columns) || empty($value)) {
 			return $this;
@@ -379,7 +379,7 @@ trait QueryTrait
 	 *
 	 * @return $this
 	 */
-	public function whereNotLike($columns, string $value)
+	public function notLike($columns, string $value)
 	{
 		if (empty($columns) || empty($value)) {
 			return $this;
@@ -470,7 +470,7 @@ trait QueryTrait
 	 *
 	 * @return $this
 	 */
-	public function whereIn($columns, $value)
+	public function in($columns, $value)
 	{
 		$this->where[] = ['in', $columns, $value];
 		return $this;
@@ -482,7 +482,7 @@ trait QueryTrait
 	 *
 	 * @return $this
 	 */
-	public function whereNotIn($columns, $value)
+	public function notIn($columns, $value)
 	{
 		$this->where[] = ['not in', $columns, $value];
 		return $this;
@@ -495,7 +495,7 @@ trait QueryTrait
 	 *
 	 * @return $this
 	 */
-	public function whereBetween(string $column, string $start, string $end)
+	public function between(string $column, string $start, string $end)
 	{
 		if (empty($column) || empty($start) || empty($end)) {
 			return $this;
@@ -513,7 +513,7 @@ trait QueryTrait
 	 *
 	 * @return $this
 	 */
-	public function whereNotBetween(string $column, string $start, string $end)
+	public function notBetween(string $column, string $start, string $end)
 	{
 		if (empty($column) || empty($start) || empty($end)) {
 			return $this;
