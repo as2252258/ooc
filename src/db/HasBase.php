@@ -47,7 +47,7 @@ abstract class HasBase
 	{
 		if (is_array($value)) {
 			if (empty($value)) $value = [-100];
-			$this->model = $model::find()->whereIn($primaryId, $value);
+			$this->model = $model::find()->in($primaryId, $value);
 		} else {
 			$this->model = $model::find()->where([$primaryId => $value]);
 		}
