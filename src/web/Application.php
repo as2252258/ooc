@@ -145,13 +145,8 @@ class Application extends BApp
 	private function getPathIdsByProcess($id)
 	{
 		$resul = shell_exec("ps x | grep '{$id}' | awk '{print $1}'");
-
-		var_dump($resul);
-
 		$explode = explode(PHP_EOL, $resul);
-		if (count($explode) == 4) {
-			return explode(PHP_EOL, $resul);
-		}
-		return [];
+
+		return array_filter($explode);
 	}
 }
