@@ -84,6 +84,8 @@ class Response extends Component
 			$this->printResult($context);
 		} else if ($this->response instanceof \swoole_http_response) {
 			$this->sendContext($context);
+		} else {
+			$this->printResult($context);
 		}
 
 		$this->triDefer();

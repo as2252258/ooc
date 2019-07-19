@@ -8,10 +8,8 @@
 
 namespace Yoc\server;
 
-use Swoole\Http\Response;
 use Yoc;
 use Swoole\WebSocket\Server;
-use Yoc\base\Config;
 use Yoc\di\Service;
 
 class Socket extends Service
