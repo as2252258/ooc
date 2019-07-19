@@ -292,6 +292,24 @@ class Yoc
 	{
 		Yoc::$app->set($name, $options);
 	}
+
+	/**
+	 * @param Task $task
+	 * @param int|null $work_id
+	 * @return mixed
+	 */
+	public static function async(Task $task,int $work_id = null)
+	{
+		$server = static::$app->socket;
+
+		if (empty($work_id)) {
+			$work_id = $server->getRandWorker();
+		}
+
+		$format = serialize($task);
+
+		return $server->getSocket()->task($format, $work_id);
+	}
 }
 
 

@@ -12,9 +12,9 @@ namespace Yoc\task;
 interface InterfaceTask
 {
 
-	public function __construct();
+	public function __construct($data);
 
-	public function handler($param);
+	public function handler();
 
 
 }

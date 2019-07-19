@@ -9,6 +9,8 @@
 namespace Yoc\server;
 
 
+use Swoole\Server;
+
 class PipeMessage extends Base
 {
 	
@@ -21,11 +23,11 @@ class PipeMessage extends Base
 	}
 	
 	/**
-	 * @param \swoole_server $server
+	 * @param Server $server
 	 * @param int $src_worker_id
 	 * @param $message
 	 */
-	public function onCallback(\swoole_server $server, int $src_worker_id, $message)
+	public function onCallback(Server $server, int $src_worker_id, $message)
 	{
 		$redis = \Yoc::$app->redis;
 		$socket = $this->server;

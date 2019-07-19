@@ -8,7 +8,8 @@
 
 namespace Yoc\server;
 
-use Swoole\Event;
+use Swoole\Http\Response;
+use Yoc;
 use Swoole\WebSocket\Server;
 use Yoc\base\Config;
 use Yoc\di\Service;
@@ -31,6 +32,7 @@ class Socket extends Service
 	private $server;
 	public $isRun = false;
 
+	public $usePipeMessage = false;
 
 	/**
 	 * @return array
@@ -38,7 +40,7 @@ class Socket extends Service
 	 */
 	private function getDefaultConfig()
 	{
-		return [
+		return array_merge([
 			'worker_num' => 6,
 			'reactor_num' => 4,
 			'backlog' => 20000,
@@ -66,7 +68,7 @@ class Socket extends Service
 			'open_websocket_close_frame' => TRUE,
 			'websocket_subprotocol' => TRUE,
 			'http_compression' => true,
-		];
+		], $this->config);
 	}
 
 
@@ -91,14 +93,28 @@ class Socket extends Service
 
 		$this->server = new Server($this->host, $this->port);
 
-		$this->server->set(array_merge($this->getDefaultConfig(), $this->config));
+		$this->server->set($this->getDefaultConfig());
 
-		$this->socketListen();
-		if (isset($this->config['task_worker_num'])) {
-			new Task();
+		$worker = Yoc::createObject(Worker::class);
+		$this->server->on('workerStart', [$worker, 'onWorkerStart']);
+		$this->server->on('workerError', [$worker, 'onWorkerError']);
+		$this->server->on('workerStop', [$worker, 'onWorkerStop']);
+		$this->server->on('workerExit', [$worker, 'onWorkerExit']);
+
+		$socket = Yoc::createObject(WebSocket::class);
+		$this->server->on('handshake', [$socket, 'onHandshake']);
+		$this->server->on('message', [$socket, 'onMessage']);
+		$this->server->on('close', [$socket, 'onClose']);
+
+		$taskNumber = $this->config['task_worker_num'] ?? 0;
+		if ($taskNumber > 0) {
+			$task = Yoc::createObject(Task::class);
+			$this->server->on('task', [$task, 'onTask']);
 		}
-		if (Config::get('usePipeMessage')) {
-			new PipeMessage();
+
+		if ($this->usePipeMessage === true) {
+			$pipeMessage = Yoc::createObject(PipeMessage::class);
+			$this->server->on('pipeMessage', [$pipeMessage, 'onPipeMessage']);
 		}
 
 		$pro = new \Swoole\Process([Process::class, 'listen']);
@@ -110,36 +126,12 @@ class Socket extends Service
 	}
 
 	/**
-	 * @throws \Yoc\exception\ConfigException
-	 */
-	public function socketListen()
-	{
-		new Worker();
-
-		$callback = Config::get('wss', false, WebSocket::class);
-		new $callback($this->host, $this->port);
-
-		//监听HTTP_SERVER
-		if ($this->http['host'] && $this->http['port']) {
-			$this->request = new Request($this->http['host'], $this->http['port']);
-		}
-	}
-
-	/**
 	 * @param $key
 	 * @param $value
 	 */
 	public function setConfig($key, $value)
 	{
 		$this->config[$key] = $value;
-	}
-
-	/**
-	 * @return \swoole_http_response
-	 */
-	public function getResponse()
-	{
-		return $this->response;
 	}
 
 	/**

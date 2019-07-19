@@ -10,14 +10,9 @@ namespace Yoc\server;
 
 use Yoc\core\JSON;
 use Yoc\core\Xml;
-use Yoc\error\Logger;
-use Yoc\event\Event;
-use Yoc\exception\ExitException;
 use Yoc\http\Response;
-use Yoc\route\Router;
 use Yoc\http\HttpParams;
 use Yoc\http\HttpHeaders;
-use Swoole\Coroutine\Http\Client;
 
 class Request extends Base
 {
@@ -34,16 +29,13 @@ class Request extends Base
 	}
 
 	/**
-	 * @param \swoole_http_request $request
-	 * @param \swoole_http_response $response
+	 * @param \Swoole\Http\Request $request
+	 * @param \Swoole\Http\Response $response
 	 * @throws \Exception
 	 */
-	public function onRequest(\swoole_http_request $request, \swoole_http_response $response)
+	public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
 	{
-		Event::on('AFTER_REQUEST', [$this, 'requestLog'], $request);
-
 		try {
-
 			$this->setRequestDi($request);
 			$this->setResponseDi($response);
 
@@ -67,27 +59,6 @@ class Request extends Base
 			$resp->send(JSON::to($code, $message, array_values($trance)));
 		}
 	}
-
-	/**
-	 * @param $request
-	 * @throws \Exception
-	 */
-	public function requestLog($request)
-	{
-		Logger::insert();
-
-		$request = $request->data;
-
-		$client = new Client('47.92.194.207', 9201);
-		$client->setHeaders(['Content-Type' => 'application/json']);
-		$time = array_merge($request->header, $request->server);
-		$time['request_day'] = date('d', $time['request_time']);
-		$time['request_month'] = date('m', $time['request_time']);
-		$time['request_year'] = date('Y', $time['request_time']);
-		$client->post('/request/json', json_encode($time));
-		$client->close();
-	}
-
 
 	/**
 	 * @param $response

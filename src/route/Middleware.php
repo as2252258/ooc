@@ -9,7 +9,6 @@
 namespace Yoc\route;
 
 
-use app\middleware\handlers\MiddlewareTest;
 use Yoc\web\Controller;
 
 class Middleware

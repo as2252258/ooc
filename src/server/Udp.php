@@ -9,48 +9,21 @@
 namespace Yoc\server;
 
 
+use Swoole\Server;
 use Yoc\base\Component;
 
-class Udp extends Base
+class Udp
 {
-	
-	/** @var \swoole_websocket_server */
-	public $server;
-	
-	public function onHandler(...$data)
-	{
-		$this->server->on('packet', [$this, 'onPacket']);
-	}
-	
+
 	/**
-	 * @param \swoole_server $serv
+	 * @param Server $server
 	 * @param $data
 	 * @param $clientInfo
 	 * udp回调
 	 */
-	public function onPacket(\swoole_server $serv, $data, $clientInfo)
+	public function onPacket(Server $server, $data, $clientInfo)
 	{
-		list($fd, $reactor_id) = $this->unpack($clientInfo['address']);
-		
-		try {
-			if (!($json = json_decode($data, TRUE))) {
-				$serv->sendto($clientInfo['address'], $clientInfo['port'], json_encode(
-					['code' => '400', 'message' => 'Con\'t resolve json data.']
-				));
-			} else if (!isset($json['cmd'])) {
-				$serv->sendto($clientInfo['address'], $clientInfo['port'], json_encode(
-					['code' => '404', 'message' => 'Con\'t resolve route.']
-				));
-			} else {
-				$result = \Yoc::command($json['cmd'], $json['content'] ?? NULL);
-				
-				$serv->sendto($clientInfo['address'], $clientInfo['port'], $result);
-			}
-		} catch (\Exception $exception) {
-			$serv->sendto($clientInfo['address'], $clientInfo['port'], json_encode(
-				['code' => $exception->getCode(), 'message' => $exception->getMessage()]
-			));
-		}
+
 	}
 	
 	/**

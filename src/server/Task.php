@@ -8,42 +8,35 @@
 
 namespace Yoc\server;
 
+use Swoole\Server;
 use Yoc\error\Logger;
 use Yoc\event\Event;
+use Yoc\task\InterfaceTask;
 
-class Task extends Base
+class Task
 {
 
 	/**
-	 * @param mixed ...$data
-	 * @throws \Exception
-	 */
-	public function onHandler(...$data)
-	{
-		$this->server->on('task', [$this, 'onTask']);
-		$this->server->on('finish', [$this, 'onFinish']);
-	}
-
-
-	/**
-	 * @param \swoole_server $serv
-	 * @param                $task_id
-	 * @param                $from_id
-	 * @param                $data
+	 * @param Server $server
+	 * @param int $task_id
+	 * @param int $from_id
+	 * @param string $data
 	 *
 	 * @return mixed|void
 	 * @throws \Exception
 	 * 异步任务
 	 */
-	public function onTask(\swoole_server $serv, $task_id, $from_id, $data)
+	public function onTask(Server $server, $task_id, $from_id, $data)
 	{
 		$time = microtime(TRUE);
+		if (empty($data)) {
+			return;
+		}
+		$serialize = unserialize($data);
 		try {
-			if (empty($data)) {
+			if (empty($serialize) || !($serialize instanceof InterfaceTask)) {
 				return;
 			}
-			$serialize = unserialize($data);
-
 			$finish = ['status' => 'success', 'info' => $serialize->handler()];
 		} catch (\Exception $exception) {
 			Logger::error($exception, 'task');
@@ -51,27 +44,31 @@ class Task extends Base
 
 			$finish = ['status' => 'error', 'info' => $message];
 		}
-		$finish = array_merge(['taskId' => $task_id, 'data' => [
-			'class' => get_class($serialize)
-		], 'runTime' => [
+
+		$runTime = [
 			'startTime' => $time,
 			'runTime' => microtime(TRUE) - $time,
 			'endTime' => microtime(TRUE),
-		]], $finish);
-		$serv->finish(json_encode($finish));
+		];
+
+		$class = get_class($serialize);
+
+		$finish = array_merge(['runTime' => $runTime, 'class' => $class], $finish);
+		$server->finish(json_encode($finish));
 	}
 
 	/**
-	 * @param \swoole_server $server
+	 * @param Server $server
 	 * @param $task_id
 	 * @param $data
 	 * @throws \Exception
 	 */
-	public function onFinish(\swoole_server $server, $task_id, $data)
+	public function onFinish(Server $server, $task_id, $data)
 	{
-		\Yoc::$app->redis->rPush('task_' . date('Y_m_d'), $data);
+		$data = json_decode($data, true);
+		$data['work_id'] = $task_id;
 
-
+		redis()->rPush('task_' . date('Y_m_d'), json_encode($data));
 		Event::trigger('AFTER_TASK');
 	}
 }

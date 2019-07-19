@@ -16,7 +16,7 @@ abstract class Task extends Component implements InterfaceTask
 
 	public $param;
 
-	public function __construct(...$data)
+	public function __construct($data)
 	{
 		$this->param = $data;
 		parent::__construct([]);

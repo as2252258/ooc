@@ -9,39 +9,30 @@
 namespace Yoc\server;
 
 
-abstract class WebSocket extends Base
+use Swoole\Http\Response;
+use Swoole\WebSocket\Frame;
+use Swoole\WebSocket\Server;
+
+class WebSocket
 {
-	
 	/**
-	 * @param mixed ...$data
+	 * @param Server $server
+	 * @param Frame $frame
 	 */
-	public function onHandler(...$data)
-	{
-		$this->server->on('handshake', [$this, 'onHandshake']);
-		$this->server->on('message', [$this, 'onMessage']);
-	}
-	
-	/**
-	 * @param \swoole_websocket_server $server
-	 * @param \swoole_websocket_frame $frame
-	 * @throws
-	 * @return mixed|void
-	 */
-	public function onMessage(\swoole_websocket_server $server, \swoole_websocket_frame $frame)
+	public function onMessage(Server $server, Frame $frame)
 	{
 		if ($frame->opcode == 0x08) {
 			echo "Close frame received: \n";
 		}
+		$server->send($frame->fd, 'ok');
 	}
-	
+
 	/**
-	 * @param \swoole_http_request $request
-	 * @param \swoole_http_response $response
-	 *
-	 * @return bool
-	 * @throws \Exception
+	 * @param \Swoole\Http\Request $request
+	 * @param Response $response
+	 * @return bool|string
 	 */
-	public function onHandshake(\swoole_http_request $request, \swoole_http_response $response)
+	public function onHandshake(\Swoole\Http\Request $request, Response $response)
 	{
 		/** @var \swoole_websocket_server $server */
 		$secWebSocketKey = $request->header['sec-websocket-key'];
@@ -65,8 +56,6 @@ abstract class WebSocket extends Base
 		foreach ($headers as $key => $val) {
 			$response->header($key, $val);
 		}
-
-		$this->server->protect($request->fd, TRUE);
 		return TRUE;
 	}
 }

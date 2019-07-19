@@ -9,6 +9,8 @@
 namespace Yoc\server;
 
 
+use Swoole\Server;
+
 class Receive extends Base
 {
 	
@@ -18,7 +20,7 @@ class Receive extends Base
 	}
 	
 	
-	public function onReceive(\swoole_server $server, int $fd, int $reactor_id, string $data)
+	public function onReceive(Server $server, int $fd, int $reactor_id, string $data)
 	{
 	
 	}
