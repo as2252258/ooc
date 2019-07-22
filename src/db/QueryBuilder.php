@@ -460,7 +460,7 @@ class QueryBuilder extends BObject
 		$condition = ['like', 'in', 'or', '>', '<', '<=', '>=', '<>'];
 		foreach ($array as $value) {
 			if (in_array(($value[0] ?? ''), $condition)) {
-				$_tmp[] = $this->builderLike($array);
+				$_tmp[] = $this->builderLike($value);
 				continue;
 			}
 			$_tmp[] = $this->addCondition($value);
