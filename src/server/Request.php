@@ -78,14 +78,16 @@ class Request extends Component
 			$headers = array_merge($headers, $request->header);
 		}
 
-		$req  = \Yoc::$app->request;
+		/** @var \Yoc\http\Request $req */
+		$req = \Yoc::$app->get('request');
 		$req->startTime = microtime(true);
-		$req->params = new HttpParams($data, $request->get, $request->files);
+		$params = new HttpParams($data, $request->get, $request->files);
+		if (!empty($request->post)) {
+			$params->setPosts($request->post);
+		}
+		$req->params = $params;
 		$req->headers = new HttpHeaders($headers);
 
-		if (!empty($request->post)) {
-			$req->params->setPosts($request->post);
-		}
 		return $this;
 	}
 
