@@ -395,17 +395,8 @@ class QueryBuilder extends BObject
 		}
 
 		$_tmp = $this->addArrayCondition($where);
-		$array = [];
-		foreach ($_tmp as $key => $val) {
-			if (is_array($val)) {
-				$array[] = $val[1];
-			} else {
-				$array[] = $val;
-			}
-		}
-
-		if (!empty($array)) {
-			return ' WHERE (' . implode(') AND (', $array) . ')';
+		if (!empty($_tmp)) {
+			return ' WHERE (' . implode(') AND (', $_tmp) . ')';
 		} else {
 			return '';
 		}
@@ -467,11 +458,12 @@ class QueryBuilder extends BObject
 		}
 		$_tmp = [];
 		$condition = ['like', 'in', 'or', '>', '<', '<=', '>=', '<>'];
-
-		if (in_array(($array[0] ?? ''), $condition)) {
-			$_tmp[] = $this->builderLike($array);
-		} else {
-			$_tmp = $this->eachCondition($array, $_tmp);
+		foreach ($array as $value) {
+			if (in_array(($value[0] ?? ''), $condition)) {
+				$_tmp[] = $this->builderLike($array);
+				continue;
+			}
+			$_tmp[] = $this->addCondition($value);
 		}
 
 		$_tmp = array_filter($_tmp);
@@ -481,33 +473,37 @@ class QueryBuilder extends BObject
 
 
 	/**
-	 * @param $array
-	 * @param $_tmp
-	 * @return array
-	 * @throws \Exception
-	 *
-	 * key => [op, value]
-	 * nickname => [like, value]
+	 * @param $condition
+	 * @return string
 	 */
-	private function eachCondition($array, $_tmp)
+	private function addCondition($condition)
 	{
-		foreach ($array as $key => $val) {
-			if ($val === null || $val === '') {
+		if (is_string($condition)) {
+			return $condition;
+		}
+		if (isset($condition[0]) && is_string($condition[0])) {
+			return $condition[0];
+		}
+
+		$_tmp = [];
+		foreach ($condition as $key => $value) {
+			if ($value === null || $value === '') {
 				continue;
 			}
-			if (is_array($val)) {
-				$_o = $this->addArrayCondition($val);
-			} else if (is_string($key)) {
-				$_o = $this->resolve($key, $val);
+			if (is_numeric($key)) {
+				$_tmp[] = $value;
 			} else {
-				$_o = $val;
+				$_tmp[] = $this->resolve($key, $value);
 			}
-			if (!is_array($_o)) {
-				$_o = [$_o];
-			}
-			$_tmp = array_merge($_tmp, $_o);
 		}
-		return $_tmp;
+
+		$_tmp = array_filter($_tmp);
+
+		if (empty($_tmp)) {
+			return '';
+		}
+
+		return '(' . implode(') AND (', $_tmp) . ')';
 	}
 
 	/**
