@@ -35,7 +35,6 @@ class Request extends Component
 
 		try {
 			Request::setRequestDi($request);
-			Request::setResponseDi($response);
 
 			$data = router()->findByRoute();
 		} catch (\Error | \Exception $exception) {
