@@ -176,4 +176,10 @@ class Response extends Component
 		return redirect($url);
 	}
 
+
+	public function setResponse($response)
+	{
+		$this->response = $response;
+	}
+
 }

@@ -57,10 +57,7 @@ class Request extends Component
 	 */
 	public function setResponseDi($response)
 	{
-		app()->set('response', [
-			'class' => Response::class,
-			'response' => $response
-		]);
+		\response()->setResponse($response);
 		return $this;
 	}
 
@@ -81,15 +78,12 @@ class Request extends Component
 			$headers = array_merge($headers, $request->header);
 		}
 
-		app()->set('request', [
-			'class' => 'Yoc\http\Request',
-			'startTime' => microtime(TRUE),
-			'params' => new HttpParams($data, $request->get, $request->files),
-			'headers' => new HttpHeaders($headers),
-		]);
+		$req  = \Yoc::$app->request;
+		$req->startTime = microtime(true);
+		$req->params = new HttpParams($data, $request->get, $request->files);
+		$req->headers = new HttpHeaders($headers);
 
 		if (!empty($request->post)) {
-			$req = \Yoc::$app->get('request');
 			$req->params->setPosts($request->post);
 		}
 		return $this;

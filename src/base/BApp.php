@@ -11,9 +11,11 @@ namespace Yoc\base;
 
 use Yoc\di\Service;
 use Yoc\error\ErrorHandler;
+use Yoc\error\RestfulHandler;
 use Yoc\event\Event;
 use Yoc\exception\InitException;
 use Yoc\http\Request;
+use Yoc\http\Response;
 use Yoc\permission\Permis;
 use Yoc\route\Router;
 
@@ -167,8 +169,9 @@ abstract class BApp extends Service
 	private function moreComponents()
 	{
 		return [
-			'error' => ['class' => 'Yoc\error\RestfulHandler'],
-			'response' => ['class' => 'Yoc\http\Response'],
+			'error' => ['class' => RestfulHandler::class],
+			'response' => ['class' => Response::class],
+			'request' => ['class' => Request::class],
 			'router' => ['class' => Router::class],
 			'permis' => ['class' => Permis::class],
 			'event' => ['class' => Event::class],
