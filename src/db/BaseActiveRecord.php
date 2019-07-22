@@ -234,8 +234,9 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	 */
 	public function beforeSave()
 	{
-		$event = new BeforeSaveEvent($this);
-		$this->trigger('BEFORE_SAVE', $event);
+		$save = new BeforeSaveEvent($this);
+		$event = \Yoc::$app->event;
+		$event->try('BEFORE_SAVE', $save);
 		return $event->isVild;
 	}
 

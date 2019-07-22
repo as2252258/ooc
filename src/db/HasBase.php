@@ -39,8 +39,7 @@ abstract class HasBase
 	 * HasBase constructor.
 	 * @param ActiveRecord $model
 	 * @param $primaryId
-	 * @param string $forgetKey
-	 * @param ActiveRecord $oldModel
+	 * @param $value
 	 * @throws \Exception
 	 */
 	public function __construct($model, $primaryId, $value)
@@ -75,14 +74,6 @@ abstract class HasBase
 	public function getForgetKey()
 	{
 		return $this->forgetKey;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getValue()
-	{
-		return $this->value;
 	}
 
 	abstract public function get();

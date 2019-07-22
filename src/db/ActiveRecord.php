@@ -14,7 +14,7 @@ use Yoc\core\ArrayAccess;
 use Yoc\error\Logger;
 use Yoc\exception\DbException;
 
-defined('SAVE_FAILs') or define('SAVE_FAIL', 3227);
+defined('SAVE_FAIL') or define('SAVE_FAIL', 3227);
 
 /**
  * Class Orm
@@ -111,7 +111,6 @@ class ActiveRecord extends BaseActiveRecord
 	public static function InsertOrUpdate(array $params)
 	{
 		$table = static::getTable();
-
 
 		$builder = static::getDb()->getSchema()->getQueryBuilder();
 

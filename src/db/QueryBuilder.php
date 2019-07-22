@@ -485,6 +485,9 @@ class QueryBuilder extends BObject
 	 * @param $_tmp
 	 * @return array
 	 * @throws \Exception
+	 *
+	 * key => [op, value]
+	 * nickname => [like, value]
 	 */
 	private function eachCondition($array, $_tmp)
 	{

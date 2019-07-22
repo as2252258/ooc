@@ -87,7 +87,7 @@ trait QueryTrait
 	/**
 	 * @param string $tableName
 	 * @param array|string $on
-	 * @param null $param
+	 * @param array $param
 	 * @return $this
 	 * $query->join([$tableName, ['userId'=>'uuvOd']], $param)
 	 * $query->join([$tableName, ['userId'=>'uuvOd'], $param])
@@ -550,7 +550,13 @@ trait QueryTrait
 	 */
 	public function where($columns, $oprea = '=', $value = NULL, $or = 'AND')
 	{
-		$this->where[] = func_get_args();
+		$args = func_get_args();
+		$math = ['in', 'like', '>', '<', '>=', '<=', '<>', 'between'];
+		if (count($args) == 3 && in_array($args[1], $math)) {
+			$this->where[] = [$args[1], $args[0], $args[2]];
+		} else {
+			$this->where[] = func_get_args();
+		}
 		return $this;
 	}
 

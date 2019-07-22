@@ -230,7 +230,6 @@ if (!function_exists('getIsCommand')) {
 }
 
 
-
 if (!function_exists('getIsCli')) {
 
 	/**
@@ -239,6 +238,20 @@ if (!function_exists('getIsCli')) {
 	function getIsCli()
 	{
 		return app()->isCli;
+	}
+
+}
+
+
+if (!function_exists('events')) {
+
+	/**
+	 * @return \Yoc\event\Event
+	 * @throws \Yoc\exception\ComponentException
+	 */
+	function events()
+	{
+		return Yoc::$app->get('event');
 	}
 
 }

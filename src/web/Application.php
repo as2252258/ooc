@@ -16,6 +16,7 @@ use Yoc\core\Qn;
 use Yoc\db\Connection;
 use Yoc\db\DbPool;
 use Yoc\error\RestfulHandler;
+use Yoc\event\Event;
 use Yoc\http\Request;
 use Yoc\http\Response;
 use Yoc\http\UrlManager;
@@ -38,6 +39,7 @@ use Yoc\server\Socket;
  * @property-read DbPool $dbPool
  * @property-read Permis $permis
  * @property-read Config $config
+ * @property-read Event $event
  */
 class Application extends BApp
 {

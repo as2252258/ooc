@@ -298,7 +298,7 @@ class Yoc
 	 * @param int|null $work_id
 	 * @return mixed
 	 */
-	public static function async(Task $task,int $work_id = null)
+	public static function async(Task $task, int $work_id = null)
 	{
 		$server = static::$app->socket;
 
@@ -309,6 +309,19 @@ class Yoc
 		$format = serialize($task);
 
 		return $server->getSocket()->task($format, $work_id);
+	}
+
+
+	/**
+	 * @param $name
+	 * @param $callback
+	 * @param $param
+	 * @throws
+	 */
+	public static function event($name, $callback, $param)
+	{
+		$event = static::$app->event;
+		$event->on($name, $callback, $param);
 	}
 }
 

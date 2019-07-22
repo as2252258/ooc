@@ -11,6 +11,7 @@ namespace Yoc\base;
 
 use Yoc\di\Service;
 use Yoc\error\ErrorHandler;
+use Yoc\event\Event;
 use Yoc\exception\InitException;
 use Yoc\http\Request;
 use Yoc\permission\Permis;
@@ -170,6 +171,7 @@ abstract class BApp extends Service
 			'response' => ['class' => 'Yoc\http\Response'],
 			'router' => ['class' => Router::class],
 			'permis' => ['class' => Permis::class],
+			'event' => ['class' => Event::class],
 		];
 	}
 }

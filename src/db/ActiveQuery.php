@@ -148,11 +148,6 @@ class ActiveQuery extends Component
 		return $collect;
 	}
 
-	public function incrBy($value)
-	{
-
-	}
-
 	/**
 	 * @return array|mixed|null|ActiveRecord
 	 * @throws \Exception
@@ -272,8 +267,6 @@ class ActiveQuery extends Component
 	}
 
 	/**
-	 * @param $action
-	 *
 	 * @return string
 	 * @throws \Exception
 	 */

@@ -31,14 +31,12 @@ class BeforeSaveEvent extends Event
 
 
 	/**
-	 * @return bool
+	 * @return ActiveRecord
 	 * @throws \Exception
 	 */
 	public function handler()
 	{
-		$this->dataAssembly();
-
-		return true;
+		return $this->dataAssembly();
 	}
 
 	/**

@@ -24,6 +24,108 @@ class Event extends BObject
 
 	public static $_events = [];
 
+	private $listens = [];
+
+	/**
+	 * @param $name
+	 * @param $handler
+	 * @param array $params
+	 * @param bool $append
+	 * @return static
+	 */
+	public function listen($name, $handler, $params = [], $append = true)
+	{
+		if (!isset($this->listens[$name])) {
+			$this->listens[$name] = [[$handler, $params]];
+		} else {
+			foreach ($this->listens[$name] as $listen) {
+				if ($handler === $listen) {
+					return $this;
+				}
+			}
+
+			if (!$append) {
+				array_unshift($this->listens[$name], [$handler, $params]);
+			} else {
+				array_push($this->listens[$name], [$handler, $params]);
+			}
+		}
+		return $this;
+	}
+
+
+	/**
+	 * @param $name
+	 * @param null $callback
+	 * @param bool $isRemove
+	 * @return bool
+	 */
+	public function try($name, $callback = null, $isRemove = false)
+	{
+		if (!isset($this->listens[$name])) {
+			return false;
+		}
+
+		$handlers = [];
+		foreach ($this->listens[$name] as $key => $listen) {
+			if (!isset($listen[0]) || !is_callable($listen[0])) {
+				continue;
+			}
+			if ($callback !== null) {
+				if ($callback !== $listen) {
+					continue;
+				}
+
+				$handlers[] = $listen;
+
+				if ($isRemove) {
+					unset($this->listens[$name][$key]);
+				}
+
+			} else {
+				$handlers[] = $listen;
+			}
+		}
+
+		foreach ($handlers as $key => $val) {
+			list($handler, $param) = $val;
+			call_user_func($handler, $param);
+			if (!$handler->isVaild) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public function off($name, $handler = null)
+	{
+		if (!isset($this->listens[$name])) {
+			return $this;
+		}
+
+		if ($handler === null) {
+			$this->listens[$name] = [];
+			return $this;
+		}
+
+		foreach ($this->listens[$name] as $index => $listen) {
+
+			if ($handler === $listen) {
+				unset($this->listens[$name][$index]);
+				break;
+			}
+
+		}
+
+		return $this;
+	}
+
+	public function closeAll()
+	{
+		$this->listens = [];
+	}
+
 	/**
 	 * @param $class
 	 * @param $name
