@@ -11,6 +11,7 @@ namespace Yoc\server;
 use Yoc\base\Component;
 use Yoc\core\JSON;
 use Yoc\core\Xml;
+use Yoc\exception\Exception;
 use Yoc\http\Response;
 use Yoc\http\HttpParams;
 use Yoc\http\HttpHeaders;
@@ -21,33 +22,45 @@ class Request extends Component
 	/**
 	 * @param \Swoole\Http\Request $request
 	 * @param \Swoole\Http\Response $response
+	 * @return mixed|void
 	 * @throws \Exception
 	 */
 	public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
 	{
+		/** @var Response $resp */
+		\response()->setResponse($response);
+		if ($request->server['request_uri'] == '/favicon.ico') {
+			return \response()->sendNotFind();
+		}
+
 		try {
 			Request::setRequestDi($request);
 			Request::setResponseDi($response);
 
-			/** @var Response $resp */
-			if ($request->server['request_uri'] == '/favicon.ico') {
-				$response->status(404);
-				$response->end();
-				return;
-			}
-
-			\response()->send(router()->findByRoute());
+			$data = router()->findByRoute();
 		} catch (\Error | \Exception $exception) {
-			$message = $exception->getMessage();
-			$this->addError($message, 'app');
-
-			$code = $exception->getCode();
-			if ($code == 0) $code = 500;
-
-			$trance = array_slice($exception->getTrace(), 0, 10);
-
-			\response()->send(JSON::to($code, $message, array_values($trance)));
+			$data = $this->logger($exception);
 		}
+
+		return \response()->send($data);
+	}
+
+	/**
+	 * @param \Exception $exception
+	 * @return mixed
+	 * @throws \Exception
+	 */
+	public function logger($exception)
+	{
+		$message = $exception->getMessage();
+		$this->addError($message, 'app');
+
+		$code = $exception->getCode();
+		if ($code == 0) $code = 500;
+
+		$trance = array_slice($exception->getTrace(), 0, 10);
+
+		return JSON::to($code, $message, array_values($trance));
 	}
 
 	/**

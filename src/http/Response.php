@@ -182,4 +182,14 @@ class Response extends Component
 		$this->response = $response;
 	}
 
+
+	/**
+	 * @throws \Exception
+	 */
+	public function sendNotFind()
+	{
+		$this->format = self::HTML;
+		$this->send('', 404);
+	}
+
 }
