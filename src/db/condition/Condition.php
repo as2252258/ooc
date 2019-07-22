@@ -34,9 +34,9 @@ abstract class Condition extends BObject
 	}
 
 	/**
-	 * @param array $value
+	 * @param $value
 	 */
-	public function setValue(array $value): void
+	public function setValue($value): void
 	{
 		$this->value = $value;
 	}

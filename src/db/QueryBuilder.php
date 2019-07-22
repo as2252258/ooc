@@ -467,8 +467,6 @@ class QueryBuilder extends BObject
 			$_tmp[] = $this->addCondition($value);
 		}
 
-		var_dump($_tmp);
-
 		$_tmp = array_filter($_tmp);
 
 		return $_tmp;
