@@ -26,17 +26,15 @@ class Request extends Component
 	public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
 	{
 		try {
-			$this->setRequestDi($request);
-			$this->setResponseDi($response);
+			Request::setRequestDi($request);
+			Request::setResponseDi($response);
 
 			/** @var Response $resp */
-			$resp = \Yoc::$app->get('response');
-
 			if ($request->server['request_uri'] == '/favicon.ico') {
 				throw new \Exception('Page not exists.', 404);
 			}
 
-			$resp->send(router()->findByRoute());
+			\response()->send(router()->findByRoute());
 		} catch (\Error | \Exception $exception) {
 			$message = $exception->getMessage();
 			$this->addError($message, 'app');
@@ -46,27 +44,24 @@ class Request extends Component
 
 			$trance = array_slice($exception->getTrace(), 0, 10);
 
-			$resp->send(JSON::to($code, $message, array_values($trance)));
+			\response()->send(JSON::to($code, $message, array_values($trance)));
 		}
 	}
 
 	/**
 	 * @param $response
-	 * @return static
 	 * @throws \Exception
 	 */
-	public function setResponseDi($response)
+	public static function setResponseDi($response)
 	{
 		\response()->setResponse($response);
-		return $this;
 	}
 
 	/**
 	 * @param \swoole_http_request $request
-	 * @return static
 	 * @throws \Exception
 	 */
-	public function setRequestDi($request)
+	public static function setRequestDi($request)
 	{
 		$data = $request->rawContent();
 		if (!Xml::isXml($data)) {
@@ -87,8 +82,6 @@ class Request extends Component
 		}
 		$req->params = $params;
 		$req->headers = new HttpHeaders($headers);
-
-		return $this;
 	}
 
 }
