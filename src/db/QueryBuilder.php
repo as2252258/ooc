@@ -498,7 +498,7 @@ class QueryBuilder extends BObject
 			}
 		}
 
-		$_tmp = array_filter($_tmp);
+		var_dump($_tmp);
 
 		if (empty($_tmp)) {
 			return '';
