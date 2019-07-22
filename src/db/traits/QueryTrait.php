@@ -556,7 +556,7 @@ trait QueryTrait
 		}
 
 		$math = ['in', 'like', '>', '<', '>=', '<=', '<>', 'between'];
-		if (count($args) == 3 && in_array($args[1], $math)) {
+		if (count($args) == 3 && isset($args[1]) && in_array($args[1], $math)) {
 			$this->where[] = [$args[1], $args[0], $args[2]];
 		} else {
 			$this->where[] = $args;
