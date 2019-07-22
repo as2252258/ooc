@@ -375,7 +375,7 @@ class ActiveRecord extends BaseActiveRecord
 	 */
 	public static function propute(array $data)
 	{
-		$model = new static();
+		$model = \Yoc::createObject(get_called_class());
 		$model->_attributes = $data;
 		$model->_oldAttributes = $data;
 		$model->setIsCreate(false);
