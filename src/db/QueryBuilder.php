@@ -539,7 +539,7 @@ class QueryBuilder extends BObject
 		$class = \Yoc::createObject($option);
 		$_tmp[] = $class->builder();
 
-		return [$array[0], array_shift($_tmp)];
+		return array_shift($_tmp);
 	}
 
 
