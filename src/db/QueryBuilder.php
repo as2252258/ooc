@@ -504,6 +504,8 @@ class QueryBuilder extends BObject
 			return '';
 		}
 
+		var_dump($_tmp);
+
 		return '(' . implode(') AND (', $_tmp) . ')';
 	}
 
