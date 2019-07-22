@@ -395,6 +395,7 @@ class QueryBuilder extends BObject
 		}
 
 		$_tmp = $this->addArrayCondition($where);
+		var_dump($_tmp);
 		if (!empty($_tmp)) {
 			return ' WHERE (' . implode(') AND (', $_tmp) . ')';
 		} else {
@@ -537,9 +538,7 @@ class QueryBuilder extends BObject
 
 		/** @var Condition $class */
 		$class = \Yoc::createObject($option);
-		$_tmp[] = $class->builder();
-
-		return array_shift($_tmp);
+		return $class->builder();
 	}
 
 
