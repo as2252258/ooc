@@ -550,7 +550,7 @@ trait QueryTrait
 	 */
 	public function where($columns, $oprea = '=', $value = NULL, $or = 'AND')
 	{
-		$args = func_get_args();
+		$args = current(func_get_args());
 		$math = ['in', 'like', '>', '<', '>=', '<=', '<>', 'between'];
 		if (count($args) == 3 && in_array($args[1], $math)) {
 			$this->where[] = [$args[1], $args[0], $args[2]];

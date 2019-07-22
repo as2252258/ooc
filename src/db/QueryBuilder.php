@@ -503,9 +503,6 @@ class QueryBuilder extends BObject
 		if (empty($_tmp)) {
 			return '';
 		}
-
-		var_dump($_tmp);
-
 		return '(' . implode(') AND (', $_tmp) . ')';
 	}
 
@@ -516,7 +513,6 @@ class QueryBuilder extends BObject
 	 */
 	private function builderLike($array)
 	{
-		$_tmp = [];
 		list($opera, $column, $value) = $array;
 
 		$option['value'] = $value;
