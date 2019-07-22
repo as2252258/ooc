@@ -31,7 +31,9 @@ class Request extends Component
 
 			/** @var Response $resp */
 			if ($request->server['request_uri'] == '/favicon.ico') {
-				throw new \Exception('Page not exists.', 404);
+				$response->status(404);
+				$response->end();
+				return;
 			}
 
 			\response()->send(router()->findByRoute());
