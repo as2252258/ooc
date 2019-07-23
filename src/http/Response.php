@@ -13,6 +13,7 @@ use Yoc\core\ArrayAccess;
 use Yoc\core\JSON;
 use Yoc\db\ActiveRecord;
 use Yoc\db\Collection;
+use Yoc\error\Logger;
 use Yoc\event\Event;
 use Yoc\http\formatter\HtmlFormatter;
 use Yoc\http\formatter\IFormatter;
@@ -90,6 +91,8 @@ class Response extends Component
 
 		$this->triDefer();
 		Event::trigger('AFTER_REQUEST');
+
+		Logger::insert();
 
 		$this->response = null;
 		$formatter = null;
