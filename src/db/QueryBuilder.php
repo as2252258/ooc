@@ -471,6 +471,8 @@ class QueryBuilder extends BObject
 			$_tmp[] = $this->addCondition($value);
 		}
 
+		var_dump($_tmp, $array);
+
 		$_tmp = array_filter($_tmp);
 
 		return $_tmp;
@@ -501,9 +503,6 @@ class QueryBuilder extends BObject
 				$_tmp[] = $this->resolve($key, $value);
 			}
 		}
-
-		var_dump($_tmp);
-
 		if (empty($_tmp)) {
 			return '';
 		}
