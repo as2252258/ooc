@@ -6,11 +6,11 @@
  * Time: 19:09
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
 use Swoole\Event;
-use Yoc\core\JSON;
+use Beauty\core\JSON;
 
 class Process
 {
@@ -86,7 +86,7 @@ class Process
 	 */
 	public static function reload()
 	{
-		$val = \Yoc::$app->runtimePath . '/socket.sock';
+		$val = \Beauty::$app->runtimePath . '/socket.sock';
 		posix_kill(file_get_contents($val), SIGUSR1);
 
 		//清理所有监听

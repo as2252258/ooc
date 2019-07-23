@@ -6,7 +6,7 @@
  * Time: 15:28
  */
 
-namespace Yoc\validator;
+namespace Beauty\validator;
 
 
 class ArrayValidator extends BaseValidator

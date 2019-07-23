@@ -6,7 +6,7 @@
  * Time: 15:42
  */
 
-namespace Yoc\db\validator;
+namespace Beauty\db\validator;
 
 
 class DateTimeValidator extends BaseValidator

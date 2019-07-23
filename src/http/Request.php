@@ -1,10 +1,10 @@
 <?php
 
-namespace Yoc\http;
+namespace Beauty\http;
 
 use Exception;
-use Yoc\base\Component;
-use Yoc\exception\RequestException;
+use Beauty\base\Component;
+use Beauty\exception\RequestException;
 
 defined('REQUEST_OK') or define('REQUEST_OK', 0);
 defined('REQUEST_FAIL') or define('REQUEST_FAIL', 500);
@@ -12,7 +12,7 @@ defined('REQUEST_FAIL') or define('REQUEST_FAIL', 500);
 /**
  * Class HttpRequest
  *
- * @package Yoc\httpRequest
+ * @package Beauty\httpRequest
  *
  * @property-read $isPost
  * @property-read $isGet
@@ -153,12 +153,12 @@ class Request extends Component
 			if (!empty($string)) {
 				$string = lcfirst(implode($string));
 			}
-			if ($suffix = \Yoc::$app->urlManager->suffix) {
+			if ($suffix = \Beauty::$app->urlManager->suffix) {
 				$string = str_replace($suffix, '', $string);
 			}
 			return ltrim($string, '/') == $route;
 		} else {
-			if ($suffix = \Yoc::$app->urlManager->suffix) {
+			if ($suffix = \Beauty::$app->urlManager->suffix) {
 				$uri = str_replace($suffix, '', $uri);
 			}
 			if (strpos($route, '*') !== false) {

@@ -6,18 +6,18 @@
  * Time: 14:39
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
-use Yoc\base\Component;
-use Yoc\validator\Validator;
-use Yoc\error\Logger;
+use Beauty\base\Component;
+use Beauty\validator\Validator;
+use Beauty\error\Logger;
 use Exception;
 
 /**
  * Class BOrm
  *
- * @package Yoc\base
+ * @package Beauty\base
  *
  * @property bool $isCreate
  * @method rules()
@@ -150,7 +150,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	 */
 	public static function find()
 	{
-		return \Yoc::createObject(ActiveQuery::class, [get_called_class()]);//$model->_query;
+		return \Beauty::createObject(ActiveQuery::class, [get_called_class()]);//$model->_query;
 	}
 
 	/**
@@ -235,7 +235,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	public function beforeSave()
 	{
 		$save = new BeforeSaveEvent($this);
-		$event = \Yoc::$app->event;
+		$event = \Beauty::$app->event;
 		$event->try('BEFORE_SAVE', $save);
 		return $event->isVild;
 	}
@@ -271,7 +271,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 
 	/**
 	 * @param array $data
-	 * @return bool|mixed|\Yoc\db\ActiveRecord
+	 * @return bool|mixed|\Beauty\db\ActiveRecord
 	 * @throws Exception
 	 */
 	public function save($data = NULL)
@@ -688,11 +688,11 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	 */
 	public static function setDatabaseConnect($bsName)
 	{
-		return \Yoc::$app->{$bsName};
+		return \Beauty::$app->{$bsName};
 	}
 
 	/**
-	 * @return \Yoc\db\mysql\Columns
+	 * @return \Beauty\db\mysql\Columns
 	 * @throws Exception
 	 */
 	public function getColumns()

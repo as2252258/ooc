@@ -6,7 +6,7 @@
  * Time: 14:11
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
 
 interface Configure

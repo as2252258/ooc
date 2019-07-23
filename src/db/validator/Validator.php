@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Yoc\db\validator;
+namespace Beauty\db\validator;
 
-use Yoc\db\ActiveRecord;
+use Beauty\db\ActiveRecord;
 
 class Validator extends BaseValidator
 {
@@ -16,73 +16,73 @@ class Validator extends BaseValidator
 
 	protected $classMap = [
 		'not empty' => [
-			'class' => 'Yoc\db\validator\EmptyValidator',
+			'class' => 'Beauty\db\validator\EmptyValidator',
 			'method' => EmptyValidator::CAN_NOT_EMPTY,
 		],
 		'not null' => [
-			'class' => 'Yoc\db\validator\EmptyValidator',
+			'class' => 'Beauty\db\validator\EmptyValidator',
 			'method' => EmptyValidator::CAN_NOT_NULL,
 		],
 		'required' => [
-			'class' => 'Yoc\db\validator\RequiredValidator',
+			'class' => 'Beauty\db\validator\RequiredValidator',
 		],
 		'unique' => [
-			'class' => 'Yoc\db\validator\UniqueValidator',
+			'class' => 'Beauty\db\validator\UniqueValidator',
 		],
 		'datetime' => [
-			'class' => 'Yoc\db\validator\DatetimeValidator',
+			'class' => 'Beauty\db\validator\DatetimeValidator',
 			'method' => DateTimeValidator::DATE_TIME,
 		],
 		'date' => [
-			'class' => 'Yoc\db\validator\DatetimeValidator',
+			'class' => 'Beauty\db\validator\DatetimeValidator',
 			'method' => DateTimeValidator::DATE,
 		],
 		'time' => [
-			'class' => 'Yoc\db\validator\DatetimeValidator',
+			'class' => 'Beauty\db\validator\DatetimeValidator',
 			'method' => DateTimeValidator::TIME,
 		],
 		'timestamp' => [
-			'class' => 'Yoc\db\validator\DatetimeValidator',
+			'class' => 'Beauty\db\validator\DatetimeValidator',
 			'method' => DateTimeValidator::STR_TO_TIME,
 		],
 		'string' => [
-			'class' => 'Yoc\db\validator\TypesOfValidator',
+			'class' => 'Beauty\db\validator\TypesOfValidator',
 			'method' => TypesOfValidator::STRING,
 		],
 		'int' => [
-			'class' => 'Yoc\db\validator\TypesOfValidator',
+			'class' => 'Beauty\db\validator\TypesOfValidator',
 			'method' => TypesOfValidator::INTEGER,
 		],
 		'json' => [
-			'class' => 'Yoc\db\validator\TypesOfValidator',
+			'class' => 'Beauty\db\validator\TypesOfValidator',
 			'method' => TypesOfValidator::JSON,
 		],
 		'float' => [
-			'class' => 'Yoc\db\validator\TypesOfValidator',
+			'class' => 'Beauty\db\validator\TypesOfValidator',
 			'method' => TypesOfValidator::FLOAT,
 		],
 		'array' => [
-			'class' => 'Yoc\db\validator\TypesOfValidator',
+			'class' => 'Beauty\db\validator\TypesOfValidator',
 			'method' => TypesOfValidator::ARRAY,
 		],
 		'serialize' => [
-			'class' => 'Yoc\db\validator\TypesOfValidator',
+			'class' => 'Beauty\db\validator\TypesOfValidator',
 			'method' => TypesOfValidator::SERIALIZE,
 		],
 		'maxLength' => [
-			'class' => 'Yoc\db\validator\LengthValidator',
+			'class' => 'Beauty\db\validator\LengthValidator',
 			'method' => 'max',
 		],
 		'minLength' => [
-			'class' => 'Yoc\db\validator\LengthValidator',
+			'class' => 'Beauty\db\validator\LengthValidator',
 			'method' => 'min',
 		],
 		'email' => [
-			'class' => 'Yoc\db\validator\EmailValidator',
+			'class' => 'Beauty\db\validator\EmailValidator',
 			'method' => 'email',
 		],
 		'length' => [
-			'class' => 'Yoc\db\validator\LengthValidator',
+			'class' => 'Beauty\db\validator\LengthValidator',
 			'method' => 'default',
 		],
 	];
@@ -140,7 +140,7 @@ class Validator extends BaseValidator
 			}
 
 			$constr = array_merge($this->classMap[$type], $define);
-			$class = \Yoc::createObject($constr);
+			$class = \Beauty::createObject($constr);
 			$class->setParams($this->getParams());
 
 			$this->validators[] = $class;

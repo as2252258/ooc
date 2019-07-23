@@ -6,19 +6,19 @@
  * Time: 19:39
  */
 
-namespace Yoc\http;
+namespace Beauty\http;
 
-use Yoc\base\Component;
-use Yoc\core\ArrayAccess;
-use Yoc\core\JSON;
-use Yoc\db\ActiveRecord;
-use Yoc\db\Collection;
-use Yoc\error\Logger;
-use Yoc\event\Event;
-use Yoc\http\formatter\HtmlFormatter;
-use Yoc\http\formatter\IFormatter;
-use Yoc\http\formatter\JsonFormatter;
-use Yoc\http\formatter\XmlFormatter;
+use Beauty\base\Component;
+use Beauty\core\ArrayAccess;
+use Beauty\core\JSON;
+use Beauty\db\ActiveRecord;
+use Beauty\db\Collection;
+use Beauty\error\Logger;
+use Beauty\event\Event;
+use Beauty\http\formatter\HtmlFormatter;
+use Beauty\http\formatter\IFormatter;
+use Beauty\http\formatter\JsonFormatter;
+use Beauty\http\formatter\XmlFormatter;
 
 class Response extends Component
 {
@@ -112,7 +112,7 @@ class Response extends Component
 		} else {
 			$config['class'] = HtmlFormatter::class;
 		}
-		$formatter = \Yoc::createObject($config);
+		$formatter = \Beauty::createObject($config);
 
 		$this->setHeaders()->end($formatter->send($context)->getData());
 	}

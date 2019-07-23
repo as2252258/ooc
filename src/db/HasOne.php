@@ -6,11 +6,11 @@
  * Time: 13:47
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 /**
  * Class HasOne
- * @package Yoc\db
+ * @package Beauty\db
  * @internal Query
  */
 class HasOne extends HasBase

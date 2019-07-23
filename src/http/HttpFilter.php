@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Yoc\http;
+namespace Beauty\http;
 
 
-use Yoc\base\Component;
-use Yoc\validator\Validator;
-use Yoc\exception\AuthException;
-use Yoc\exception\RequestException;
+use Beauty\base\Component;
+use Beauty\validator\Validator;
+use Beauty\exception\AuthException;
+use Beauty\exception\RequestException;
 
 class HttpFilter extends Component
 {

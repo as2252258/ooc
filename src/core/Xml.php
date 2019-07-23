@@ -6,7 +6,7 @@
  * Time: 01:03
  */
 
-namespace Yoc\core;
+namespace Beauty\core;
 
 
 class Xml

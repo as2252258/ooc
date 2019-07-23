@@ -55,8 +55,8 @@ if (!function_exists('get_unique_id')) {
 	 */
 	function get_unique_id($prefix = NULL)
 	{
-		$redis = Yoc::$app->redis;
-		$id = Yoc::$app->id . ':' . ($prefix ?? 'uniqueID');
+		$redis = Beauty::$app->redis;
+		$id = Beauty::$app->id . ':' . ($prefix ?? 'uniqueID');
 		if (!$redis->exists($id)) {
 			$redis->set($id, 1);
 
@@ -83,12 +83,12 @@ if (!function_exists('md5_uniqid')) {
 if (!function_exists('request')) {
 
 	/**
-	 * @return \Yoc\http\Request
+	 * @return \Beauty\http\Request
 	 * @throws
 	 */
 	function request()
 	{
-		return Yoc::$app->get('request');
+		return Beauty::$app->get('request');
 	}
 
 }
@@ -97,7 +97,7 @@ if (!function_exists('request')) {
 if (!function_exists('Input')) {
 
 	/**
-	 * @return \Yoc\http\HttpParams
+	 * @return \Beauty\http\HttpParams
 	 */
 	function Input()
 	{
@@ -110,12 +110,12 @@ if (!function_exists('Input')) {
 if (!function_exists('response')) {
 
 	/**
-	 * @return \Yoc\http\Response
+	 * @return \Beauty\http\Response
 	 * @throws
 	 */
 	function response()
 	{
-		return Yoc::$app->get('response');
+		return Beauty::$app->get('response');
 	}
 
 }
@@ -123,11 +123,11 @@ if (!function_exists('response')) {
 if (!function_exists('app')) {
 
 	/**
-	 * @return \Yoc\web\Application
+	 * @return \Beauty\web\Application
 	 */
 	function app()
 	{
-		return Yoc::$app;
+		return Beauty::$app;
 	}
 
 }
@@ -153,19 +153,19 @@ if (!function_exists('redis')) {
 	 */
 	function redis()
 	{
-		return Yoc::$app->getRedis();
+		return Beauty::$app->getRedis();
 	}
 }
 
 if (!function_exists('router')) {
 
 	/**
-	 * @return \Yoc\route\Router
+	 * @return \Beauty\route\Router
 	 * @throws
 	 */
 	function router()
 	{
-		return Yoc::$app->router;
+		return Beauty::$app->router;
 	}
 }
 
@@ -246,12 +246,12 @@ if (!function_exists('getIsCli')) {
 if (!function_exists('events')) {
 
 	/**
-	 * @return \Yoc\event\Event
-	 * @throws \Yoc\exception\ComponentException
+	 * @return \Beauty\event\Event
+	 * @throws \Beauty\exception\ComponentException
 	 */
 	function events()
 	{
-		return Yoc::$app->get('event');
+		return Beauty::$app->get('event');
 	}
 
 }

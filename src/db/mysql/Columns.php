@@ -6,13 +6,13 @@
  * Time: 17:22
  */
 
-namespace Yoc\db\mysql;
+namespace Beauty\db\mysql;
 
 
-use Yoc\base\Component;
-use Yoc\db\ActiveRecord;
-use Yoc\db\Connection;
-use Yoc\exception\DbException;
+use Beauty\base\Component;
+use Beauty\db\ActiveRecord;
+use Beauty\db\Connection;
+use Beauty\exception\DbException;
 
 class Columns extends Component
 {

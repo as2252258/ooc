@@ -6,7 +6,7 @@
  * Time: 19:28
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
 
 class Controller extends Component

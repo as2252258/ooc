@@ -6,12 +6,12 @@
  * Time: 17:18
  */
 
-namespace Yoc\http\formatter;
+namespace Beauty\http\formatter;
 
 
-use Yoc\base\Component;
-use Yoc\core\ArrayAccess;
-use Yoc\core\JSON;
+use Beauty\base\Component;
+use Beauty\core\ArrayAccess;
+use Beauty\core\JSON;
 
 class JsonFormatter extends Component implements IFormatter
 {

@@ -6,29 +6,29 @@
  * Time: 18:02
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
-use Yoc\base\Component;
-use Yoc\db\DbPool;
-use Yoc\error\Logger;
-use Yoc\route\Router;
+use Beauty\base\Component;
+use Beauty\db\DbPool;
+use Beauty\error\Logger;
+use Beauty\route\Router;
 
 class Worker
 {
 
 	public function onWorkerError(\swoole_server $server, int $worker_id)
 	{
-		$redis = \Yoc::$app->redis;
+		$redis = \Beauty::$app->redis;
 		$redis->hIncrBy('workerStatus', 'onWorkerError', 1);
-		\Yoc::trance('The server error. at No.' . $worker_id);
+		\Beauty::trance('The server error. at No.' . $worker_id);
 	}
 
 	public function onWorkerStop(\swoole_server $server, int $worker_id)
 	{
-		$redis = \Yoc::$app->redis;
+		$redis = \Beauty::$app->redis;
 		$redis->hIncrBy('workerStatus', 'onWorkerStop', 1);
-		\Yoc::trance('The server stop. at No.' . $worker_id);
+		\Beauty::trance('The server stop. at No.' . $worker_id);
 	}
 
 	/**
@@ -37,9 +37,9 @@ class Worker
 	 */
 	public function onWorkerExit(\swoole_server $server, int $worker_id)
 	{
-		$redis = \Yoc::$app->redis;
+		$redis = \Beauty::$app->redis;
 		$redis->hIncrBy('workerStatus', 'onWorkerExit', 1);
-		\Yoc::trance('The server exit. at No.' . $worker_id);
+		\Beauty::trance('The server exit. at No.' . $worker_id);
 	}
 
 	/**
@@ -51,7 +51,7 @@ class Worker
 	 */
 	public function onWorkerStart(\swoole_server $request, $workeer_id)
 	{
-		$socket = \Yoc::$app->socket;
+		$socket = \Beauty::$app->socket;
 
 		/** @var DbPool $dbPool */
 		try {
@@ -61,7 +61,7 @@ class Worker
 				$worker_name = ': worker: No.' . $workeer_id;
 			}
 
-			$worker_name = 'PHP_' . \Yoc::$app->id . $worker_name;
+			$worker_name = 'PHP_' . \Beauty::$app->id . $worker_name;
 			if (function_exists('swoole_set_process_name')) {
 				swoole_set_process_name($worker_name);
 			}

@@ -6,7 +6,7 @@
  * Time: 9:44
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
 abstract class BCollect implements \IteratorAggregate, \ArrayAccess

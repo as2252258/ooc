@@ -6,7 +6,7 @@
  * Time: 01:04
  */
 
-namespace Yoc\core;
+namespace Beauty\core;
 
 
 class JSON

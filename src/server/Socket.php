@@ -6,11 +6,11 @@
  * Time: 14:53
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
-use Yoc;
+use Beauty;
 use Swoole\WebSocket\Server;
-use Yoc\di\Service;
+use Beauty\di\Service;
 
 class Socket extends Service
 {
@@ -92,13 +92,13 @@ class Socket extends Service
 		$this->server = new Server($this->host, $this->port);
 		$this->server->set($this->getDefaultConfig());
 
-		$worker = Yoc::createObject(Worker::class);
+		$worker = Beauty::createObject(Worker::class);
 		$this->server->on('workerStart', [$worker, 'onWorkerStart']);
 		$this->server->on('workerError', [$worker, 'onWorkerError']);
 		$this->server->on('workerStop', [$worker, 'onWorkerStop']);
 		$this->server->on('workerExit', [$worker, 'onWorkerExit']);
 
-		$socket = Yoc::createObject(WebSocket::class);
+		$socket = Beauty::createObject(WebSocket::class);
 		$this->server->on('handshake', [$socket, 'onHandshake']);
 		$this->server->on('message', [$socket, 'onMessage']);
 		$this->server->on('close', [$socket, 'onClose']);
@@ -106,18 +106,18 @@ class Socket extends Service
 		if (!empty($this->http)) {
 			$this->server->addlistener($this->http['host'], $this->http['port'], SWOOLE_TCP);
 
-			$request = Yoc::createObject(Request::class);
+			$request = Beauty::createObject(Request::class);
 			$this->server->on('request', [$request, 'onRequest']);
 		}
 
 		$taskNumber = $this->config['task_worker_num'] ?? 0;
 		if ($taskNumber > 0) {
-			$task = Yoc::createObject(Task::class);
+			$task = Beauty::createObject(Task::class);
 			$this->server->on('task', [$task, 'onTask']);
 		}
 
 		if ($this->usePipeMessage === true) {
-			$pipeMessage = Yoc::createObject(PipeMessage::class);
+			$pipeMessage = Beauty::createObject(PipeMessage::class);
 			$this->server->on('pipeMessage', [$pipeMessage, 'onPipeMessage']);
 		}
 
@@ -169,11 +169,11 @@ class Socket extends Service
 	 */
 	public function onStart(\swoole_server $server)
 	{
-		$time = \Yoc::$app->runtimePath . '/socket.sock';
+		$time = \Beauty::$app->runtimePath . '/socket.sock';
 		file_put_contents($time, $server->master_pid);
 
 		if (function_exists('swoole_set_process_name')) {
-			swoole_set_process_name(\Yoc::$app->id);
+			swoole_set_process_name(\Beauty::$app->id);
 		}
 
 		$this->isRun = true;

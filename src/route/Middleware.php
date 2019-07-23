@@ -6,10 +6,10 @@
  * Time: 02:17
  */
 
-namespace Yoc\route;
+namespace Beauty\route;
 
 
-use Yoc\web\Controller;
+use Beauty\web\Controller;
 
 class Middleware
 {

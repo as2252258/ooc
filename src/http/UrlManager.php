@@ -6,14 +6,14 @@
  * Time: 14:57
  */
 
-namespace Yoc\http;
+namespace Beauty\http;
 
 
-use Yoc\base\BUrlManager;
-use Yoc\exception\RequestException;
-use Yoc\core\Xml;
-use Yoc\core\JSON;
-use Yoc\web\Controller;
+use Beauty\base\BUrlManager;
+use Beauty\exception\RequestException;
+use Beauty\core\Xml;
+use Beauty\core\JSON;
+use Beauty\web\Controller;
 
 class UrlManager extends BUrlManager
 {
@@ -49,7 +49,7 @@ class UrlManager extends BUrlManager
 		}
 
 		/** @var HttpFilter $filter */
-//		$filter = \Yoc::createObject(HttpFilter::class, [$controller, $data]);
+//		$filter = \Beauty::createObject(HttpFilter::class, [$controller, $data]);
 //		if ($filter instanceof HttpFilter) {
 //			$filter->filter();
 //		}
@@ -74,15 +74,15 @@ class UrlManager extends BUrlManager
 			$headers = array_merge($headers, $request->header);
 		}
 
-		\Yoc::$app->set('request', [
-			'class' => 'Yoc\http\Request',
+		\Beauty::$app->set('request', [
+			'class' => 'Beauty\http\Request',
 			'startTime' => microtime(TRUE),
 			'params' => new HttpParams($data, $request->get, $request->files),
 			'headers' => new HttpHeaders($headers),
 		]);
 
 		if (!empty($request->post)) {
-			$request = \Yoc::$app->request;
+			$request = \Beauty::$app->request;
 			$request->params->setPosts($request->isPost);
 		}
 

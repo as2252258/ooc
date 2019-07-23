@@ -6,11 +6,11 @@
  * Time: 0:42
  */
 
-namespace Yoc\permission;
+namespace Beauty\permission;
 
 
 use model\Auth;
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 class Permis extends Component
 {

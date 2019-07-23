@@ -6,11 +6,11 @@
  * Time: 14:57
  */
 
-namespace Yoc\core;
+namespace Beauty\core;
 
 
-use Yoc\db\ActiveRecord;
-use Yoc\db\Collection;
+use Beauty\db\ActiveRecord;
+use Beauty\db\Collection;
 
 class ArrayAccess
 {

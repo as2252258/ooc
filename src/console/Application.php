@@ -6,12 +6,12 @@
  * Time: 2:16
  */
 
-namespace Yoc\console;
+namespace Beauty\console;
 
 
-use Yoc\base\BApp;
-use Yoc\core\Str;
-use Yoc\web\Action;
+use Beauty\base\BApp;
+use Beauty\core\Str;
+use Beauty\web\Action;
 
 class Application extends BApp
 {

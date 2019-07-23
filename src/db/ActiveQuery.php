@@ -6,10 +6,10 @@
  * Time: 14:42
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
-use Yoc\base\Component;
-use Yoc\db\traits\QueryTrait;
+use Beauty\base\Component;
+use Beauty\db\traits\QueryTrait;
 
 class ActiveQuery extends Component
 {

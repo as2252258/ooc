@@ -6,7 +6,7 @@
  * Time: 15:24
  */
 
-namespace Yoc\gii;
+namespace Beauty\gii;
 
 
 abstract class BGii
@@ -146,7 +146,7 @@ abstract class BGii
             $res[] = ucfirst($val);
         }
 
-        $name = ucfirst(rtrim(\Yoc::$app->db->tablePrefix, '_'));
+        $name = ucfirst(rtrim(\Beauty::$app->db->tablePrefix, '_'));
 
         return str_replace($name, '', implode('', $res)) . 'controller';
     }

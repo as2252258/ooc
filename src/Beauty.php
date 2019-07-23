@@ -6,12 +6,12 @@
  * Time: 17:15
  */
 
-use Yoc\db\ActiveRecord;
-use Yoc\db\Collection;
-use Yoc\task\Task;
-use Yoc\web\Application;
-use Yoc\route\Router;
-use Yoc\di\Container;
+use Beauty\db\ActiveRecord;
+use Beauty\db\Collection;
+use Beauty\task\Task;
+use Beauty\web\Application;
+use Beauty\route\Router;
+use Beauty\di\Container;
 
 defined('APP_PATH') or define('APP_PATH', realpath(__DIR__ . '/../../../..'));
 defined('DISPLAY_ERRORS') or define('DISPLAY_ERRORS', true);
@@ -36,7 +36,7 @@ defined('IMG_TYPES') or define('IMG_TYPES', [
 	IMAGETYPE_WEBP => '.webp',
 ]);
 
-class Yoc
+class Beauty
 {
 
 	/** @var Application */
@@ -117,7 +117,7 @@ class Yoc
 		$message = self::param($event, $data);
 
 		/** @var swoole_websocket_server $service */
-		$service = Yoc::$app->socket->getSocket();
+		$service = Beauty::$app->socket->getSocket();
 
 		if (is_array($user_id)) {
 			$fd = $user_id;
@@ -161,13 +161,13 @@ class Yoc
 	 */
 	public static function getFds($userId)
 	{
-		$redis = \Yoc::$app->redis;
+		$redis = \Beauty::$app->redis;
 		$fds = $redis->hGet('user_fds', $userId);
 		if (empty($fds)) {
 			return NULL;
 		}
 		$all = [];
-		$server = \Yoc::$app->socket->getSocket();
+		$server = \Beauty::$app->socket->getSocket();
 		foreach (explode(',', $fds) as $key => $val) {
 			if (!is_numeric($val)) {
 				continue;
@@ -191,9 +191,9 @@ class Yoc
 	 */
 	public static function trance(...$message)
 	{
-		$redis = Yoc::$app->redis;
+		$redis = Beauty::$app->redis;
 		/** @var swoole_websocket_server $socket */
-		$socket = Yoc::$app->get('socket');
+		$socket = Beauty::$app->get('socket');
 		if (empty($socket) || !($socket = $socket->getSocket())) {
 			return;
 		}
@@ -236,12 +236,12 @@ class Yoc
 	}
 
 	/**
-	 * @param \Yoc\task\Task $task
+	 * @param \Beauty\task\Task $task
 	 * @return false|int
 	 */
 	public static function putin(Task $task)
 	{
-		$server = \Yoc::$app->socket;
+		$server = \Beauty::$app->socket;
 
 		$worker = $server->getRandWorker();
 
@@ -251,11 +251,11 @@ class Yoc
 	}
 
 	/**
-	 * @return \Yoc\error\RestfulHandler
+	 * @return \Beauty\error\RestfulHandler
 	 */
 	public static function getLogger()
 	{
-		return Yoc::$app->error;
+		return Beauty::$app->error;
 	}
 
 	/**
@@ -266,10 +266,10 @@ class Yoc
 	 */
 	public static function getOrCreate($name, $default)
 	{
-		if (!Yoc::$app->has($name)) {
+		if (!Beauty::$app->has($name)) {
 			return $default;
 		} else {
-			return Yoc::$app->get($name);
+			return Beauty::$app->get($name);
 		}
 	}
 
@@ -280,7 +280,7 @@ class Yoc
 	 */
 	public static function get($name)
 	{
-		return Yoc::$app->get($name);
+		return Beauty::$app->get($name);
 	}
 
 	/**
@@ -290,7 +290,7 @@ class Yoc
 	 */
 	public static function set($name, $options)
 	{
-		Yoc::$app->set($name, $options);
+		Beauty::$app->set($name, $options);
 	}
 
 	/**
@@ -338,5 +338,5 @@ function process_exists($server_name = 'im server')
 	return (bool)trim(rtrim($ret, "\r\n"));
 }
 
-Yoc::$container = new Container();
-//Yoc::$router = new Router();
+Beauty::$container = new Container();
+//Beauty::$router = new Router();

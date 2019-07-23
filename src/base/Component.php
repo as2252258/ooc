@@ -6,12 +6,12 @@
  * Time: 14:28
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
 
 use app\model\server\Auth;
-use Yoc\error\Logger;
-use Yoc\event\Event;
+use Beauty\error\Logger;
+use Beauty\event\Event;
 
 class Component extends BObject
 {

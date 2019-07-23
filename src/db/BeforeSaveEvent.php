@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
 use Validate\Validate;
-use Yoc\error\Logger;
-use Yoc\event\Event;
+use Beauty\error\Logger;
+use Beauty\event\Event;
 
 class BeforeSaveEvent extends Event
 {

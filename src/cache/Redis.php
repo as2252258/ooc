@@ -6,15 +6,15 @@
  * Time: 11:00
  */
 
-namespace Yoc\cache;
+namespace Beauty\cache;
 
 
-use Yoc\base\Component;
-use Yoc\event\Event;
+use Beauty\base\Component;
+use Beauty\event\Event;
 
 /**
  * Class Redis
- * @package Yoc\cache
+ * @package Beauty\cache
  * @see \Redis
  * @method __destruct()
  * @method _prefix($key)
@@ -280,7 +280,7 @@ class Redis extends Component implements ICache
 		}
 		$redis->select($this->databases);
 		$redis->setOption(\Redis::OPT_READ_TIMEOUT, $this->timeout);
-		$redis->setOption(\Redis::OPT_PREFIX, \Yoc::$app->id . ':');
+		$redis->setOption(\Redis::OPT_PREFIX, \Beauty::$app->id . ':');
 		return $redis;
 	}
 

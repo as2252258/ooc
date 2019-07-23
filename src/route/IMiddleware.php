@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Yoc\route;
+namespace Beauty\route;
 
 
-use Yoc\http\Request;
+use Beauty\http\Request;
 
 interface IMiddleware
 {

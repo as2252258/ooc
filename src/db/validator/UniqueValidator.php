@@ -6,7 +6,7 @@
  * Time: 10:24
  */
 
-namespace Yoc\db\validator;
+namespace Beauty\db\validator;
 
 
 class UniqueValidator extends BaseValidator

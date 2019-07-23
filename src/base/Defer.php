@@ -6,7 +6,7 @@
  * Time: 9:37
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
 
 class Defer
@@ -20,7 +20,7 @@ class Defer
 	 */
     public static function add(callable $callback, array $param)
     {
-        $fd = \Yoc::$app->request->fd;
+        $fd = \Beauty::$app->request->fd;
         if (!is_array($param)) {
             return;
         }
@@ -33,7 +33,7 @@ class Defer
 
     public static function try()
     {
-        $fd = \Yoc::$app->request->fd;
+        $fd = \Beauty::$app->request->fd;
         if (count(static::$_defer[$fd]) <= 0) {
             return;
         }

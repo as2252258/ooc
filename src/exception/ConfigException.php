@@ -6,7 +6,7 @@
  * Time: 12:06
  */
 
-namespace Yoc\exception;
+namespace Beauty\exception;
 
 
 use Throwable;

@@ -6,11 +6,11 @@
  * Time: 15:47
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 /**
  * Class HasBase
- * @package Yoc\db
+ * @package Beauty\db
  *
  * @include Query
  */

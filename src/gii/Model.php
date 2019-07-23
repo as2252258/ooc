@@ -6,7 +6,7 @@
  * Time: 15:28
  */
 
-namespace Yoc\gii;
+namespace Beauty\gii;
 
 
 class Model extends BGii

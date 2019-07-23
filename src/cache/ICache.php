@@ -6,7 +6,7 @@
  * Time: 16:35
  */
 
-namespace Yoc\cache;
+namespace Beauty\cache;
 
 
 interface ICache

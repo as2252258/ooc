@@ -6,10 +6,10 @@
  * Time: 17:43
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
-use Yoc\db\Connection;
-use Yoc\http\Request;
+use Beauty\db\Connection;
+use Beauty\http\Request;
 
 /**
  * Class gii
@@ -39,7 +39,7 @@ class Gii
 	private $db;
 
 	/**
-	 * @param \Yoc\http\Request $request
+	 * @param \Beauty\http\Request $request
 	 *
 	 * @return array
 	 * @throws \Exception
@@ -49,9 +49,9 @@ class Gii
 		$gii = new Gii();
 		if (!empty($db)) $gii->db = $db;
 		if (!$gii->db) {
-			$gii->db = \Yoc::$app->db;
+			$gii->db = \Beauty::$app->db;
 		}
-		$redis = \Yoc::$app->redis;
+		$redis = \Beauty::$app->redis;
 		if (!empty(Input()->get('t'))) {
 			$gii->tableName = Input()->get('t');
 			$redis->del('column:' . $gii->tableName);
@@ -273,13 +273,13 @@ class Gii
 			$html .= "<?php
 namespace {$namespace};
 
-use Yoc;
+use Beauty;
 use Code;
 use exception;
-use Yoc\core\Str;
-use Yoc\core\JSON;
-use Yoc\http\Request;
-use Yoc\http\Response;
+use Beauty\core\Str;
+use Beauty\core\JSON;
+use Beauty\http\Request;
+use Beauty\http\Response;
 use components\Authorize;
 use components\ActiveController;
 use {$model_namespace}\\{$managerName};
@@ -485,7 +485,7 @@ class {$managerName}Controller extends ActiveController
 			$html = '<?php
 namespace ' . $namespace . ';
 
-use Yoc\db\ActiveRecord;';
+use Beauty\db\ActiveRecord;';
 		}
 		$html .= '
 ' . $this->setCreateSql($tableName) . '
@@ -591,7 +591,7 @@ class ' . $managerName . ' extends ActiveRecord
 	{
 		return '
     /**
-	 * @return mixed|\Yoc\db\Connection
+	 * @return mixed|\Beauty\db\Connection
 	 * @throws \Exception
 	 */
     public static function getDb()

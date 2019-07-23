@@ -16,10 +16,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Yoc\\": "src/"
+            "Beauty\\": "src/"
         },
         "files": [
-            "src/Yoc.php",
+            "src/Beauty.php",
             "src/Code.php",
             "src/func.php",
             "src/Db.php"

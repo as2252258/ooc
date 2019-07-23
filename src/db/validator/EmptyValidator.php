@@ -5,7 +5,7 @@
  * Date: 2018/4/3 0003
  * Time: 15:46
  */
-namespace Yoc\db\validator;
+namespace Beauty\db\validator;
 
 
 class EmptyValidator extends BaseValidator

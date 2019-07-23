@@ -6,7 +6,7 @@
  * Time: 10:25
  */
 
-namespace Yoc\error;
+namespace Beauty\error;
 
 
 interface ErrorInterface

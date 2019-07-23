@@ -6,10 +6,10 @@
  * Time: 18:37
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 abstract class Base extends Component implements IServer
 {
@@ -26,7 +26,7 @@ abstract class Base extends Component implements IServer
 		parent::__construct([]);
 		
 		if (!($this->server instanceof \swoole_server)) {
-			$this->server = \Yoc::$app->socket->getSocket();
+			$this->server = \Beauty::$app->socket->getSocket();
 		}
 		
 		$this->onHandler(...$all);

@@ -6,10 +6,10 @@
  * Time: 10:54
  */
 
-namespace Yoc\core;
+namespace Beauty\core;
 
 
-use Yoc\db\ActiveRecord;
+use Beauty\db\ActiveRecord;
 
 class ArrayIterator extends \ArrayIterator
 {

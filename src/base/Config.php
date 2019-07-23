@@ -6,14 +6,14 @@
  * Time: 11:50
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
-use Yoc\exception\ConfigException;
+use Beauty\exception\ConfigException;
 
 
 /**
  * Class Config
- * @package Yoc\base
+ * @package Beauty\base
  */
 class Config extends Component
 {
@@ -31,7 +31,7 @@ class Config extends Component
 	 */
 	public static function get($key, $try = FALSE, $default = null)
 	{
-		$config = \Yoc::$app->config;
+		$config = \Beauty::$app->config;
 		if (isset($config->data[$key])) {
 			return $config->data[$key];
 		} else if ($default !== null) {
@@ -49,7 +49,7 @@ class Config extends Component
 	 */
 	public static function set($key, $value)
 	{
-		$config = \Yoc::$app->config;
+		$config = \Beauty::$app->config;
 		return $config->data[$key] = $value;
 	}
 
@@ -59,7 +59,7 @@ class Config extends Component
 	 */
 	public static function has($key)
 	{
-		$config = \Yoc::$app->config;
+		$config = \Beauty::$app->config;
 		return isset($config->data[$key]);
 	}
 

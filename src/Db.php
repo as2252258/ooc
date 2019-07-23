@@ -6,8 +6,8 @@
  * Time: 15:40
  */
 
-use \Yoc\db\traits\QueryTrait;
-use \Yoc\db\Connection;
+use \Beauty\db\traits\QueryTrait;
+use \Beauty\db\Connection;
 
 class Db
 {
@@ -89,7 +89,7 @@ class Db
 	 */
 	public static function findAllBySql(string $sql,array $attributes = [], Connection $db = NULL)
 	{
-		$db = $db ?? Yoc::$app->db;
+		$db = $db ?? Beauty::$app->db;
 		return $db->createCommand($sql, $attributes)->all();
 	}
 
@@ -103,7 +103,7 @@ class Db
 	public static function findBySql(string $sql,array $attributes = [], Connection $db = NULL)
 	{
 		/** @var Connection $db */
-		list(, $db) = $db ?? Yoc::$app->db;
+		list(, $db) = $db ?? Beauty::$app->db;
 
 		return $db->createCommand($sql, $attributes)->one();
 	}
@@ -147,7 +147,7 @@ class Db
 	 */
 	private function createCommand($dbName = 'db')
 	{
-		return Yoc::$app->$dbName;
+		return Beauty::$app->$dbName;
 	}
 
 	/**
@@ -158,7 +158,7 @@ class Db
 	public function delete($db = null)
 	{
 		/** @var Connection $db */
-		list(, $db) = $db ?? Yoc::$app->dbPool->getDbConnect('server');
+		list(, $db) = $db ?? Beauty::$app->dbPool->getDbConnect('server');
 
 		$query = $db->getBuild()->builder($this);
 
@@ -174,7 +174,7 @@ class Db
 	public static function drop($table, $db = null)
 	{
 		/** @var Connection $db */
-		list(, $db) = $db ?? Yoc::$app->dbPool->getDbConnect('server');
+		list(, $db) = $db ?? Beauty::$app->dbPool->getDbConnect('server');
 
 		return $db->createCommand('DROP TABLE ' . $table)->delete();
 	}
@@ -188,7 +188,7 @@ class Db
 	public static function truncate($table, $db = null)
 	{
 		/** @var Connection $db */
-		list(, $db) = $db ?? Yoc::$app->dbPool->getDbConnect('server');
+		list(, $db) = $db ?? Beauty::$app->dbPool->getDbConnect('server');
 
 		return $db->createCommand('TRUNCATE ' . $table)->exec();
 	}
@@ -203,7 +203,7 @@ class Db
 	{
 		if (!$db) {
 			/** @var Connection $db */
-			list(, $db) = $db ?? Yoc::$app->dbPool->getDbConnect('server');
+			list(, $db) = $db ?? Beauty::$app->dbPool->getDbConnect('server');
 		}
 
 		if (empty($table)) {
@@ -223,7 +223,7 @@ class Db
 	{
 		if (!$db) {
 			/** @var Connection $db */
-			list(, $db) = $db ?? Yoc::$app->dbPool->getDbConnect('server');
+			list(, $db) = $db ?? Beauty::$app->dbPool->getDbConnect('server');
 		}
 
 		if (empty($table)) {

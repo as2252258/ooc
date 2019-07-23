@@ -6,10 +6,10 @@
  * Time: 11:34
  */
 
-namespace Yoc\http;
+namespace Beauty\http;
 
 
-use Yoc\base\Component;
+use Beauty\base\Component;
 use \Swoole\Coroutine\Http\Client as SClient;
 
 class Client extends Component
@@ -29,7 +29,7 @@ class Client extends Component
 	{
 		/** @var Client $_class */
 		static $_class = NULL;
-		if ($_class == NULL) $_class = \Yoc::createObject(Client::class);
+		if ($_class == NULL) $_class = \Beauty::createObject(Client::class);
 		return $_class->request($url, $pushType, $data, $header);
 	}
 

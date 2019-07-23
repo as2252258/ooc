@@ -6,7 +6,7 @@
  * Time: 18:02
  */
 
-namespace Yoc\exception;
+namespace Beauty\exception;
 
 
 class Exception extends \Exception

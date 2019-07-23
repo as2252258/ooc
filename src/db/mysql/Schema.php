@@ -1,11 +1,11 @@
 <?php
 
-namespace Yoc\db\mysql;
+namespace Beauty\db\mysql;
 
 
-use Yoc\base\Component;
-use Yoc\db\Connection;
-use Yoc\db\QueryBuilder;
+use Beauty\base\Component;
+use Beauty\db\Connection;
+use Beauty\db\QueryBuilder;
 
 class Schema extends Component
 {

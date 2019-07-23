@@ -6,7 +6,7 @@
  * Time: 13:50
  */
 
-namespace Yoc\core;
+namespace Beauty\core;
 
 
 class DateFormat

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Yoc\db\condition;
+namespace Beauty\db\condition;
 
 
 class LikeCondition extends Condition

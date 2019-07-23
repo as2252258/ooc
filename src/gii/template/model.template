@@ -1,7 +1,7 @@
 <?php
 namespace app\Model;
 
-use Yoc\db\Orm;
+use Beauty\db\Orm;
 
 {$comment}
 class {$model} extends Orm

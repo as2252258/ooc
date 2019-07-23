@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
-use Yoc\event\Event;
+use Beauty\event\Event;
 
 class ModelEvent extends Event
 {

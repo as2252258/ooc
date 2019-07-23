@@ -6,10 +6,10 @@
  * Time: 18:32
  */
 
-namespace Yoc\event;
+namespace Beauty\event;
 
 
-use Yoc\base\BObject;
+use Beauty\base\BObject;
 
 class Event extends BObject
 {
@@ -68,9 +68,11 @@ class Event extends BObject
 
 		$handlers = [];
 		foreach ($this->listens[$name] as $key => $listen) {
+
 			if (!isset($listen[0]) || !is_callable($listen[0])) {
 				continue;
 			}
+
 			if ($callback !== null) {
 				if ($callback !== $listen) {
 					continue;
@@ -82,17 +84,13 @@ class Event extends BObject
 					unset($this->listens[$name][$key]);
 				}
 
-			} else {
-				$handlers[] = $listen;
+				continue;
 			}
+			$handlers[] = $listen;
 		}
 
 		foreach ($handlers as $key => $val) {
-			list($handler, $param) = $val;
-			call_user_func($handler, $param);
-			if (!$handler->isVaild) {
-				return false;
-			}
+			call_user_func(...$val);
 		}
 
 		return true;

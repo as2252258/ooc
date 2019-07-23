@@ -6,12 +6,12 @@
  * Time: 18:29
  */
 
-namespace Yoc\di;
+namespace Beauty\di;
 
 
-use Yoc\base\Component;
-use Yoc\exception\ComponentException;
-use Yoc\exception\NotFindClassException;
+use Beauty\base\Component;
+use Beauty\exception\ComponentException;
+use Beauty\exception\NotFindClassException;
 
 class Service extends Component
 {
@@ -34,7 +34,7 @@ class Service extends Component
 		}
 		if (isset($this->_definition[$id])) {
 			$config = $this->_definition[$id];
-			$object = \Yoc::createObject($config);
+			$object = \Beauty::createObject($config);
 			return $this->_components[$id] = $object;
 		} else {
 			throw new ComponentException("Unknown component ID: $id");

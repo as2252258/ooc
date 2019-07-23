@@ -6,7 +6,7 @@
  * Time: 19:18
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
 use Swoole\Server;

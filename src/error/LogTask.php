@@ -6,16 +6,16 @@
  * Time: 16:09
  */
 
-namespace Yoc\error;
+namespace Beauty\error;
 
 
 use Swoole\Coroutine\Client;
-use Yoc\core\JSON;
-use Yoc\task\Task;
+use Beauty\core\JSON;
+use Beauty\task\Task;
 
 /**
  * Class LogTask
- * @package Yoc\error
+ * @package Beauty\error
  * 日志记录
  */
 class LogTask extends Task
@@ -28,7 +28,7 @@ class LogTask extends Task
 	 */
 	public function handler()
 	{
-		$path = \Yoc::$app->runtimePath . '/log';
+		$path = \Beauty::$app->runtimePath . '/log';
 		if (!is_dir($path)) mkdir($path, 777);
 
 		$_tmp = [];

@@ -6,7 +6,7 @@
  * Time: 15:47
  */
 
-namespace Yoc\validator;
+namespace Beauty\validator;
 
 
 class RequiredValidator extends BaseValidator

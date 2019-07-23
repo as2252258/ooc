@@ -6,20 +6,20 @@
  * Time: 14:09
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
-use Yoc\base\Component;
-use Yoc\db\mysql\Schema;
-use Yoc\db\pool\DbManager;
-use Yoc\db\pool\Master;
-use Yoc\db\pool\Slave;
-use Yoc\error\Logger;
-use Yoc\event\Event;
+use Beauty\base\Component;
+use Beauty\db\mysql\Schema;
+use Beauty\db\pool\DbManager;
+use Beauty\db\pool\Master;
+use Beauty\db\pool\Slave;
+use Beauty\error\Logger;
+use Beauty\event\Event;
 
 /**
  * Class Connection
- * @package Yoc\db
+ * @package Beauty\db
  *
  * 连接管理器
  *   创建连接
@@ -90,7 +90,7 @@ class Connection extends Component
 	public function getSchema()
 	{
 		if ($this->_schema === null) {
-			$this->_schema = \Yoc::createObject([
+			$this->_schema = \Beauty::createObject([
 				'class' => Schema::class,
 				'db' => $this
 			]);
@@ -132,7 +132,7 @@ class Connection extends Component
 		}
 
 		/** @var Master $class */
-		$this->masterInstance = \Yoc::createObject([
+		$this->masterInstance = \Beauty::createObject([
 			'class' => Master::class,
 			'host' => $this->cds,
 			'username' => $this->username,
@@ -158,7 +158,7 @@ class Connection extends Component
 		$slaveConfig = array_shift($this->slaveConfig);
 
 		/** @var Master $class */
-		$this->slaveInstance = \Yoc::createObject([
+		$this->slaveInstance = \Beauty::createObject([
 			'class' => Slave::class,
 			'host' => $slaveConfig['cds'],
 			'username' => $slaveConfig['username'],

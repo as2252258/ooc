@@ -6,7 +6,7 @@
  * Time: 14:54
  */
 
-namespace Yoc\http;
+namespace Beauty\http;
 
 
 class HttpHeaders

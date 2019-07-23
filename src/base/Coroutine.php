@@ -6,7 +6,7 @@
  * Time: 15:54
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
 
 use Swoole\Channel;

@@ -6,12 +6,12 @@
  * Time: 9:27
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
 
-use Yoc\di\Service;
-use Yoc\exception\RequestException;
-use Yoc\http\Request;
+use Beauty\di\Service;
+use Beauty\exception\RequestException;
+use Beauty\http\Request;
 
 abstract class BUrlManager extends Service
 {
@@ -21,7 +21,7 @@ abstract class BUrlManager extends Service
     public $showScriptName = FALSE;
     public $suffix = '';
 
-    /** @var \Yoc\web\Controller $controller */
+    /** @var \Beauty\web\Controller $controller */
     public $controller;
 
     /**
@@ -54,7 +54,7 @@ abstract class BUrlManager extends Service
 
         $control = $control->newInstance();
 
-        /** @var \Yoc\web\Controller $control */
+        /** @var \Beauty\web\Controller $control */
         $control->id = $control;
 
         $control->action = $control->createAction($action);
@@ -71,7 +71,7 @@ abstract class BUrlManager extends Service
     public function resolveUrl()
     {
         /** @var Request $request */
-        $request = \Yoc::$app->request;
+        $request = \Beauty::$app->request;
         $uri = $this->before($request->headers->getHeader('request_uri'));
         $path = explode('/', ltrim($uri, '/'));
         if (count($path) < 2) {

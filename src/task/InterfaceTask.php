@@ -6,7 +6,7 @@
  * Time: 16:01
  */
 
-namespace Yoc\task;
+namespace Beauty\task;
 
 
 interface InterfaceTask

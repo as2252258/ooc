@@ -6,7 +6,7 @@
  * Time: 10:02
  */
 
-namespace Yoc\error;
+namespace Beauty\error;
 
 
 class RestfulHandler extends ErrorHandler

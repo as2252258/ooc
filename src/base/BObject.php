@@ -6,10 +6,10 @@
  * Time: 14:10
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
 
-use Yoc\error\Logger;
+use Beauty\error\Logger;
 
 class BObject implements Configure
 {
@@ -22,7 +22,7 @@ class BObject implements Configure
 	public function __construct(array $config = [])
 	{
 		if (!empty($config) && is_array($config)) {
-			\Yoc::configure($this, $config);
+			\Beauty::configure($this, $config);
 		}
 		$this->init();
 	}
@@ -112,7 +112,7 @@ class BObject implements Configure
 	 */
 	public function task($callback, $param = [])
 	{
-		$server = \Yoc::$app->socket;
+		$server = \Beauty::$app->socket;
 		if (!is_array($param)) {
 			$param = [$param];
 		}

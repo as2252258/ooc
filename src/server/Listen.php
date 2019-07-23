@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 class Listen extends Component
 {
@@ -20,7 +20,7 @@ class Listen extends Component
 	 */
 	public function listen()
 	{
-		$this->server = \Yoc::$app->socket;
+		$this->server = \Beauty::$app->socket;
 		if ($this->server->isRun || empty($this->listens)) {
 			return;
 		}
@@ -73,7 +73,7 @@ class Listen extends Component
 				throw new \Exception('类需注册handler执行函数');
 			}
 
-			$calss = \Yoc::createObject($callback);
+			$calss = \Beauty::createObject($callback);
 
 			return $calss->handler($data);
 		}

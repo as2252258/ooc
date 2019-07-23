@@ -10,9 +10,9 @@ namespace data;
 
 
 use model\Email;
-use Yoc\core\Str;
-use Yoc\http\Request;
-use Yoc\http\Response;
+use Beauty\core\Str;
+use Beauty\http\Request;
+use Beauty\http\Response;
 use Exception;
 
 class EmailService
@@ -47,7 +47,7 @@ class EmailService
 
     /**
      * @param Email $model
-     * @return bool|mixed|\Yoc\db\Orm
+     * @return bool|mixed|\Beauty\db\Orm
      * @throws \Exception
      */
     public static function dataUpdate($model, $params = [])

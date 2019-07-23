@@ -6,7 +6,7 @@
  * Time: 18:24
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
 interface IServer

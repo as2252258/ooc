@@ -6,11 +6,11 @@
  * Time: 13:38
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 /**
  * Class Collection
- * @package Yoc\db
+ * @package Beauty\db
  * @property-read $length
  */
 class Collection extends BCollect

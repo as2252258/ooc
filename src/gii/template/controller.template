@@ -4,8 +4,8 @@ namespace controller;
 
 use {$service};
 use Exception;
-use Yoc\core\Str;
-use Yoc\http\Request;
+use Beauty\core\Str;
+use Beauty\http\Request;
 use components\ActiveController;
 
 

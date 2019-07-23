@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Yoc\db\pool;
+namespace Beauty\db\pool;
 
 
 class DbConnection extends ConnectPool

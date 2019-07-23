@@ -6,10 +6,10 @@
  * Time: 14:42
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
-use Yoc\base\Component;
-use Yoc\db\traits\QueryTrait;
+use Beauty\base\Component;
+use Beauty\db\traits\QueryTrait;
 
 abstract class BaseModel extends Component
 {
@@ -125,7 +125,7 @@ abstract class BaseModel extends Component
 		if ($this->modelClass instanceof ActiveRecord) {
 			return $this->modelClass;
 		} else {
-			$this->modelClass = \Yoc::createObject($this->modelClass);
+			$this->modelClass = \Beauty::createObject($this->modelClass);
 			return clone $this->modelClass;
 		}
 	}

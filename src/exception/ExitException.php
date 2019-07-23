@@ -6,7 +6,7 @@
  * Time: 10:40
  */
 
-namespace Yoc\exception;
+namespace Beauty\exception;
 
 
 class ExitException extends \Exception

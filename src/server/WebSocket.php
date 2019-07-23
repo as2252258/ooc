@@ -6,7 +6,7 @@
  * Time: 18:15
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
 use Swoole\Http\Response;

@@ -6,10 +6,10 @@
  * Time: 17:49
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
-use Yoc\db\traits\QueryTrait;
+use Beauty\db\traits\QueryTrait;
 
 class Sql
 {

@@ -6,7 +6,7 @@
  * Time: 17:29
  */
 
-namespace Yoc\http\formatter;
+namespace Beauty\http\formatter;
 
 
 interface IFormatter

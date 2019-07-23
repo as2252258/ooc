@@ -6,7 +6,7 @@
  * Time: 14:39
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
 interface IOrm

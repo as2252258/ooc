@@ -6,14 +6,14 @@
  * Time: 19:28
  */
 
-namespace Yoc\web;
+namespace Beauty\web;
 
 
-use Yoc\base\Component;
-use Yoc\base\Config;
-use Yoc\db\DbPool;
-use Yoc\pool\ObPool;
-use Yoc\server\Request;
+use Beauty\base\Component;
+use Beauty\base\Config;
+use Beauty\db\DbPool;
+use Beauty\pool\ObPool;
+use Beauty\server\Request;
 
 class Controller extends Component
 {
@@ -55,7 +55,7 @@ class Controller extends Component
 
 	/**
 	 * @return mixed
-	 * @throws \Yoc\exception\RequestException
+	 * @throws \Beauty\exception\RequestException
 	 */
 	public function runWithParam($param = null)
 	{
@@ -69,7 +69,7 @@ class Controller extends Component
 	 */
 	public function notFind($message = '')
 	{
-		$response = \Yoc::$app->response;
+		$response = \Beauty::$app->response;
 		$response->statusCode = 404;
 		return $response->sender($message);
 	}

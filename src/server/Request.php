@@ -6,15 +6,15 @@
  * Time: 18:18
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
-use Yoc\base\Component;
-use Yoc\core\JSON;
-use Yoc\core\Xml;
-use Yoc\exception\Exception;
-use Yoc\http\Response;
-use Yoc\http\HttpParams;
-use Yoc\http\HttpHeaders;
+use Beauty\base\Component;
+use Beauty\core\JSON;
+use Beauty\core\Xml;
+use Beauty\exception\Exception;
+use Beauty\http\Response;
+use Beauty\http\HttpParams;
+use Beauty\http\HttpHeaders;
 
 class Request extends Component
 {
@@ -86,8 +86,8 @@ class Request extends Component
 			$headers = array_merge($headers, $request->header);
 		}
 
-		/** @var \Yoc\http\Request $req */
-		$req = \Yoc::$app->get('request');
+		/** @var \Beauty\http\Request $req */
+		$req = \Beauty::$app->get('request');
 		$req->startTime = microtime(true);
 		$params = new HttpParams($data, $request->get, $request->files);
 		if (!empty($request->post)) {

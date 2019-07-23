@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Yoc\route;
+namespace Beauty\route;
 
 
-use Yoc\base\Component;
-use Yoc\exception\AuthException;
-use Yoc\exception\RequestException;
-use Yoc\validator\Validator;
+use Beauty\base\Component;
+use Beauty\exception\AuthException;
+use Beauty\exception\RequestException;
+use Beauty\validator\Validator;
 
 class Filter extends Component
 {

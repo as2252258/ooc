@@ -1,16 +1,16 @@
 <?php
 
 
-namespace Yoc\route;
+namespace Beauty\route;
 
 
 use Exception;
-use Yoc\error\Logger;
-use Yoc\exception\NotFindClassException;
+use Beauty\error\Logger;
+use Beauty\exception\NotFindClassException;
 
 /**
  * Class Node
- * @package Yoc\route
+ * @package Beauty\route
  */
 class Node
 {
@@ -141,7 +141,7 @@ class Node
 			throw new NotFindClassException();
 		}
 		$mid = new Middleware();
-		$mid->bindParams(\Yoc::$app->request);
+		$mid->bindParams(\Beauty::$app->request);
 
 		if (!empty($this->rules)) {
 			foreach ($this->rules as $rule) {
@@ -149,7 +149,7 @@ class Node
 					$rule['class'] = Filter::class;
 				}
 
-				$object = \Yoc::createObject($rule);
+				$object = \Beauty::createObject($rule);
 				$object->handler();
 			}
 		}

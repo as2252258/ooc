@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Yoc\db\condition;
+namespace Beauty\db\condition;
 
 
-use Yoc\base\BObject;
+use Beauty\base\BObject;
 
 abstract class Condition extends BObject
 {

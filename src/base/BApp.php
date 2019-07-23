@@ -6,22 +6,22 @@
  * Time: 2:13
  */
 
-namespace Yoc\base;
+namespace Beauty\base;
 
 
-use Yoc\di\Service;
-use Yoc\error\ErrorHandler;
-use Yoc\error\RestfulHandler;
-use Yoc\event\Event;
-use Yoc\exception\InitException;
-use Yoc\http\Request;
-use Yoc\http\Response;
-use Yoc\permission\Permis;
-use Yoc\route\Router;
+use Beauty\di\Service;
+use Beauty\error\ErrorHandler;
+use Beauty\error\RestfulHandler;
+use Beauty\event\Event;
+use Beauty\exception\InitException;
+use Beauty\http\Request;
+use Beauty\http\Response;
+use Beauty\permission\Permis;
+use Beauty\route\Router;
 
 /**
  * Class BApp
- * @package Yoc\base
+ * @package Beauty\base
  */
 abstract class BApp extends Service
 {
@@ -45,7 +45,7 @@ abstract class BApp extends Service
 	 */
 	public function __construct(array $config = [])
 	{
-		\Yoc::$app = $this;
+		\Beauty::$app = $this;
 
 		$this->parseInt($config);
 
@@ -156,7 +156,7 @@ abstract class BApp extends Service
 
 	/**
 	 * @return Router
-	 * @throws \Yoc\exception\ComponentException
+	 * @throws \Beauty\exception\ComponentException
 	 */
 	public function getRouter()
 	{

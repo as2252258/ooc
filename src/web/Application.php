@@ -6,27 +6,27 @@
  * Time: 18:38
  */
 
-namespace Yoc\web;
+namespace Beauty\web;
 
 
-use Yoc\base\BApp;
-use Yoc\base\Config;
-use Yoc\cache\Redis;
-use Yoc\core\Qn;
-use Yoc\db\Connection;
-use Yoc\db\DbPool;
-use Yoc\error\RestfulHandler;
-use Yoc\event\Event;
-use Yoc\http\Request;
-use Yoc\http\Response;
-use Yoc\http\UrlManager;
-use Yoc\permission\Permis;
-use Yoc\server\Socket;
+use Beauty\base\BApp;
+use Beauty\base\Config;
+use Beauty\cache\Redis;
+use Beauty\core\Qn;
+use Beauty\db\Connection;
+use Beauty\db\DbPool;
+use Beauty\error\RestfulHandler;
+use Beauty\event\Event;
+use Beauty\http\Request;
+use Beauty\http\Response;
+use Beauty\http\UrlManager;
+use Beauty\permission\Permis;
+use Beauty\server\Socket;
 
 /**
  * Class Init
  *
- * @package Yoc\web
+ * @package Beauty\web
  *
  * @property-read Redis $redis
  * @property-read Socket $socket

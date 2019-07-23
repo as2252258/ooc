@@ -6,11 +6,11 @@
  * Time: 17:29
  */
 
-namespace Yoc\http\formatter;
+namespace Beauty\http\formatter;
 
 
-use Yoc\base\Component;
-use Yoc\core\ArrayAccess;
+use Beauty\base\Component;
+use Beauty\core\ArrayAccess;
 
 class XmlFormatter extends Component implements IFormatter
 {

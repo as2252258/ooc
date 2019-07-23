@@ -6,10 +6,10 @@
  * Time: 14:56
  */
 
-namespace Yoc\db\traits;
+namespace Beauty\db\traits;
 
-use Yoc\db\ActiveQuery;
-use Yoc\db\ActiveRecord;
+use Beauty\db\ActiveQuery;
+use Beauty\db\ActiveRecord;
 
 trait QueryTrait
 {

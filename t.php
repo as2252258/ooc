@@ -4,7 +4,7 @@
 require_once 'vendor/autoload.php';
 
 
-class Ac extends \Yoc\db\ActiveRecord{
+class Ac extends \Beauty\db\ActiveRecord{
 
 
 	public static function tableName()

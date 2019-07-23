@@ -6,11 +6,11 @@
  * Time: 13:58
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 /**
  * Class HasMany
- * @package Yoc\db
+ * @package Beauty\db
  *
  * @method with($name)
  */

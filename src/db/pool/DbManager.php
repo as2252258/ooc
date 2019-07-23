@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Yoc\db\pool;
+namespace Beauty\db\pool;
 
 
-use Yoc\db\Connection;
+use Beauty\db\Connection;
 
 class DbManager
 {

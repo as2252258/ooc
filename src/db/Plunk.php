@@ -6,10 +6,10 @@
  * Time: 16:03
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 class Plunk extends Component
 {

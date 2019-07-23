@@ -1,9 +1,9 @@
 <?php
 
-namespace Yoc\core;
+namespace Beauty\core;
 
 
-use Yoc\base\BObject;
+use Beauty\base\BObject;
 
 class Str extends BObject
 {

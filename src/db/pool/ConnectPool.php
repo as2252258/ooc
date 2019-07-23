@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Yoc\db\pool;
+namespace Beauty\db\pool;
 
 
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 abstract class ConnectPool extends Component
 {

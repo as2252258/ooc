@@ -6,7 +6,7 @@
  * Time: 17:32
  */
 
-namespace Yoc\validator;
+namespace Beauty\validator;
 
 
 class EmailValidator extends BaseValidator

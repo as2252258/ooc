@@ -6,7 +6,7 @@
  * Time: 15:03
  */
 
-namespace Yoc\http;
+namespace Beauty\http;
 
 
 class Kafka

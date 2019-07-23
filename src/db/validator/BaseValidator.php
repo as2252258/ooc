@@ -1,9 +1,9 @@
 <?php
 
-namespace Yoc\db\validator;
+namespace Beauty\db\validator;
 
 
-use Yoc\db\ActiveRecord;
+use Beauty\db\ActiveRecord;
 
 abstract class BaseValidator
 {

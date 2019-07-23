@@ -6,7 +6,7 @@
  * Time: 17:04
  */
 
-namespace Yoc\db\validator;
+namespace Beauty\db\validator;
 
 
 class LengthValidator extends BaseValidator

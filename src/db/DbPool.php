@@ -6,11 +6,11 @@
  * Time: 11:41
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
-use Yoc\base\BObject;
-use Yoc\error\Logger;
+use Beauty\base\BObject;
+use Beauty\error\Logger;
 
 class DbPool extends BObject
 {
@@ -64,7 +64,7 @@ class DbPool extends BObject
 				}
 			}
 			if (!isset($object) || !($object instanceof Connection)) {
-				$object = \Yoc::createObject($this->dbs[$dbName]);
+				$object = \Beauty::createObject($this->dbs[$dbName]);
 
 				Logger::debug('创建数据库链接[' . $dbName . ']', 'mysql');
 			}
@@ -87,7 +87,7 @@ class DbPool extends BObject
 			throw new \Exception('Unknown database[' . $dbName . '] configuration.');
 		}
 
-		$object = \Yoc::createObject($this->dbs[$dbName]);
+		$object = \Beauty::createObject($this->dbs[$dbName]);
 		$object->setSerial($this->sort++);
 
 		$connect = [$dbName, $object];
@@ -170,7 +170,7 @@ class DbPool extends BObject
 
 		foreach ($this->dbs as $key => $connectConfig) {
 			/** @var Connection $object */
-			$object = \Yoc::createObject($connectConfig);
+			$object = \Beauty::createObject($connectConfig);
 			$object->getSlaveConnect();
 			$object->getMasterConnect();
 

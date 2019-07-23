@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Yoc\tcp;
+namespace Beauty\tcp;
 
 
 use Swoole\Server;
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 abstract class Socket extends Component
 {

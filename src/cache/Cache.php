@@ -6,7 +6,7 @@
  * Time: 15:00
  */
 
-namespace Yoc\cache;
+namespace Beauty\cache;
 
 /**
  * Class cache

@@ -6,15 +6,15 @@
  * Time: 10:00
  */
 
-namespace Yoc\error;
+namespace Beauty\error;
 
-use Yoc\base\Component;
-use Yoc\http\formatter\IFormatter;
+use Beauty\base\Component;
+use Beauty\http\formatter\IFormatter;
 
 /**
  * Class ErrorHandler
  *
- * @package Yoc\base
+ * @package Beauty\base
  * @property-read $asError
  */
 abstract class ErrorHandler extends Component implements ErrorInterface
@@ -90,7 +90,7 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 				'line' => $line
 			]
 		]);
-		if (\Yoc::$app->has('response')) {
+		if (\Beauty::$app->has('response')) {
 			response()->send($send);
 		}
 		return $send;
@@ -117,7 +117,7 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 	public function writer($message, $category = 'app')
 	{
 
-		$path = \Yoc::$app->runtimePath . '/log';
+		$path = \Beauty::$app->runtimePath . '/log';
 		if (!is_dir($path)) mkdir($path, 777);
 
 		if (!empty($category)) {
@@ -165,9 +165,9 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 	public function reader($offset, $limit = 1000, $category = '')
 	{
 		if (!empty($category)) {
-			$path = \Yoc::$app->runtimePath . '/log/' . $category . '/server.log';
+			$path = \Beauty::$app->runtimePath . '/log/' . $category . '/server.log';
 		} else {
-			$path = \Yoc::$app->runtimePath . '/log/error/server.log';
+			$path = \Beauty::$app->runtimePath . '/log/error/server.log';
 		}
 		if (!file_exists($path)) {
 			return '';
@@ -182,7 +182,7 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 
 	public function getCount()
 	{
-		$path = \Yoc::$app->runtimePath . '/log/server.log';
+		$path = \Beauty::$app->runtimePath . '/log/server.log';
 		if (!file_exists($path)) {
 			return 0;
 		}

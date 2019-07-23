@@ -6,11 +6,11 @@
  * Time: 2:17
  */
 
-namespace Yoc\console;
+namespace Beauty\console;
 
 
-use Yoc\base\Component;
-use Yoc\web\Action;
+use Beauty\base\Component;
+use Beauty\web\Action;
 
 abstract class Command extends Component implements ICommand
 {

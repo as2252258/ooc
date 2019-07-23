@@ -6,13 +6,13 @@
  * Time: 14:02
  */
 
-namespace Yoc\core;
+namespace Beauty\core;
 
 
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 class Qn extends Component
 {

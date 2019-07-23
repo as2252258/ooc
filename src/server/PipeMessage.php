@@ -6,7 +6,7 @@
  * Time: 18:37
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
 use Swoole\Server;
@@ -21,7 +21,7 @@ class PipeMessage
 	 */
 	public function onPipeMessage(Server $server, int $src_worker_id, $message)
 	{
-		$redis = \Yoc::$app->redis;
+		$redis = \Beauty::$app->redis;
 		if ($redis->sCard('debug_list') < 1) {
 			return;
 		}

@@ -6,11 +6,11 @@
  * Time: 19:24
  */
 
-namespace Yoc\web;
+namespace Beauty\web;
 
 
-use Yoc\base\Component;
-use Yoc\exception\RequestException;
+use Beauty\base\Component;
+use Beauty\exception\RequestException;
 
 class Action extends Component
 {
@@ -42,7 +42,7 @@ class Action extends Component
 	
 	/**
 	 * @return Controller
-	 * return implements Yoc\web\controller
+	 * return implements Beauty\web\controller
 	 */
 	public function getController()
 	{
@@ -56,7 +56,7 @@ class Action extends Component
 	 */
 	public function runWithParam($param = [])
 	{
-		$request = \Yoc::$app->request;
+		$request = \Beauty::$app->request;
 		
 		if (empty($this->id) || empty($this->controller)) {
 			throw new RequestException("Page not found.", 404);

@@ -6,19 +6,19 @@
  * Time: 14:39
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
 use Exception;
-use Yoc\core\ArrayAccess;
-use Yoc\error\Logger;
-use Yoc\exception\DbException;
+use Beauty\core\ArrayAccess;
+use Beauty\error\Logger;
+use Beauty\exception\DbException;
 
 defined('SAVE_FAIL') or define('SAVE_FAIL', 3227);
 
 /**
  * Class Orm
- * @package Yoc\db
+ * @package Beauty\db
  *
  * @property $attributes
  * @property-read $oldAttributes
@@ -221,7 +221,7 @@ class ActiveRecord extends BaseActiveRecord
 	 * @param       $condition
 	 * @param array $attributes
 	 *
-	 * @return array|mixed|null|\Yoc\db\Collection
+	 * @return array|mixed|null|\Beauty\db\Collection
 	 * @throws \Exception
 	 */
 	public static function findAll($condition, $attributes = [])
@@ -375,7 +375,7 @@ class ActiveRecord extends BaseActiveRecord
 	 */
 	public static function propute(array $data)
 	{
-		$model = \Yoc::createObject(get_called_class());
+		$model = \Beauty::createObject(get_called_class());
 		$model->_attributes = $data;
 		$model->_oldAttributes = $data;
 		$model->setIsCreate(false);

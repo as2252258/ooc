@@ -6,10 +6,10 @@
  * Time: 16:00
  */
 
-namespace Yoc\task;
+namespace Beauty\task;
 
 
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 abstract class Task extends Component implements InterfaceTask
 {

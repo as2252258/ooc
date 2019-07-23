@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Yoc\route;
+namespace Beauty\route;
 
 
 use Exception;
-use Yoc\base\Component;
-use Yoc\exception\NotFindClassException;
-use Yoc\exception\RequestException;
+use Beauty\base\Component;
+use Beauty\exception\NotFindClassException;
+use Beauty\exception\RequestException;
 
 class Router extends Component
 {
@@ -276,7 +276,7 @@ class Router extends Component
 		}
 
 		$_tmp = $this->transform($explode);
-		/** @var \Yoc\route\Node $node */
+		/** @var \Beauty\route\Node $node */
 		$node = $this->findByPath('/' . implode('/', $_tmp));
 		if (!($node instanceof Node)) {
 			throw new NotFindClassException('/' . implode('/', $_tmp));

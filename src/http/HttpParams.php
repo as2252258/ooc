@@ -6,9 +6,9 @@
  * Time: 14:54
  */
 
-namespace Yoc\http;
+namespace Beauty\http;
 
-use Yoc\exception\RequestException;
+use Beauty\exception\RequestException;
 use Exception;
 
 
@@ -259,7 +259,7 @@ class HttpParams
 	 * @param null $default
 	 *
 	 * @return mixed|null
-	 * @throws \Yoc\exception\RequestException
+	 * @throws \Beauty\exception\RequestException
 	 */
 	public function timestamp($name, $default = NULL)
 	{
@@ -285,7 +285,7 @@ class HttpParams
 	 * @param null $default
 	 *
 	 * @return mixed|null
-	 * @throws \Yoc\exception\RequestException
+	 * @throws \Beauty\exception\RequestException
 	 */
 	public function datetime($name, $default = NULL)
 	{

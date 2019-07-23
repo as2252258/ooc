@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Yoc\tcp;
+namespace Beauty\tcp;
 
 
 use Swoole\Server;
-use Yoc\core\ArrayAccess;
-use Yoc\http\HttpHeaders;
-use Yoc\http\HttpParams;
-use Yoc\http\Request;
+use Beauty\core\ArrayAccess;
+use Beauty\http\HttpHeaders;
+use Beauty\http\HttpParams;
+use Beauty\http\Request;
 
 class Tcp extends Socket
 {
@@ -60,7 +60,7 @@ class Tcp extends Socket
 			$params = json_decode($params, true);
 		}
 
-		\Yoc::$app->set('request', [
+		\Beauty::$app->set('request', [
 			'class' => Request::class,
 			'params' => new HttpParams($params, [], []),
 			'headers' => new HttpHeaders([])
@@ -81,7 +81,7 @@ class Tcp extends Socket
 	 */
 	private function encode($data)
 	{
-		$password = \Yoc::$app->id;
+		$password = \Beauty::$app->id;
 
 		if (!is_string($data)) {
 			$data = json_encode(ArrayAccess::toArray($data));
@@ -96,7 +96,7 @@ class Tcp extends Socket
 	 */
 	private function decode($data)
 	{
-		$password = \Yoc::$app->id;
+		$password = \Beauty::$app->id;
 
 		return openssl_decrypt($data, 'AES-256-CBC', $password);
 	}

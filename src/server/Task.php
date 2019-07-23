@@ -6,12 +6,12 @@
  * Time: 18:06
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 use Swoole\Server;
-use Yoc\error\Logger;
-use Yoc\event\Event;
-use Yoc\task\InterfaceTask;
+use Beauty\error\Logger;
+use Beauty\event\Event;
+use Beauty\task\InterfaceTask;
 
 class Task
 {

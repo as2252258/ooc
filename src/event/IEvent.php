@@ -6,7 +6,7 @@
  * Time: 16:44
  */
 
-namespace Yoc\event;
+namespace Beauty\event;
 
 
 interface IEvent

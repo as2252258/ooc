@@ -6,7 +6,7 @@
  * Time: 14:36
  */
 
-namespace Yoc\error;
+namespace Beauty\error;
 
 
 class Logger

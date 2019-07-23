@@ -6,11 +6,11 @@
  * Time: 17:27
  */
 
-namespace Yoc\di;
+namespace Beauty\di;
 
 
-use Yoc\base\BObject;
-use Yoc\exception\NotFindClassException;
+use Beauty\base\BObject;
+use Beauty\exception\NotFindClassException;
 
 class Container extends BObject
 {
@@ -113,7 +113,7 @@ class Container extends BObject
 			return $reflect->newInstanceArgs($dependencies ?? []);
 		}
 		
-		if (!empty($dependencies) && $reflect->implementsInterface('Yoc\base\Configure')) {
+		if (!empty($dependencies) && $reflect->implementsInterface('Beauty\base\Configure')) {
 			$dependencies[count($dependencies) - 1] = $config;
 			return $reflect->newInstanceArgs($dependencies);
 		}

@@ -1,8 +1,8 @@
 <?php
 
-namespace Yoc\http;
+namespace Beauty\http;
 
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 /**
  * Class Result

@@ -6,16 +6,16 @@
  * Time: 15:27
  */
 
-namespace Yoc\gii;
+namespace Beauty\gii;
 
 
-use Yoc\http\Request;
+use Beauty\http\Request;
 
 class Gii extends BGii
 {
 
     /**
-     * @param \Yoc\http\Request $request
+     * @param \Beauty\http\Request $request
      *
      * @return array
      * @throws \Exception
@@ -34,7 +34,7 @@ class Gii extends BGii
      */
     public function createFiles()
     {
-        $request = \Yoc::$app->request;
+        $request = \Beauty::$app->request;
         foreach ($this->tableName as $key => $val) {
             $structure = $this->resolveTableStructure($val, $this->fileList[$val]);
             if (!$request->get('c', NULL)) {

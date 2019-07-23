@@ -6,24 +6,24 @@
  * Time: 10:40
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
 use function Amp\first;
-use Yoc\base\BObject;
-use Yoc\db\condition\BetweenCondition;
-use Yoc\db\condition\ChildCondition;
-use Yoc\db\condition\Condition;
-use Yoc\db\condition\DefaultCondition;
-use Yoc\db\condition\InCondition;
-use Yoc\db\condition\LikeCondition;
-use Yoc\db\condition\LLikeCondition;
-use Yoc\db\condition\MathematicsCondition;
-use Yoc\db\condition\NotBetweenCondition;
-use Yoc\db\condition\NotInCondition;
-use Yoc\db\condition\NotLikeCondition;
-use Yoc\db\condition\RLikeCondition;
-use Yoc\db\traits\QueryTrait;
+use Beauty\base\BObject;
+use Beauty\db\condition\BetweenCondition;
+use Beauty\db\condition\ChildCondition;
+use Beauty\db\condition\Condition;
+use Beauty\db\condition\DefaultCondition;
+use Beauty\db\condition\InCondition;
+use Beauty\db\condition\LikeCondition;
+use Beauty\db\condition\LLikeCondition;
+use Beauty\db\condition\MathematicsCondition;
+use Beauty\db\condition\NotBetweenCondition;
+use Beauty\db\condition\NotInCondition;
+use Beauty\db\condition\NotLikeCondition;
+use Beauty\db\condition\RLikeCondition;
+use Beauty\db\traits\QueryTrait;
 
 class QueryBuilder extends BObject
 {
@@ -369,7 +369,7 @@ class QueryBuilder extends BObject
 	private function builderFrom($table)
 	{
 		if (preg_match('/^\{\{.*\}\}$/', $table)) {
-			$prefix = \Yoc::$app->db->tablePrefix;
+			$prefix = \Beauty::$app->db->tablePrefix;
 
 			return " FROM " . $prefix . trim($table, '{{%}}');
 		} else {
@@ -543,7 +543,7 @@ class QueryBuilder extends BObject
 		}
 
 		/** @var Condition $class */
-		$class = \Yoc::createObject($option);
+		$class = \Beauty::createObject($option);
 		return $class->builder();
 	}
 

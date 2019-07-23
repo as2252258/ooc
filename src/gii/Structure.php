@@ -6,7 +6,7 @@
  * Time: 15:41
  */
 
-namespace Yoc\gii;
+namespace Beauty\gii;
 
 
 class Structure

@@ -6,15 +6,15 @@
  * Time: 15:23
  */
 
-namespace Yoc\db;
+namespace Beauty\db;
 
 
-use Yoc\base\Component;
-use Yoc\error\Logger;
+use Beauty\base\Component;
+use Beauty\error\Logger;
 
 /**
  * Class Command
- * @package Yoc\db
+ * @package Beauty\db
  */
 class Command extends Component
 {

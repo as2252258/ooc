@@ -6,11 +6,11 @@
  * Time: 18:27
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
 use Swoole\Server;
-use Yoc\base\Component;
+use Beauty\base\Component;
 
 class Udp
 {

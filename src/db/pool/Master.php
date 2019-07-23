@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Yoc\db\pool;
+namespace Beauty\db\pool;
 
 /**
  * Class MasterConnect
- * @package Yoc\pool
+ * @package Beauty\pool
  *
  * \Db::table()
  *

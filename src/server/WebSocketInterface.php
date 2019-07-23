@@ -6,7 +6,7 @@
  * Time: 01:43
  */
 
-namespace Yoc\server;
+namespace Beauty\server;
 
 
 interface WebSocketInterface

@@ -83,7 +83,7 @@ $options = [
     'options' => '',  // ajax跨域请求处理	
 ];
 
-$router->group($options, function (\Yoc\route\Router $router){
+$router->group($options, function (\Beauty\route\Router $router){
     $router->get('index', 'SiteController@index');
     $router->post('index', 'SiteController@index');
     $router->any('index', 'SiteController@index');
@@ -106,7 +106,7 @@ define('DB_ERROR', 3002);
 define('PARAM_NOT_EXISTS', 4001);
 define('PARAM_EMPTY', 4004);
 
-use Yoc\web\Application;
+use Beauty\web\Application;
 
 $array = parse_ini_file(APP_PATH . '/.env', true);
 foreach ($array as $key => $val) {
@@ -115,7 +115,7 @@ foreach ($array as $key => $val) {
 
 
 require_once __DIR__ . '/vendor/autoload.php';
-//require_once __DIR__ . '/vendor/yoc/Yoc.php';
+Beauty.php
 
 $config = require_once __DIR__ . '/config/configure.php';
 
@@ -132,7 +132,7 @@ return [
 	'runtimePath' => __DIR__ . '/../runtime',
 	'components' => [
 		'config' => [
-			'class' => \Yoc\base\Config::class,
+			'class' => \Beauty\base\Config::class,
 			'cache_time' => 60 * 60 * 24,
 			'usePipeMessage' => TRUE,
 			'wss' => \app\socket\GameSocket::class,
@@ -145,7 +145,7 @@ return [
 			'class' => \app\MyErrorHandler::class
 		],
 		'socket' => [
-			'class' => 'Yoc\server\Socket',
+			'class' => 'Beauty\server\Socket',
 			'host' => '127.0.0.1',
 			'port' => 6500,
 			'serverHost' => '127.0.0.1',
@@ -157,7 +157,7 @@ return [
 			],
 		],
 		'redis' => [
-			'class' => 'Yoc\cache\Redis',
+			'class' => 'Beauty\cache\Redis',
 			'host' => '127.0.0.1',
 			'port' => '6379',
 			'prefix' => '',
@@ -165,14 +165,14 @@ return [
 			'databases' => '0',
 		],
 		'qn' => [
-			'class' => '\Yoc\core\Qn',
+			'class' => '\Beauty\core\Qn',
 			'access_key' => '',
 			'secret_key' => '',
 			'bucket' => '',
 		],
 
 		'default' => [
-			'class' => 'Yoc\db\Connection',
+			'class' => 'Beauty\db\Connection',
 			'id' => 'default',
 			'cds' => 'mysql:dbname=aircraftwar;host=' . CONNECT_HOST,
 			'username' => CONNECT_USER,

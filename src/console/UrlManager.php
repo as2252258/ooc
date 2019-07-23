@@ -6,13 +6,13 @@
  * Time: 9:31
  */
 
-namespace Yoc\console;
+namespace Beauty\console;
 
 
-use Yoc\base\BUrlManager;
-use Yoc\exception\RequestException;
-use Yoc\http\HttpHeaders;
-use Yoc\http\HttpParams;
+use Beauty\base\BUrlManager;
+use Beauty\exception\RequestException;
+use Beauty\http\HttpHeaders;
+use Beauty\http\HttpParams;
 
 class UrlManager extends BUrlManager
 {
@@ -133,8 +133,8 @@ class UrlManager extends BUrlManager
 		$data = [];
 		$header['request_uri'] = $request[1];
 		if (count($request) > 2) $data = $this->resolveParam($request);
-		\Yoc::$app->set('request', [
-			'class' => 'Yoc\http\Request',
+		\Beauty::$app->set('request', [
+			'class' => 'Beauty\http\Request',
 			'startTime' => microtime(TRUE),
 			'params' => new HttpParams([], $data, []),
 			'headers' => new HttpHeaders($header),

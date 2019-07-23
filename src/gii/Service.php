@@ -6,7 +6,7 @@
  * Time: 15:22
  */
 
-namespace Yoc\gii;
+namespace Beauty\gii;
 
 
 class Service extends BGii
