@@ -488,9 +488,6 @@ class QueryBuilder extends BObject
 		if (is_string($condition)) {
 			return $condition;
 		}
-		if (isset($condition[0]) && is_string($condition[0])) {
-			return $condition[0];
-		}
 
 		echo PHP_EOL;
 		echo PHP_EOL;

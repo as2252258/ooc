@@ -1,9 +1,22 @@
 <?php
 
 
-$array = ['a' => '', 'b' => '', 'c' => ''];
+require_once 'vendor/autoload.php';
 
 
-$new = ['a' => 1, 'b' => 2, 'c' => ''];
+class Ac extends \Yoc\db\ActiveRecord{
 
-var_dump(array_diff_assoc($new, $array));
+
+	public static function tableName()
+	{
+		return 'aaaa';
+	}
+
+}
+
+$model = new Ac();
+$model->attributes = [
+	'id' => 1,
+	'name' => 2
+];
+$model->save();
