@@ -33,6 +33,7 @@ class LogTask extends Task
 
 		$_tmp = [];
 
+		var_dump($this->param);
 		foreach ($this->param as $val) {
 			list($category, $message) = $val;
 
@@ -69,6 +70,7 @@ class LogTask extends Task
 	 */
 	private function write($context, $path)
 	{
+		var_dump($context, $path);
 		if (!file_exists($path)) {
 			touch($path);
 		}

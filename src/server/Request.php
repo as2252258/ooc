@@ -32,7 +32,6 @@ class Request extends Component
 		if ($request->server['request_uri'] == '/favicon.ico') {
 			return \response()->sendNotFind();
 		}
-
 		try {
 			Request::setRequestDi($request);
 
