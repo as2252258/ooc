@@ -501,6 +501,9 @@ class QueryBuilder extends BObject
 				$_tmp[] = $this->resolve($key, $value);
 			}
 		}
+
+		var_dump($_tmp);
+
 		if (empty($_tmp)) {
 			return '';
 		}

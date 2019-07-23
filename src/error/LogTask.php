@@ -68,7 +68,6 @@ class LogTask extends Task
 	 */
 	private function write($context, $path)
 	{
-		var_dump($context, $path);
 		if (!file_exists($path)) {
 			touch($path);
 		}
