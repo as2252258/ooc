@@ -460,13 +460,15 @@ class QueryBuilder extends BObject
 		}
 		$_tmp = [];
 		$condition = ['like', 'in', 'or', '>', '<', '<=', '>=', '<>', 'eq', 'neq', 'gt', 'ngt', 'lt', 'nlt'];
-		foreach ($array as $value) {
+		foreach ($array as $key => $value) {
 			if (is_array($value) && isset($value[0])) {
 				if (in_array($value[0], $condition)) {
 					$tmp = $this->builderLike($value);
 				} else {
 					$tmp = $this->addCondition($value);
 				}
+			} else if (is_string($key)) {
+				$tmp = $this->resolve($key, $value);
 			} else {
 				$tmp = $this->addCondition($value);
 			}
@@ -485,7 +487,7 @@ class QueryBuilder extends BObject
 	 */
 	private function addCondition($condition)
 	{
-		if (is_string($condition)) {
+		if (!is_array($condition)) {
 			return $condition;
 		}
 
