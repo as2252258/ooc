@@ -49,7 +49,7 @@ class LogTask extends Task
 			$_tmp[$category]['data'][] = $message;
 		}
 
-		$text = '[debug ' . date('Y-m-d H:i:s') . ']:';
+		$text = '';
 		foreach ($_tmp as $key => $val) {
 			$data = implode(PHP_EOL, $val['data']);
 
