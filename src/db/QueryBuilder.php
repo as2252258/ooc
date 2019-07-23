@@ -491,6 +491,10 @@ class QueryBuilder extends BObject
 			return $condition[0];
 		}
 
+		echo PHP_EOL;
+		echo PHP_EOL;
+		echo PHP_EOL;
+		echo __FILE__ . __LINE__ . PHP_EOL;
 		var_dump($condition);
 
 		$_tmp = [];
