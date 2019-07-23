@@ -400,7 +400,6 @@ class QueryBuilder extends BObject
 		}
 
 		$_tmp = $this->addArrayCondition($where);
-		var_dump($_tmp);
 		if (!empty($_tmp)) {
 			return ' WHERE (' . implode(') AND (', $_tmp) . ')';
 		} else {
@@ -502,9 +501,6 @@ class QueryBuilder extends BObject
 				$_tmp[] = $this->resolve($key, $value);
 			}
 		}
-
-		var_dump($_tmp);
-
 		if (empty($_tmp)) {
 			return '';
 		}
