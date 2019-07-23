@@ -168,8 +168,13 @@ class QueryBuilder extends BObject
 			}
 			$_tmp[] = $val . '=:' . $val;
 		}
+
+		$where = $this->builderWhere($condition);
+
+		var_dump($where, $condition);
+
 		if (!empty($_tmp)) {
-			$sql .= implode(',', $_tmp) . $this->builderWhere($condition);
+			$sql .= implode(',', $_tmp) . $where;
 		}
 
 		return $sql;

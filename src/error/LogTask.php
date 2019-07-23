@@ -32,8 +32,6 @@ class LogTask extends Task
 		if (!is_dir($path)) mkdir($path, 777);
 
 		$_tmp = [];
-
-		var_dump($this->param);
 		foreach ($this->param as $val) {
 			list($category, $message) = $val;
 
