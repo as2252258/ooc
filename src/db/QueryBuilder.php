@@ -170,9 +170,6 @@ class QueryBuilder extends BObject
 		}
 
 		$where = $this->builderWhere($condition);
-
-		var_dump($where, $condition);
-
 		if (!empty($_tmp)) {
 			$sql .= implode(',', $_tmp) . $where;
 		}
@@ -464,8 +461,12 @@ class QueryBuilder extends BObject
 		$_tmp = [];
 		$condition = ['like', 'in', 'or', '>', '<', '<=', '>=', '<>', 'eq', 'neq', 'gt', 'ngt', 'lt', 'nlt'];
 		foreach ($array as $value) {
-			if (in_array(($value[0] ?? ''), $condition)) {
-				$tmp = $this->builderLike($value);
+			if (is_array($value) && isset($value[0])) {
+				if (in_array($value[0], $condition)) {
+					$tmp = $this->builderLike($value);
+				} else {
+					$tmp = $this->addCondition($value);
+				}
 			} else {
 				$tmp = $this->addCondition($value);
 			}
