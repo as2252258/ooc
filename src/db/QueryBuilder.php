@@ -491,6 +491,8 @@ class QueryBuilder extends BObject
 			return $condition[0];
 		}
 
+		var_dump($condition);
+
 		$_tmp = [];
 		foreach ($condition as $key => $value) {
 			if ($value === null || $value === '') {
