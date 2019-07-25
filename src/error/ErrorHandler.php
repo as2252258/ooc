@@ -96,6 +96,9 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 		return $send;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getErrorMessage()
 	{
 		$message = $this->message;
@@ -103,6 +106,9 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 		return $message->getData();
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function getAsError()
 	{
 		return $this->message !== NULL;
@@ -157,7 +163,8 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 
 	/**
 	 * @param $offset
-	 * @param $limit
+	 * @param int $limit
+	 * @param string $category
 	 *
 	 * @return array|string
 	 * 从文件读取错误日志
@@ -180,6 +187,9 @@ abstract class ErrorHandler extends Component implements ErrorInterface
 	}
 
 
+	/**
+	 * @return int
+	 */
 	public function getCount()
 	{
 		$path = \Beauty::$app->runtimePath . '/log/server.log';

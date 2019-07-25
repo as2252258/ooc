@@ -45,6 +45,10 @@ class HttpParams
 		return ($this->page() - 1) * $this->size();
 	}
 
+	/**
+	 * @param array $data
+	 * 批量添加数据
+	 */
 	public function setPosts(array $data)
 	{
 		foreach ($data as $key => $vla) {

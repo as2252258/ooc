@@ -49,6 +49,16 @@ class Beauty
 	public static $container;
 
 	/**
+	 * @param $name
+	 * @return mixed
+	 * @throws
+	 */
+	public static function getApp($name)
+	{
+		return static::$app->get($name);
+	}
+
+	/**
 	 * @param $tmp
 	 * @return string
 	 */
@@ -117,7 +127,7 @@ class Beauty
 		$message = self::param($event, $data);
 
 		/** @var swoole_websocket_server $service */
-		$service = Beauty::$app->socket->getSocket();
+		$service = Beauty::getApp('socket')->getSocket();
 
 		if (is_array($user_id)) {
 			$fd = $user_id;
@@ -161,13 +171,15 @@ class Beauty
 	 */
 	public static function getFds($userId)
 	{
-		$redis = \Beauty::$app->redis;
+		$redis = \Beauty::getApp('redis');
 		$fds = $redis->hGet('user_fds', $userId);
 		if (empty($fds)) {
 			return NULL;
 		}
 		$all = [];
-		$server = \Beauty::$app->socket->getSocket();
+
+		/** @var \Swoole\WebSocket\Server $server */
+		$server = \Beauty::getApp('socket')->getSocket();
 		foreach (explode(',', $fds) as $key => $val) {
 			if (!is_numeric($val)) {
 				continue;
@@ -191,9 +203,9 @@ class Beauty
 	 */
 	public static function trance(...$message)
 	{
-		$redis = Beauty::$app->redis;
+		$redis = Beauty::getApp('redis');
 		/** @var swoole_websocket_server $socket */
-		$socket = Beauty::$app->get('socket');
+		$socket = Beauty::getApp('socket');
 		if (empty($socket) || !($socket = $socket->getSocket())) {
 			return;
 		}
@@ -220,16 +232,14 @@ class Beauty
 	 * @param null $ms
 	 * @return mixed
 	 */
-	public static function command($command, $param = [], $ms = NULL)
+	public static function command($command, array $param = [])
 	{
 		$_TMP = [APP_PATH . '/artisan', $command];
-		if (!empty($param) && is_array($param)) {
-			foreach ($param as $key => $val) {
-				if (is_array($val) || is_object($val)) {
-					continue;
-				}
-				$_TMP[] = $key . '=' . $val;
+		foreach ($param as $key => $val) {
+			if (is_array($val) || is_object($val)) {
+				continue;
 			}
+			$_TMP[] = $key . '=' . $val;
 		}
 		$data = shell_exec(PHP_BINDIR . '/php ' . implode(' ', $_TMP));
 		return trim($data);
@@ -241,7 +251,7 @@ class Beauty
 	 */
 	public static function putin(Task $task)
 	{
-		$server = \Beauty::$app->socket;
+		$server = \Beauty::getApp('socket');
 
 		$worker = $server->getRandWorker();
 
@@ -255,42 +265,7 @@ class Beauty
 	 */
 	public static function getLogger()
 	{
-		return Beauty::$app->error;
-	}
-
-	/**
-	 * @param $name
-	 * @param $default
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public static function getOrCreate($name, $default)
-	{
-		if (!Beauty::$app->has($name)) {
-			return $default;
-		} else {
-			return Beauty::$app->get($name);
-		}
-	}
-
-	/**
-	 * @param $name
-	 * @return mixed
-	 * @throws
-	 */
-	public static function get($name)
-	{
-		return Beauty::$app->get($name);
-	}
-
-	/**
-	 * @param $name
-	 * @param $options
-	 * @throws Exception
-	 */
-	public static function set($name, $options)
-	{
-		Beauty::$app->set($name, $options);
+		return Beauty::getApp('error');
 	}
 
 	/**
@@ -300,7 +275,7 @@ class Beauty
 	 */
 	public static function async(Task $task, int $work_id = null)
 	{
-		$server = static::$app->socket;
+		$server = static::getApp('socket');
 
 		if (empty($work_id)) {
 			$work_id = $server->getRandWorker();
@@ -318,10 +293,31 @@ class Beauty
 	 * @param $param
 	 * @throws
 	 */
-	public static function event($name, $callback, $param)
+	public static function on($name, $callback, $param)
 	{
-		$event = static::$app->event;
+		$event = static::getApp('event');
 		$event->on($name, $callback, $param);
+	}
+
+
+	/**
+	 * @param $name
+	 * @param $callback
+	 * @param bool $isRemove
+	 */
+	public static function trigger($name, $callback, $isRemove = false)
+	{
+		$event = static::getApp('event');
+		$event->try($name, $callback, $isRemove);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public static function getRuntimePath()
+	{
+		return \Beauty::$app->runtimePath;
 	}
 }
 

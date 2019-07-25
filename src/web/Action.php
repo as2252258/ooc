@@ -14,22 +14,22 @@ use Beauty\exception\RequestException;
 
 class Action extends Component
 {
-	
+
 	const BEFORE_ACTION = 'beforeAction';
 	const AFTER_ACTION = 'afterAction';
-	
+
 	/**
 	 * @var string
 	 *
 	 * action name
 	 */
 	public $id;
-	
+
 	/**
 	 * @var Controller
 	 */
 	public $controller;
-	
+
 	/**
 	 * @return mixed
 	 *
@@ -39,7 +39,7 @@ class Action extends Component
 	{
 		return $this->id;
 	}
-	
+
 	/**
 	 * @return Controller
 	 * return implements Beauty\web\controller
@@ -48,25 +48,25 @@ class Action extends Component
 	{
 		return $this->controller;
 	}
-	
+
 	/**
 	 * @param array $param
 	 * @return mixed
 	 * @throws
 	 */
-	public function runWithParam($param = [])
+	public function runWithParam(array $param = [])
 	{
 		$request = \Beauty::$app->request;
-		
+		$request->params->setPosts($param);
 		if (empty($this->id) || empty($this->controller)) {
 			throw new RequestException("Page not found.", 404);
 		}
-		
+
 		$control = $this->controller;
 		$action = 'action' . ucfirst($this->id);
 		if (!method_exists($control, $action)) {
 			$message = "Unable to resolve the request {$request->headers->getHeader('request_uri')}.";
-			
+
 			throw new RequestException($message, 404);
 		}
 

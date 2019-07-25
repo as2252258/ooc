@@ -290,7 +290,6 @@ class Router extends Component
 			throw new \Exception('method mot allowed.', 403);
 		}
 
-
 		return $node->run($node->handler);
 	}
 

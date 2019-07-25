@@ -29,13 +29,13 @@ class Filter extends Component
 		if (!empty($this->header)) {
 			$this->headerRun();
 		}
-
 		if (!is_callable($this->grant, true)) {
-			return;
+			return true;
 		}
 		if (!call_user_func($this->grant)) {
 			throw new AuthException("Authentication error.");
 		}
+		return true;
 	}
 
 	/**

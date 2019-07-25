@@ -44,20 +44,7 @@ class Node
 			if (!empty($this->namespace)) {
 				$controller = implode('\\', $this->namespace) . '\\' . $controller;
 			}
-			try {
-				$reflect = new \ReflectionClass($controller);
-				if (!$reflect->isInstantiable()) {
-					throw new Exception($controller . ' Class is con\'t Instantiable.');
-				}
-
-				if (!$reflect->hasMethod($action)) {
-					throw new Exception('method ' . $action . ' not exists at ' . $controller . '.');
-				}
-				$this->handler = [$reflect->newInstance(), $action];
-			} catch (Exception $exception) {
-				Logger::error($exception->getMessage(), 'router');
-				return;
-			}
+			$this->handler = $this->getReflect($controller, $action);
 		} else if ($handler instanceof \Closure) {
 			$this->handler = $handler;
 		} else if ($handler != null && !is_callable($handler, true)) {
@@ -65,7 +52,30 @@ class Node
 		} else {
 			$this->handler = $handler;
 		}
+	}
 
+	/**
+	 * @param string $controller
+	 * @param string $action
+	 * @return null|array
+	 * @throws Exception
+	 */
+	private function getReflect(string $controller, string $action)
+	{
+		try {
+			$reflect = new \ReflectionClass($controller);
+			if (!$reflect->isInstantiable()) {
+				throw new Exception($controller . ' Class is con\'t Instantiable.');
+			}
+
+			if (!empty($action) && !$reflect->hasMethod($action)) {
+				throw new Exception('method ' . $action . ' not exists at ' . $controller . '.');
+			}
+			return [$reflect->newInstance(), $action];
+		} catch (Exception $exception) {
+			Logger::error($exception->getMessage(), 'router');
+			return null;
+		}
 	}
 
 	/**
@@ -143,21 +153,29 @@ class Node
 		$mid = new Middleware();
 		$mid->bindParams(\Beauty::$app->request);
 
-		if (!empty($this->rules)) {
-			foreach ($this->rules as $rule) {
-				if (!isset($rule['class'])) {
-					$rule['class'] = Filter::class;
-				}
-
-				$object = \Beauty::createObject($rule);
-				$object->handler();
-			}
-		}
-
+		$this->runFilter();
 		foreach ($this->middleware as $val) {
 			$mid->set($val);
 		}
 		return $mid->exec($call);
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	private function runFilter()
+	{
+		if (empty($this->rules)) {
+			return;
+		}
+		foreach ($this->rules as $rule) {
+			if (!isset($rule['class'])) {
+				$rule['class'] = Filter::class;
+			}
+
+			$object = \Beauty::createObject($rule);
+			$object->handler();
+		}
 	}
 
 	/**
@@ -181,21 +199,19 @@ class Node
 
 	/**
 	 * @param $middles
-	 * @throws \ReflectionException
+	 * @throws
 	 */
-	public function bindMiddleware($middles)
+	public function bindMiddleware(array $middles)
 	{
 		$_tmp = [];
+		if (empty($middles)) {
+			return;
+		}
 		foreach ($middles as $class) {
-			if (is_string($class) && class_exists($class)) {
-				$reflect = new \ReflectionClass($class);
-
-				$_tmp[] = $reflect->newInstance();
-			} else if ($class instanceof \Closure) {
-				$_tmp[] = $class;
-			} else {
-				$_tmp[] = $class;
+			if (empty($class)) {
+				continue;
 			}
+			$_tmp[] = \Beauty::createObject($class);
 		}
 		$this->middleware = $_tmp;
 	}
