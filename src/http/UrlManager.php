@@ -48,12 +48,6 @@ class UrlManager extends BUrlManager
 			return $controller;
 		}
 
-		/** @var HttpFilter $filter */
-//		$filter = \Beauty::createObject(HttpFilter::class, [$controller, $data]);
-//		if ($filter instanceof HttpFilter) {
-//			$filter->filter();
-//		}
-
 		return $controller;
 	}
 

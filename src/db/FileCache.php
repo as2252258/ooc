@@ -71,21 +71,24 @@ class FileCache extends Component
         return unserialize(file_get_contents($tmpFile));
     }
 
-    /**
-     * @param $table
-     * @param $key
-     * @return bool
-     */
+	/**
+	 * @param $table
+	 * @param $key
+	 * @param string $end
+	 * @return bool
+	 */
     public function has($table, $key, $end = '.data')
     {
         return file_exists($this->path . '/' . $table . '/' . $key . $end);
     }
 
-    /**
-     * @param $table
-     * @return bool
-     * @throws
-     */
+	/**
+	 * @param $table
+	 * @param bool $clearHash
+	 * @param string $end
+	 * @return bool
+	 * @throws \Exception
+	 */
     public function clear($table, $clearHash = FALSE, $end = '.data')
     {
         if ($table instanceof ActiveRecord) {
@@ -116,6 +119,9 @@ class FileCache extends Component
     }
 
 
+	/**
+	 * @param $path
+	 */
     private function unlink($path)
     {
         if (!is_dir($path)) {
