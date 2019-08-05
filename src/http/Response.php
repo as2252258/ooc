@@ -153,7 +153,7 @@ class Response extends Component
 		if ($isReturn) {
 			return $sendData;
 		}
-		return $this->setHeaders()->end($isReturn);
+		return $this->setHeaders()->end($sendData);
 	}
 
 	/**
