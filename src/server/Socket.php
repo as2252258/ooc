@@ -121,15 +121,15 @@ class Socket extends Service
 	{
 		$socket = Beauty::createObject(WebSocket::class);
 		$onHandshake = [$socket, 'onHandshake'];
-		if (Beauty::checkFunction($this->callback['handshake'] ?? null, true)) {
+		if (Beauty::checkFunction($this->callback['handshake'] ?? null)) {
 			$onHandshake = $this->callback['handshake'];
 		}
 		$onMessage = [$socket, 'onMessage'];
-		if (Beauty::checkFunction($this->callback['message'] ?? null, true)) {
+		if (Beauty::checkFunction($this->callback['message'] ?? null)) {
 			$onMessage = $this->callback['message'];
 		}
 		$onClose = [$socket, 'onClose'];
-		if (Beauty::checkFunction($this->callback['close'] ?? null, true)) {
+		if (Beauty::checkFunction($this->callback['close'] ?? null)) {
 			$onClose = $this->callback['close'];
 		}
 		$this->server->on('handshake', $onHandshake);
