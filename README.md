@@ -155,6 +155,11 @@ return [
 				'reactor_num' => 8,
 				'task_worker_num' => 20
 			],
+            'callback' => [
+                'handshake' => [WebSocket::class, 'onHandshake'],
+                'message' => [WebSocket::class, 'onMessage'],
+                'close' => [WebSocket::class, 'onClose'],
+            ]
 		],
 		'redis' => [
 			'class' => 'Beauty\cache\Redis',

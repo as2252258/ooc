@@ -293,7 +293,7 @@ class Beauty
 	 * @param $param
 	 * @throws
 	 */
-	public static function on($name, $callback, $param)
+	public static function on($name, $callback, $param = null)
 	{
 		$event = static::getApp('event');
 		$event->on($name, $callback, $param);
@@ -319,6 +319,27 @@ class Beauty
 	{
 		return \Beauty::$app->runtimePath;
 	}
+
+
+	/**
+	 * @param $callback
+	 * @param bool $throw
+	 * @return bool
+	 * @throws
+	 */
+	public static function checkFunction($callback, $throw = false)
+	{
+		if (is_callable($callback, true)) {
+			return true;
+		}
+
+		if ($throw) {
+			throw new Exception('The $callback not is function.');
+		}
+
+		return false;
+	}
+
 }
 
 

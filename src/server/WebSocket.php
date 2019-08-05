@@ -9,22 +9,80 @@
 namespace Beauty\server;
 
 
+use Beauty\core\JSON;
+use Beauty\exception\NotFindClassException;
 use Swoole\Http\Response;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
 
 class WebSocket
 {
+
+	public $namespace = 'app\\sockets\\';
+
 	/**
 	 * @param Server $server
 	 * @param Frame $frame
+	 * @return mixed
+	 * @throws NotFindClassException|\Exception
+	 * @throws \ReflectionException
 	 */
 	public function onMessage(Server $server, Frame $frame)
 	{
-		if ($frame->opcode == 0x08) {
-			echo "Close frame received: \n";
+		$json = json_decode($frame->data, true);
+
+		\response()->setIsWebSocket($frame->fd);
+		if (is_null($json) || !isset($json['route'])) {
+			$message = JSON::to(404, '错误的地址!');
+
+			return \response()->send($message) ;
 		}
-		$server->send($frame->fd, 'ok');
+		/** @var \ReflectionClass $class */
+		list($class, $action) = $this->resolveUrl($json['route']);
+		if (isset($json['body']) && !empty($json['body'])) {
+			Input()->setPosts($json['body']);
+		}
+
+		$controller = $class->newInstance();
+		$response = $controller->{$action}(...$json['body']);
+		return \response()->send($response);
+	}
+
+	/**
+	 * @param $route
+	 * @return array
+	 * @throws NotFindClassException
+	 * @throws \ReflectionException
+	 *
+	 * 解析URL
+	 */
+	private function resolveUrl($route)
+	{
+		$explode = explode('/', $route);
+		$explode = array_filter($explode);
+
+		if (count($explode) < 2) {
+			throw new NotFindClassException($route);
+		}
+
+		$action = end($explode);
+		$explode[count($explode) - 1] = lcfirst($explode[count($explode) - 1]);
+		$class = $this->namespace . implode('\\', $explode) . 'Socket';
+
+		if (!class_exists($class)) {
+			throw new NotFindClassException($route);
+		}
+
+		$class = new \ReflectionClass($class);
+		if (!$class->isInstantiable()) {
+			throw new NotFindClassException($route);
+		}
+
+		if (!$class->hasMethod($action)) {
+			throw new NotFindClassException($action);
+		}
+
+		return [$class, $action];
 	}
 
 	/**

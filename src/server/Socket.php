@@ -21,18 +21,19 @@ class Socket extends Service
 
 	public $http;
 
-	public $udp;
-
 	public $config = [];
 
 	/** @var Request $request */
 	public $request;
 
-	/** @var \swoole_websocket_server */
+	/** @var Server $server */
 	private $server;
 	public $isRun = false;
 
 	public $usePipeMessage = false;
+
+	/** @var array $callback */
+	public $callback = [];
 
 	/**
 	 * @return array
@@ -40,7 +41,7 @@ class Socket extends Service
 	 */
 	private function getDefaultConfig()
 	{
-		return array_merge([
+		$default = [
 			'worker_num' => 6,
 			'reactor_num' => 4,
 			'backlog' => 20000,
@@ -68,7 +69,8 @@ class Socket extends Service
 			'open_websocket_close_frame' => TRUE,
 			'websocket_subprotocol' => TRUE,
 			'http_compression' => true,
-		], $this->config);
+		];
+		return array_merge($default, $this->config);
 	}
 
 
@@ -98,18 +100,63 @@ class Socket extends Service
 		$this->server->on('workerStop', [$worker, 'onWorkerStop']);
 		$this->server->on('workerExit', [$worker, 'onWorkerExit']);
 
+		$this->registerWebSocketCallback();     //注册 handshake AND message AND close.
+		$this->registerHttpServerCallback();    //register http server callback
+		$this->registerTaskAndPipeCallback();   //register task and message queue
+
+		$pro = new \Swoole\Process([Process::class, 'listen']);
+		$this->server->addProcess($pro);
+
+		//进程执行
+		$this->server->on('start', [$this, 'onStart']);
+		$this->server->start();
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	private function registerWebSocketCallback()
+	{
 		$socket = Beauty::createObject(WebSocket::class);
-		$this->server->on('handshake', [$socket, 'onHandshake']);
-		$this->server->on('message', [$socket, 'onMessage']);
-		$this->server->on('close', [$socket, 'onClose']);
-
-		if (!empty($this->http)) {
-			$this->server->addlistener($this->http['host'], $this->http['port'], SWOOLE_TCP);
-
-			$request = Beauty::createObject(Request::class);
-			$this->server->on('request', [$request, 'onRequest']);
+		$onHandshake = [$socket, 'onHandshake'];
+		if (Beauty::checkFunction($this->callback['handshake'] ?? null, true)) {
+			$onHandshake = $this->callback['handshake'];
 		}
+		$onMessage = [$socket, 'onMessage'];
+		if (Beauty::checkFunction($this->callback['message'] ?? null, true)) {
+			$onMessage = $this->callback['message'];
+		}
+		$onClose = [$socket, 'onClose'];
+		if (Beauty::checkFunction($this->callback['close'] ?? null, true)) {
+			$onClose = $this->callback['close'];
+		}
+		$this->server->on('handshake', $onHandshake);
+		$this->server->on('message', $onMessage);
+		$this->server->on('close', $onClose);
+	}
 
+	/**
+	 * @throws \Exception
+	 */
+	private function registerHttpServerCallback()
+	{
+		if (empty($this->http)) {
+			return;
+		}
+		if (!isset($this->http['host']) || !isset($this->http['port'])) {
+			return;
+		}
+		$this->server->addlistener($this->http['host'], $this->http['port'], SWOOLE_TCP);
+
+		$request = Beauty::createObject(Request::class);
+		$this->server->on('request', [$request, 'onRequest']);
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	private function registerTaskAndPipeCallback()
+	{
 		$taskNumber = $this->config['task_worker_num'] ?? 0;
 		if ($taskNumber > 0) {
 			$task = Beauty::createObject(Task::class);
@@ -120,13 +167,6 @@ class Socket extends Service
 			$pipeMessage = Beauty::createObject(PipeMessage::class);
 			$this->server->on('pipeMessage', [$pipeMessage, 'onPipeMessage']);
 		}
-
-		$pro = new \Swoole\Process([Process::class, 'listen']);
-		$this->server->addProcess($pro);
-
-		//进程执行
-		$this->server->on('start', [$this, 'onStart']);
-		$this->server->start();
 	}
 
 	/**
@@ -147,14 +187,16 @@ class Socket extends Service
 	}
 
 	/**
-	 * @return \swoole_websocket_server
+	 * @return Server
 	 */
 	public function getSocket()
 	{
 		return $this->server;
 	}
 
-
+	/**
+	 * 重启
+	 */
 	public function reload()
 	{
 		$this->server->reload();

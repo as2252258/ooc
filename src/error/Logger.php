@@ -103,17 +103,17 @@ class Logger
 
 
 	/**
+	 * @return array
 	 * 写入日志
 	 */
 	public static function insert()
 	{
 		if (empty(static::$logs)) {
-			static::$logs = [];
-			return;
+			return static::$logs = [];
 		}
 
 		(new LogTask(static::$logs))->handler();
-		static::$logs = [];
+		return static::$logs = [];
 	}
 
 	/**

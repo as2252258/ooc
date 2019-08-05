@@ -106,8 +106,6 @@ class ActiveQuery extends Component
 	{
 		$this->modelClass = $model;
 		parent::__construct($config);
-
-		$this->defer([$this, 'clear']);
 	}
 
 	/**

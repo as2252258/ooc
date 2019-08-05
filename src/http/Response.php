@@ -19,6 +19,8 @@ use Beauty\http\formatter\HtmlFormatter;
 use Beauty\http\formatter\IFormatter;
 use Beauty\http\formatter\JsonFormatter;
 use Beauty\http\formatter\XmlFormatter;
+use Beauty\server\Socket;
+use Swoole\WebSocket\Server;
 
 class Response extends Component
 {
@@ -35,8 +37,40 @@ class Response extends Component
 
 	/** @var \swoole_http_response */
 	public $response;
-
+	public $isWebSocket = false;
 	public $headers = [];
+
+	public $fd = 0;
+
+	/**
+	 * 清理
+	 */
+	public function init()
+	{
+		Event::on('AFTER_REQUEST', [$this, 'clear']);
+	}
+
+	/**
+	 * @param int $fd
+	 */
+	public function setIsWebSocket(int $fd)
+	{
+		if ($fd < 0) {
+			return;
+		}
+		$this->fd = $fd;
+		$this->isWebSocket = true;
+	}
+
+	/**
+	 * 清理无用数据
+	 */
+	public function clear()
+	{
+		$this->response = null;
+		$this->fd = 0;
+		$this->isWebSocket = false;
+	}
 
 	/**
 	 * @return string
@@ -73,37 +107,38 @@ class Response extends Component
 	/**
 	 * @param $context
 	 * @param $statusCode
+	 * @param $isWebSocket
+	 * @param $fd
 	 * @return mixed
 	 * @throws \Exception
 	 */
 	public function send($context, $statusCode = 200)
 	{
 		$this->statusCode = $statusCode;
-
 		/** @var IFormatter $formatter */
-		if (getIsCommand()) {
-			$this->printResult($context);
+		if ($this->isWebSocket) {
+			$this->format = self::JSON;
+
+			/** @var Server $socket */
+			$socket = \Beauty::getApp('socket')->getSocket();
+			$socket->send($this->fd, $this->sendContext($context, true));
 		} else if ($this->response instanceof \swoole_http_response) {
 			$this->sendContext($context);
 		} else {
 			$this->printResult($context);
 		}
 
-		$this->triDefer();
 		Event::trigger('AFTER_REQUEST');
-
-		Logger::insert();
-
-		$this->response = null;
-		$formatter = null;
-		return true;
+		return Logger::insert();
 	}
 
 	/**
 	 * @param $context
+	 * @param $isReturn
+	 * @return mixed
 	 * @throws \Exception
 	 */
-	private function sendContext($context)
+	private function sendContext($context, $isReturn = false)
 	{
 		if ($this->format == self::JSON) {
 			$config['class'] = JsonFormatter::class;
@@ -113,8 +148,12 @@ class Response extends Component
 			$config['class'] = HtmlFormatter::class;
 		}
 		$formatter = \Beauty::createObject($config);
+		$sendData = $formatter->send($context)->getData();
 
-		$this->setHeaders()->end($formatter->send($context)->getData());
+		if ($isReturn) {
+			return $sendData;
+		}
+		return $this->setHeaders()->end($isReturn);
 	}
 
 	/**
@@ -123,15 +162,7 @@ class Response extends Component
 	 */
 	private function printResult($result)
 	{
-		if (is_object($result)) {
-			if ($result instanceof Collection) {
-				$result = $result->toArray();
-			} else if ($result instanceof ActiveRecord) {
-				$result = $result->toArray();
-			} else {
-				$result = get_object_vars($result);
-			}
-		} else if (is_array($result)) {
+		if (!is_string($result)) {
 			$result = ArrayAccess::toArray($result);
 		}
 		if (is_array($result)) {
