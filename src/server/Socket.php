@@ -19,6 +19,8 @@ class Socket extends Service
 
 	public $port;
 
+	public $udp = [];
+
 	public $http;
 
 	public $config = [];
