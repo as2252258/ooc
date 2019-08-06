@@ -36,7 +36,7 @@ class WebSocket extends Component
 		if (is_null($json) || !isset($json['route'])) {
 			$message = JSON::to(404, '错误的地址!');
 
-			return \response()->send($message) ;
+			return \response()->send($message);
 		}
 		/** @var \ReflectionClass $class */
 		list($class, $action) = $this->resolveUrl($json['route']);
@@ -59,7 +59,11 @@ class WebSocket extends Component
 	 */
 	private function resolveUrl($route)
 	{
-		$explode = explode('/', $route);
+		if (strpos($route, '-') !== false) {
+			$explode = $this->split($route);
+		} else {
+			$explode = explode('/', $route);
+		}
 		$explode = array_filter($explode);
 
 		if (count($explode) < 2) {
@@ -84,6 +88,27 @@ class WebSocket extends Component
 		}
 
 		return [$class, $action];
+	}
+
+	/**
+	 * @param $route
+	 * @return array
+	 */
+	private function split($route)
+	{
+		$explode = [];
+		foreach (explode('-', $route) as $key => $value) {
+			if ($key != 0) {
+				$explode[] = ucfirst($value);
+			} else {
+				$explode[] = $value;
+			}
+		}
+		if (empty($explode)) {
+			return [];
+		}
+		$explode = implode('', $explode);
+		return explode('/', $explode);
 	}
 
 	/**
