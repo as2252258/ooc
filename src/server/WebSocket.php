@@ -51,7 +51,7 @@ class WebSocket extends Component
 		}
 
 		$controller = $class->newInstance();
-		$response = $controller->{$action}(...$json['body']);
+		$response = $controller->{$action}(...($json['body'] ?? []));
 		return \response()->send($response);
 	}
 
