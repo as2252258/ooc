@@ -39,10 +39,15 @@ class WebSocket extends Component
 
 			return \response()->send($message);
 		}
-		/** @var \ReflectionClass $class */
-		list($class, $action) = $this->resolveUrl($json['route']);
-		if (isset($json['body']) && !empty($json['body'])) {
-			Input()->setPosts($json['body']);
+
+		try {
+			/** @var \ReflectionClass $class */
+			list($class, $action) = $this->resolveUrl($json['route']);
+			if (isset($json['body']) && !empty($json['body'])) {
+				Input()->setPosts($json['body']);
+			}
+		} catch (\Exception $exception) {
+			return \response()->send(JSON::to(500, $exception->getMessage()));
 		}
 
 		$controller = $class->newInstance();
