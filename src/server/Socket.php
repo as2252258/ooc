@@ -123,14 +123,23 @@ class Socket extends Service
 		$onHandshake = [$socket, 'onHandshake'];
 		if (Beauty::checkFunction($this->callback['handshake'] ?? null)) {
 			$onHandshake = $this->callback['handshake'];
+			if (is_array($onHandshake) && !is_object($onHandshake[0])) {
+				$onHandshake[0] = Beauty::createObject($onHandshake[0]);
+			}
 		}
 		$onMessage = [$socket, 'onMessage'];
 		if (Beauty::checkFunction($this->callback['message'] ?? null)) {
 			$onMessage = $this->callback['message'];
+			if (is_array($onMessage) && !is_object($onMessage[0])) {
+				$onMessage[0] = Beauty::createObject($onMessage[0]);
+			}
 		}
 		$onClose = [$socket, 'onClose'];
 		if (Beauty::checkFunction($this->callback['close'] ?? null)) {
 			$onClose = $this->callback['close'];
+			if (is_array($onClose) && !is_object($onClose[0])) {
+				$onClose[0] = Beauty::createObject($onClose[0]);
+			}
 		}
 		$this->server->on('handshake', $onHandshake);
 		$this->server->on('message', $onMessage);
