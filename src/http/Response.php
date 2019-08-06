@@ -121,7 +121,7 @@ class Response extends Component
 
 			/** @var Server $socket */
 			$socket = \Beauty::getApp('socket')->getSocket();
-			$socket->send($this->fd, $this->sendContext($context, true));
+			$socket->push($this->fd, $this->sendContext($context, true));
 		} else if ($this->response instanceof \swoole_http_response) {
 			$this->sendContext($context);
 		} else {

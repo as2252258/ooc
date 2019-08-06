@@ -33,6 +33,7 @@ class WebSocket extends Component
 		$json = json_decode($frame->data, true);
 
 		\response()->setIsWebSocket($frame->fd);
+		$server->push($frame->fd, $frame->fd);
 		if (is_null($json) || !isset($json['route'])) {
 			$message = JSON::to(404, '错误的地址!');
 
