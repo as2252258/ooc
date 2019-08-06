@@ -68,7 +68,7 @@ class WebSocket extends Component
 
 		$action = end($explode);
 		$explode[count($explode) - 1] = lcfirst($explode[count($explode) - 1]);
-		$class = $this->namespace . implode('\\', $explode) . 'Socket';
+		$class = $this->namespace . implode('\\', $explode) . 'Controller';
 
 		if (!class_exists($class)) {
 			throw new NotFindClassException($route);
