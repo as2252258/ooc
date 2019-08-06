@@ -9,13 +9,14 @@
 namespace Beauty\server;
 
 
+use Beauty\base\Component;
 use Beauty\core\JSON;
 use Beauty\exception\NotFindClassException;
 use Swoole\Http\Response;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
 
-class WebSocket
+class WebSocket extends Component
 {
 
 	public $namespace = 'app\\sockets\\';
