@@ -30,29 +30,25 @@ class WebSocket extends Component
 	 */
 	public function onMessage(Server $server, Frame $frame)
 	{
-		$json = json_decode($frame->data, true);
-
-		\response()->setIsWebSocket($frame->fd);
-		$server->push($frame->fd, $frame->fd);
-		if (is_null($json) || !isset($json['route'])) {
-			$message = JSON::to(404, '错误的地址!');
-
-			return \response()->send($message);
-		}
-
 		try {
+			$json = json_decode($frame->data, true);
+			\response()->setIsWebSocket($frame->fd);
+			if (is_null($json) || !isset($json['route'])) {
+				$message = JSON::to(404, '错误的地址!');
+				return \response()->send($message);
+			}
 			/** @var \ReflectionClass $class */
 			list($class, $action) = $this->resolveUrl($json['route']);
 			if (isset($json['body']) && !empty($json['body'])) {
 				Input()->setPosts($json['body']);
 			}
+
+			$controller = $class->newInstance();
+			$response = $controller->{$action}(...($json['body'] ?? []));
+			return \response()->send($response);
 		} catch (\Exception $exception) {
 			return \response()->send(JSON::to(500, $exception->getMessage()));
 		}
-
-		$controller = $class->newInstance();
-		$response = $controller->{$action}(...($json['body'] ?? []));
-		return \response()->send($response);
 	}
 
 	/**
