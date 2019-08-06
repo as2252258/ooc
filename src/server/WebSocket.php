@@ -78,7 +78,7 @@ class WebSocket extends Component
 
 		$action = end($explode);
 		array_pop($explode);
-		$explode[count($explode) - 1] = lcfirst($explode[count($explode) - 1]);
+		$explode[count($explode) - 1] = ucfirst($explode[count($explode) - 1]);
 		$class = $this->namespace . implode('\\', $explode) . 'Controller';
 
 		if (!class_exists($class)) {
