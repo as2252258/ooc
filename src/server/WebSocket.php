@@ -76,12 +76,12 @@ class WebSocket extends Component
 		$class = $this->namespace . implode('\\', $explode) . 'Controller';
 
 		if (!class_exists($class)) {
-			throw new NotFindClassException($route);
+			throw new NotFindClassException($class);
 		}
 
 		$class = new \ReflectionClass($class);
 		if (!$class->isInstantiable()) {
-			throw new NotFindClassException($route);
+			throw new NotFindClassException('ReflectionClass ' . $class);
 		}
 
 		if (!$class->hasMethod($action)) {
