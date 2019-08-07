@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Yoc\http;
+namespace Beauty\http;
 
 
 class File
