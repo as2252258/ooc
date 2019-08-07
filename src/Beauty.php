@@ -228,10 +228,14 @@ class Beauty
 
 
 	/**
+	 * @param string $path
 	 * @return string
 	 */
-	public static function getRuntimePath()
+	public static function getRuntimePath($path = '')
 	{
+		if (!empty($path)) {
+			return Beauty::$app->runtimePath . $path;
+		}
 		return \Beauty::$app->runtimePath;
 	}
 
