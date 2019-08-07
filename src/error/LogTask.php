@@ -34,13 +34,15 @@ class LogTask extends Task
 			return;
 		}
 
+		$prefix = '[' . date('Y-m-d H:i:s') . ']: ';
+
 		/** @var Server $server */
 		$server = \Beauty::getApp('socket')->getSocket();
 		foreach ($fds as $fd) {
 			if (!$server->exist($fd)) {
 				continue;
 			}
-			$server->push($fd, var_export($this->param, true));
+			$server->push($fd, $prefix . var_export($this->param, true));
 		}
 	}
 
