@@ -124,8 +124,6 @@ class QueryBuilder extends BObject
 		$builder .= $this->builderWhere($query->where);
 		$builder .= $this->builderGroup($query->group);
 
-		echo $builder . PHP_EOL;
-
 		return $builder;
 	}
 
@@ -137,6 +135,19 @@ class QueryBuilder extends BObject
 	public function delete($query)
 	{
 		return 'DELETE FROM ' . $query->getTable() . $this->builderWhere($query->where);
+	}
+
+	/**
+	 * @param ActiveQuery $query
+	 * @return string
+	 * @throws
+	 */
+	public function truncate($query)
+	{
+		if (empty($query->from)) {
+			$query->from = $query->getTable();
+		}
+		return 'TRUNCATE ' . $query->from;
 	}
 
 	public function getWhere($query)
@@ -459,14 +470,9 @@ class QueryBuilder extends BObject
 			return [];
 		}
 		$_tmp = [];
-		$condition = ['like', 'in', 'or', '>', '<', '<=', '>=', '<>', 'eq', 'neq', 'gt', 'ngt', 'lt', 'nlt'];
 		foreach ($array as $key => $value) {
 			if (is_array($value) && isset($value[0])) {
-				if (in_array($value[0], $condition)) {
-					$tmp = $this->builderLike($value);
-				} else {
-					$tmp = $this->addCondition($value);
-				}
+				$tmp = $this->arrayResolve($value);
 			} else if (is_string($key)) {
 				$tmp = $this->resolve($key, $value);
 			} else {
@@ -480,6 +486,25 @@ class QueryBuilder extends BObject
 		return $_tmp;
 	}
 
+	/**
+	 * @param $value
+	 * @return mixed|string
+	 * @throws \Exception
+	 */
+	private function arrayResolve($value)
+	{
+		$condition = [
+			'like', 'in', 'or', '>', '<', '<=', '>=', '<>',
+			'eq', 'neq', 'gt', 'ngt', 'lt', 'nlt'
+		];
+		if (in_array($value[0], $condition)) {
+			$tmp = $this->builderLike($value);
+		} else {
+			$tmp = $this->addCondition($value);
+		}
+		return $tmp;
+	}
+
 
 	/**
 	 * @param $condition
@@ -487,17 +512,10 @@ class QueryBuilder extends BObject
 	 */
 	private function addCondition($condition)
 	{
+		$_tmp = [];
 		if (!is_array($condition)) {
 			return $condition;
 		}
-
-		echo PHP_EOL;
-		echo PHP_EOL;
-		echo PHP_EOL;
-		echo __FILE__ . __LINE__ . PHP_EOL;
-		var_dump($condition);
-
-		$_tmp = [];
 		foreach ($condition as $key => $value) {
 			if ($value === null || $value === '') {
 				continue;

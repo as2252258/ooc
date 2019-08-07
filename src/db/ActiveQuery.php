@@ -126,6 +126,39 @@ class ActiveQuery extends Component
 
 	/**
 	 * @return array|Collection
+	 */
+	public function get()
+	{
+		return $this->all();
+	}
+
+
+	/**
+	 * @param int $size
+	 * @param callable $callback
+	 * @throws \Exception
+	 */
+	public function plunk(int $size, callable $callback)
+	{
+		$offset = 0;
+		\Beauty::checkFunction($callback, true);
+		do {
+			//get batch data by condition
+			$data = $this->limit($size, $offset)->get();
+			if ($data->isEmpty()) {
+				break;
+			}
+
+			call_user_func($callback, $data);
+			if ($data->getLength() < $size) {
+				break;
+			}
+			$offset += $size;
+		} while ($data->getLength() < $size);
+	}
+
+	/**
+	 * @return array|Collection
 	 * @throws
 	 */
 	public function all()
@@ -277,10 +310,10 @@ class ActiveQuery extends Component
 	 * @param $limit
 	 * @return Query|Plunk
 	 */
-	public function plunk($limit)
-	{
-		return new Plunk($this);
-	}
+//	public function plunk($limit)
+//	{
+//		return new Plunk($this);
+//	}
 
 	/**
 	 * @param $sql
