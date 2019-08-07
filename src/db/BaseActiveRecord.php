@@ -571,9 +571,9 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	 */
 	public function __get($name)
 	{
-		$method = 'get' . ucfirst($name) . 'Attribute';
-		if (method_exists($this, $method)) {
-			return $this->$method($this->_attributes[$name] ?? null);
+		$method = 'get' . ucfirst($name);
+		if (method_exists($this, $method . 'Attribute')) {
+			return $this->{$method . 'Attribute'}($this->_attributes[$name] ?? null);
 		}
 
 		if (isset($this->_attributes[$name]) || array_key_exists($name, $this->_attributes)) {
@@ -581,12 +581,13 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 		}
 
 		if (isset($this->_relate[$name])) {
-			return $this->resolveClass($this->{$this->_relate[$name]}());
+			$gets = $this->{$this->_relate[$name]}();
+		} else if (method_exists($this, $method)) {
+			$gets = $this->$method();
 		}
 
-		$method = 'get' . ucfirst($name);
-		if (method_exists($this, $method)) {
-			return $this->resolveClass($this->$method());
+		if (isset($gets)) {
+			return $this->resolveClass($gets);
 		}
 
 		return parent::__get($name);
