@@ -10,6 +10,7 @@ namespace Beauty\http;
 
 use Beauty\exception\RequestException;
 use Exception;
+use Yoc\http\File;
 
 
 class HttpParams
@@ -143,11 +144,17 @@ class HttpParams
 
 	/**
 	 * @param $name
-	 * @return mixed|null
+	 * @return mixed|File|null
+	 * @throws Exception
 	 */
 	public function file($name)
 	{
-		return $this->files[$name] ?? null;
+		if (!isset($this->files[$name])) {
+			return null;
+		}
+		$param = $this->files[$name];
+		$param['class'] = File::class;
+		return \Beauty::createObject($param);
 	}
 
 	/**
