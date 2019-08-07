@@ -10,8 +10,6 @@ namespace Beauty\http;
 
 use Beauty\exception\RequestException;
 use Exception;
-use Yoc\http\File;
-
 
 class HttpParams
 {
