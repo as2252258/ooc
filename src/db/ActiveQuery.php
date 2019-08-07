@@ -136,9 +136,10 @@ class ActiveQuery extends Component
 	/**
 	 * @param int $size
 	 * @param callable $callback
+	 * @param mixed $param
 	 * @throws \Exception
 	 */
-	public function plunk(int $size, callable $callback)
+	public function plunk(int $size, callable $callback, $param = null)
 	{
 		$offset = 0;
 		\Beauty::checkFunction($callback, true);
@@ -149,12 +150,19 @@ class ActiveQuery extends Component
 				break;
 			}
 
-			call_user_func($callback, $data);
+			//run callback
+			if ($param !== null) {
+				call_user_func($callback, $data, $param);
+			} else {
+				call_user_func($callback, $data);
+			}
+
+			//check data if is over
 			if ($data->getLength() < $size) {
 				break;
 			}
 			$offset += $size;
-		} while ($data->getLength() < $size);
+		} while ($data->getLength() == $size);
 	}
 
 	/**
