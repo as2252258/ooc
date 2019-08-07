@@ -255,3 +255,63 @@ if (!function_exists('events')) {
 	}
 
 }
+
+
+if (!function_exists('exif_imagetype')) {
+
+	/**
+	 * @param $name
+	 * @return string
+	 */
+	function exif_imagetype($name)
+	{
+		return getType($name);
+	}
+
+	/**
+	 * @param $file
+	 * @return string
+	 */
+	function getFileType($file)
+	{
+		$fp = fopen($file, "rb");
+		$bin = fread($fp, 2); //只读2字节
+		fclose($fp);
+		// unpack() 函数从二进制字符串对数据进行解包
+		$str_info = @unpack("C2chars", $bin);
+		//  intval() 函数用于获取变量的整数值
+		$type_code = intval($str_info['chars1'] . $str_info['chars2']);
+		$file_type = '';
+		// 下面将解析后获取的状态值进行判断
+		switch ($type_code) {
+			case 7790:
+				$file_type = 'exe';
+				break;
+			case 7784:
+				$file_type = 'midi';
+				break;
+			case 8075:
+				$file_type = 'zip';
+				break;
+			case 8297:
+				$file_type = 'rar';
+				break;
+			case 255216:
+				$file_type = 'jpg';
+				break;
+			case 7173:
+				$file_type = 'gif';
+				break;
+			case 6677:
+				$file_type = 'bmp';
+				break;
+			case 13780:
+				$file_type = 'png';
+				break;
+			default:
+				$file_type = 'unknown';
+				break;
+		}
+		return $file_type;
+	}
+}
