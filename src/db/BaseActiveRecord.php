@@ -581,7 +581,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 		}
 
 		if (isset($this->_relate[$name])) {
-			return $this->resolveClass($this->_relate[$name]);
+			return $this->resolveClass($this->{$this->_relate[$name]}());
 		}
 
 		$method = 'get' . ucfirst($name);
@@ -608,9 +608,6 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	 */
 	private function resolveClass($call)
 	{
-		if (is_string($call)) {
-			$call = $this->$call();
-		}
 		if ($call instanceof HasOne) {
 			return $call->get();
 		} else if ($call instanceof HasMany) {
