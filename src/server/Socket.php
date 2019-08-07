@@ -172,6 +172,7 @@ class Socket extends Service
 		if ($taskNumber > 0) {
 			$task = Beauty::createObject(Task::class);
 			$this->server->on('task', [$task, 'onTask']);
+			$this->server->on('finish', [$task, 'onFinish']);
 		}
 
 		if ($this->usePipeMessage === true) {

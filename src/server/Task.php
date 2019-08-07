@@ -68,7 +68,7 @@ class Task
 		$data = json_decode($data, true);
 		$data['work_id'] = $task_id;
 
-		redis()->rPush('task_' . date('Y_m_d'), json_encode($data));
+//		redis()->rPush('task_' . date('Y_m_d'), json_encode($data));
 		Event::trigger('AFTER_TASK');
 	}
 }
