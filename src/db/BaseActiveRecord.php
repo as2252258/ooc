@@ -234,10 +234,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	 */
 	public function beforeSave()
 	{
-		$save = new BeforeSaveEvent($this);
-		$event = \Beauty::$app->event;
-		$event->try('BEFORE_SAVE', $save);
-		return $event->isVild;
+		return true;
 	}
 
 	/**
@@ -251,20 +248,21 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 			return FALSE;
 		}
 
-		$command = static::getDb()->createCommand()->insert(static::getTable(), $attributes, $param);
+		if ($this->beforeSave()) {
+			$command = static::getDb()->createCommand()->insert(static::getTable(), $attributes, $param);
 
-		if (($lastId = $command->save(TRUE)) === FALSE) {
-			return FALSE;
+			if (($lastId = $command->save(TRUE)) === FALSE) {
+				return FALSE;
+			}
+
+			if (!empty(self::getPrimary()) && $lastId) {
+				$param[self::getPrimary()] = $lastId;
+			}
+
+			if ($this->afterSave($attributes, $param)) {
+				return $this->populate($param);
+			}
 		}
-
-		if (!empty(self::getPrimary()) && $lastId) {
-			$param[self::getPrimary()] = $lastId;
-		}
-
-		if ($this->afterSave($attributes, $param)) {
-			return $this->populate($param);
-		}
-
 		return false;
 	}
 
@@ -362,18 +360,20 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 			$condition = [$primary => $this->$primary];
 		}
 
-		$command = static::getDb()->createCommand();
-		$command = $command->update($this, $attributes, $condition, $param, $this->getColumns()->getFields());
-		if (!$command->save(false)) {
-			return $this->addError($command->getError());
-		}
-		$model = $this->populate($this->_attributes);
+		if ($this->beforeSave()) {
+			$command = static::getDb()->createCommand();
+			$command = $command->update($this, $attributes, $condition, $param, $this->getColumns()->getFields());
+			if (!$command->save(false)) {
+				return $this->addError($command->getError());
+			}
+			$model = $this->populate($this->_attributes);
 
-		if (method_exists($this, 'afterSave')) {
-			$this->afterSave($attributes, $param);
+			if (method_exists($this, 'afterSave')) {
+				$this->afterSave($attributes, $param);
+			}
+			return $model;
 		}
-
-		return $model;
+		return false;
 	}
 
 	/**
