@@ -13,6 +13,7 @@ class File
 	public $type = '';
 	public $size = '';
 
+	private $newName = '';
 	private $errorInfo = [
 		0 => 'UPLOAD_ERR_OK.',
 		1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
@@ -47,7 +48,12 @@ class File
 	 */
 	public function rename()
 	{
-		return \Beauty::rename(['tmp_name' => $this->getTmpPath()]);
+		if (!empty($this->newName)) {
+			return $this->newName;
+		}
+		$param = ['tmp_name' => $this->getTmpPath()];
+		$this->newName = \Beauty::rename($param);
+		return $this->newName;
 	}
 
 	/**
