@@ -45,6 +45,14 @@ class File
 	/**
 	 * @return string
 	 */
+	public function rename()
+	{
+		return \Beauty::rename(['tmp_name' => $this->getTmpPath()]);
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getTmpPath()
 	{
 		return $this->tmp_name;
