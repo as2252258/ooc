@@ -595,7 +595,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 
 	/**
 	 * @param $name
-	 * @return |null
+	 * @return mixed|null
 	 */
 	public function __isset($name)
 	{
