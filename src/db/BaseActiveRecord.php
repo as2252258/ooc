@@ -248,7 +248,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 			return FALSE;
 		}
 
-		if ($this->beforeSave()) {
+		if ($this->beforeSave() === true) {
 			$command = static::getDb()->createCommand()->insert(static::getTable(), $attributes, $param);
 
 			if (($lastId = $command->save(TRUE)) === FALSE) {
@@ -360,7 +360,7 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 			$condition = [$primary => $this->$primary];
 		}
 
-		if ($this->beforeSave()) {
+		if ($this->beforeSave() === true) {
 			$command = static::getDb()->createCommand();
 			$command = $command->update($this, $attributes, $condition, $param, $this->getColumns()->getFields());
 			if (!$command->save(false)) {
