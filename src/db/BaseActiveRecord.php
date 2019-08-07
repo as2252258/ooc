@@ -602,12 +602,15 @@ abstract class BaseActiveRecord extends Component implements IOrm, \ArrayAccess
 	}
 
 	/**
-	 * @param $name
+	 * @param $call
 	 * @return array|null|ActiveRecord
 	 * @throws \Exception
 	 */
 	private function resolveClass($call)
 	{
+		if (is_string($call)) {
+			$call = $this->$call();
+		}
 		if ($call instanceof HasOne) {
 			return $call->get();
 		} else if ($call instanceof HasMany) {
