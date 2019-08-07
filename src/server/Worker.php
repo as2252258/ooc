@@ -17,29 +17,40 @@ use Beauty\route\Router;
 class Worker
 {
 
+	/**
+	 * @param \swoole_server $server
+	 * @param int $worker_id
+	 * @throws \Exception
+	 */
 	public function onWorkerError(\swoole_server $server, int $worker_id)
 	{
 		$redis = \Beauty::$app->redis;
 		$redis->hIncrBy('workerStatus', 'onWorkerError', 1);
-		\Beauty::trance('The server error. at No.' . $worker_id);
-	}
-
-	public function onWorkerStop(\swoole_server $server, int $worker_id)
-	{
-		$redis = \Beauty::$app->redis;
-		$redis->hIncrBy('workerStatus', 'onWorkerStop', 1);
-		\Beauty::trance('The server stop. at No.' . $worker_id);
+		Logger::trance('The server error. at No.' . $worker_id);
 	}
 
 	/**
 	 * @param \swoole_server $server
 	 * @param int $worker_id
+	 * @throws \Exception
+	 */
+	public function onWorkerStop(\swoole_server $server, int $worker_id)
+	{
+		$redis = \Beauty::$app->redis;
+		$redis->hIncrBy('workerStatus', 'onWorkerStop', 1);
+		Logger::trance('The server stop. at No.' . $worker_id);
+	}
+
+	/**
+	 * @param \swoole_server $server
+	 * @param int $worker_id
+	 * @throws \Exception
 	 */
 	public function onWorkerExit(\swoole_server $server, int $worker_id)
 	{
 		$redis = \Beauty::$app->redis;
 		$redis->hIncrBy('workerStatus', 'onWorkerExit', 1);
-		\Beauty::trance('The server exit. at No.' . $worker_id);
+		Logger::trance('The server exit. at No.' . $worker_id);
 	}
 
 	/**
