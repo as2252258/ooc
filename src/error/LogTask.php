@@ -12,6 +12,7 @@ namespace Beauty\error;
 use Swoole\Coroutine\Client;
 use Beauty\core\JSON;
 use Beauty\task\Task;
+use Swoole\WebSocket\Server;
 
 /**
  * Class LogTask
@@ -28,7 +29,20 @@ class LogTask extends Task
 	 */
 	public function handler()
 	{
-		$path = \Beauty::$app->runtimePath . '/log';
+		$fds = redis()->sMembers('debug_list');
+		if (empty($fds)) {
+			return;
+		}
+
+		/** @var Server $server */
+		$server = \Beauty::getApp('socket')->getSocket();
+		foreach ($fds as $fd) {
+			$server->push($fd, var_export($this->param, true));
+		}
+	}
+
+	private function format(){
+		$path = \Beauty::getRuntimePath() . '/log';
 		if (!is_dir($path)) mkdir($path, 777);
 
 		$_tmp = [];

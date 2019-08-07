@@ -64,6 +64,7 @@ class Logger
 	 */
 	private static function writer($message, $category = 'app')
 	{
+		\Beauty::async(new LogTask($message));
 		if ($message instanceof \Exception) {
 			$message = $message->getMessage();
 		} else {
