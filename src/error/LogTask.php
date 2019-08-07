@@ -37,11 +37,15 @@ class LogTask extends Task
 		/** @var Server $server */
 		$server = \Beauty::getApp('socket')->getSocket();
 		foreach ($fds as $fd) {
+			if (!$server->exist($fd)) {
+				continue;
+			}
 			$server->push($fd, var_export($this->param, true));
 		}
 	}
 
-	private function format(){
+	private function format()
+	{
 		$path = \Beauty::getRuntimePath() . '/log';
 		if (!is_dir($path)) mkdir($path, 777);
 
