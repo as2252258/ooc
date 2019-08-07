@@ -118,30 +118,21 @@ class Beauty
 
 	/**
 	 * @param string $event
-	 * @param $user_id
+	 * @param array $fds
 	 * @param null $data
 	 * @throws Exception
 	 */
-	public static function push(string $event, $user_id, $data = NULL)
+	public static function push(string $event, array $fds, $data = NULL)
 	{
 		$message = self::param($event, $data);
 
 		/** @var swoole_websocket_server $service */
 		$service = Beauty::getApp('socket')->getSocket();
-
-		if (is_array($user_id)) {
-			$fd = $user_id;
-		} else {
-			$fd = static::getFds($user_id);
-		}
-		if (!is_array($fd) || empty($fd)) {
-			return;
-		}
-		foreach ($fd as $_key => $_val) {
-			if (!$service->exist(intval($_val))) {
+		foreach ($fds as $fd) {
+			if (!$service->exist($fd)) {
 				continue;
 			}
-			$service->push($_val, $message);
+			$service->push($fd, $message);
 		}
 	}
 
@@ -166,67 +157,6 @@ class Beauty
 	}
 
 	/**
-	 * @param $userId
-	 * @return array|null
-	 */
-	public static function getFds($userId)
-	{
-		$redis = \Beauty::getApp('redis');
-		$fds = $redis->hGet('user_fds', $userId);
-		if (empty($fds)) {
-			return NULL;
-		}
-		$all = [];
-
-		/** @var \Swoole\WebSocket\Server $server */
-		$server = \Beauty::getApp('socket')->getSocket();
-		foreach (explode(',', $fds) as $key => $val) {
-			if (!is_numeric($val)) {
-				continue;
-			}
-			if ($server->exist((int)$val)) {
-				$all[] = $val;
-			}
-		}
-		if (empty($all)) {
-			$redis->hDel('user_fds', $userId);
-		} else {
-			$all = array_unique($all);
-			$redis->hMset('user_fds', [$userId => implode(',', $all)]);
-		}
-		return $all;
-	}
-
-	/**
-	 * @param $message
-	 * @throws
-	 */
-	public static function trance(...$message)
-	{
-		$redis = Beauty::getApp('redis');
-		/** @var swoole_websocket_server $socket */
-		$socket = Beauty::getApp('socket');
-		if (empty($socket) || !($socket = $socket->getSocket())) {
-			return;
-		}
-		$remove = [];
-		$members = $redis->sMembers('debug_list');
-		foreach ($members as $val) {
-			if (!$socket->exist($val)) {
-				$remove[] = $val;
-			} else {
-				if (count($message) == 1) {
-					$message = current($message);
-				}
-				$socket->push($val, print_r($message, TRUE));
-			}
-		}
-		if (!empty($remove)) {
-			$redis->sRem('debug_list', ...$remove);
-		}
-	}
-
-	/**
 	 * @param $command
 	 * @param array $param
 	 * @param null $ms
@@ -243,21 +173,6 @@ class Beauty
 		}
 		$data = shell_exec(PHP_BINDIR . '/php ' . implode(' ', $_TMP));
 		return trim($data);
-	}
-
-	/**
-	 * @param \Beauty\task\Task $task
-	 * @return false|int
-	 */
-	public static function putin(Task $task)
-	{
-		$server = \Beauty::getApp('socket');
-
-		$worker = $server->getRandWorker();
-
-		$format = serialize($task);
-
-		return $server->getSocket()->task($format, $worker);
 	}
 
 	/**
