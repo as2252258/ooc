@@ -43,14 +43,6 @@ class Response extends Component
 	public $fd = 0;
 
 	/**
-	 * 清理
-	 */
-	public function init()
-	{
-		Event::on('AFTER_REQUEST', [$this, 'clear']);
-	}
-
-	/**
 	 * @param int $fd
 	 */
 	public function setIsWebSocket(int $fd)
