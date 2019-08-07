@@ -265,7 +265,7 @@ if (!function_exists('exif_imagetype')) {
 	 */
 	function exif_imagetype($name)
 	{
-		return getType($name);
+		return getFileType($name);
 	}
 
 	/**
