@@ -42,7 +42,7 @@ class LogTask extends Task
 			if (!$server->exist($fd)) {
 				continue;
 			}
-			$server->push($fd, $prefix . var_export($this->param, true));
+			$server->push($fd, $prefix . print_r($this->param, true));
 		}
 	}
 
