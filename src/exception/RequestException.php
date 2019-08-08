@@ -15,6 +15,6 @@ class RequestException extends Exception
 {
 	public function __construct(string $message = "", int $code = 0, Throwable $previous = null)
 	{
-		parent::__construct($message, 7000, $previous);
+		parent::__construct($message, 4004, $previous);
 	}
 }
