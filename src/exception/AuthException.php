@@ -16,7 +16,7 @@ class AuthException extends Exception
 	
 	public function __construct($message = "", $code = 0, Throwable $previous = NULL)
 	{
-		parent::__construct($message, 2000, $previous);
+		parent::__construct($message, 7000, $previous);
 	}
 	
 }
