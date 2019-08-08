@@ -263,7 +263,7 @@ class Beauty
 	 * @param array $param
 	 * @return stdClass
 	 */
-	public static function anonymous(array $param)
+	public static function createAnonymous(array $param)
 	{
 		$class = new stdClass();
 		foreach ($param as $key => $value) {
