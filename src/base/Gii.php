@@ -299,7 +299,7 @@ class {$managerName}Controller extends ActiveController
 	
 ";
 		$funcNames = [];
-		$default = ['actionAdd', 'actionUpdate', 'actionDetail', 'actionDelete', 'actionList'];
+		$default = ['actionLoadParam', 'actionAdd', 'actionUpdate', 'actionDetail', 'actionDelete', 'actionList'];
 		if (is_object($class)) {
 			$methods = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
 			$funcNames = array_column($methods, 'name');
@@ -771,12 +771,25 @@ class ' . $managerName . ' extends ActiveRecord
 	 */
 	public function actionAdd(){
 		$model = new ' . $className . '();
-		$model->attributes = [' . $this->getData($className, $fields) . '
-		];
+		$model->attributes = $this->loadParam();
 		if (!$model->save()) {
 			return JSON::to(500, $model->getLastError());
 		}
 		return JSON::to(Code::SUCCESS, $model->toArray());
+	}';
+	}
+
+	public function controllerMethodLoadParam($fields, $className, $object = NULL)
+	{
+		return '
+	/**
+	 * @return array
+	 * @throws Beauty\exception\RequestException
+	 * @throws Exception
+	 */
+	private function loadParam(){
+		return [' . $this->getData($className, $fields) . '
+		];
 	}';
 	}
 
@@ -810,7 +823,7 @@ class ' . $managerName . ' extends ActiveRecord
 							$_tps = 'Input()->' . $_key . '(\'' . $val['Field'] . '\', date(\'Y-m-d H:i:s\'))';
 					}
 					$html .= '
-            \'' . str_pad($val['Field'] . '\'', $length, ' ', STR_PAD_RIGHT) . ' => ' . str_pad($_tps . ',', 60, ' ', STR_PAD_RIGHT) . $comment;
+        \'' . str_pad($val['Field'] . '\'', $length, ' ', STR_PAD_RIGHT) . ' => ' . str_pad($_tps . ',', 60, ' ', STR_PAD_RIGHT) . $comment;
 				} else {
 					$tmp = 'null';
 					if (isset($number[0])) {
@@ -841,7 +854,7 @@ class ' . $managerName . ' extends ActiveRecord
 						$_tps = 'Input()->' . $_key . '(\'' . $val['Field'] . '\', ' . $_field['required'] . ')';
 					}
 					$html .= '
-            \'' . str_pad($val['Field'] . '\'', $length, ' ', STR_PAD_RIGHT) . ' => ' . str_pad($_tps . ',', 60, ' ', STR_PAD_RIGHT) . $comment;
+        \'' . str_pad($val['Field'] . '\'', $length, ' ', STR_PAD_RIGHT) . ' => ' . str_pad($_tps . ',', 60, ' ', STR_PAD_RIGHT) . $comment;
 				}
 			}
 			$this->rules[$val['Field']] = $_field;
@@ -870,8 +883,8 @@ class ' . $managerName . ' extends ActiveRecord
 		if (empty($model)) {
 			return JSON::to(500, \'指定数据不存在\');
 		}
-		$model->attributes = [' . $this->getData($className, $fields) . '
-		];
+		$model->attributes = $this->loadParam();
+		
 		if (!$model->save()) {
 			return JSON::to(500, $model->getLastError());
 		}
