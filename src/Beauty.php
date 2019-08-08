@@ -259,6 +259,20 @@ class Beauty
 		return false;
 	}
 
+	/**
+	 * @param array $param
+	 * @return stdClass
+	 */
+	public static function anonymous(array $param)
+	{
+		$class = new stdClass();
+		foreach ($param as $key => $value) {
+			$class->{$key} = $value;
+		}
+
+		return $class;
+	}
+
 }
 
 
